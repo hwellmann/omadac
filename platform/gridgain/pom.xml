@@ -1,0 +1,156 @@
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.gridgain</groupId>
+  <artifactId>org.omadac.org.gridgain</artifactId>
+  <name>GridGain Grid Computing</name>
+  <version>2.1.1</version>
+  <packaging>jar</packaging>
+  <parent>
+    <groupId>org.omadac</groupId>
+    <artifactId>platform</artifactId>
+    <version>0.1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.junit</groupId>
+      <artifactId>com.springsource.org.junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>com.springsource.org.apache.commons.cli</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.log4j</groupId>
+      <artifactId>com.springsource.org.apache.log4j</artifactId>
+      <version>1.2.15</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.core</artifactId>
+      <version>2.5.4.A</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.beans</artifactId>
+      <version>2.5.4.A</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.aop</artifactId>
+      <version>2.5.4.A</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.context</artifactId>
+      <version>2.5.4.A</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jgroups</groupId>
+      <artifactId>com.springsource.org.jgroups</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.bcel</groupId>
+      <artifactId>com.springsource.org.apache.bcel</artifactId>
+      <version>5.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.javassist</groupId>
+      <artifactId>com.springsource.javassist</artifactId>
+      <version>3.6.0.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss</groupId>
+      <artifactId>org.omadac.org.jboss.serialization</artifactId>
+      <version>1.0.3.GA</version>
+    </dependency>
+    <!-- 
+         This version uses some old style XML interfaces which may
+         cause conflicts at runtime with other bundles. In that case,
+         get the sources, modify them and build your own bundle.
+    -->
+    <dependency>
+      <groupId>org.w3c.tidy</groupId>
+      <artifactId>com.springsource.org.w3c.tidy</artifactId>
+      <version>0.0.0.04aug2000r7-dev</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <excludes>
+            <exclude>org/gridgain/grid/GridJexlNodeFilter.java</exclude>
+            <exclude>org/gridgain/grid/gridify/aop/aspectj/**</exclude>
+            <exclude>org/gridgain/grid/gridify/aop/jboss/**</exclude>
+            <exclude>org/gridgain/grid/loaders/glassfish/**</exclude>
+            <exclude>org/gridgain/grid/loaders/jboss/**</exclude>
+            <exclude>org/gridgain/grid/loaders/servlet/**</exclude>
+            <exclude>org/gridgain/grid/loaders/weblogic/**</exclude>
+            <exclude>org/gridgain/grid/loaders/websphere/**</exclude>
+            <exclude>org/gridgain/grid/logger/jboss/**</exclude>
+            <exclude>org/gridgain/grid/marshaller/xstream/**</exclude>
+            <exclude>org/gridgain/grid/spi/checkpoint/coherence/**</exclude>
+            <exclude>org/gridgain/grid/spi/checkpoint/gigaspaces/**</exclude>
+            <exclude>org/gridgain/grid/spi/communication/coherence/**</exclude>
+            <exclude>org/gridgain/grid/spi/communication/jms/**</exclude>
+            <exclude>org/gridgain/grid/spi/communication/mail/**</exclude>
+            <exclude>org/gridgain/grid/spi/communication/mule/**</exclude>
+            <exclude>org/gridgain/grid/spi/communication/mule2/**</exclude>
+            <exclude>org/gridgain/grid/spi/deployment/uri/scanners/ftp/**</exclude>
+            <exclude>org/gridgain/grid/spi/deployment/uri/scanners/mail/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/coherence/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/jboss/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/jms/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/mail/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/mule/**</exclude>
+            <exclude>org/gridgain/grid/spi/discovery/mule2/**</exclude>
+            <exclude>org/gridgain/grid/spi/loadbalancing/coherence/**</exclude>
+            <exclude>org/gridgain/grid/spi/tracing/jxinsight/**</exclude>
+            <exclude>org/gridgain/grid/test/aop/**</exclude>
+            <exclude>org/gridgain/grid/thread/GridWorkManagerExecutorService.java</exclude>
+            <exclude>org/gridgain/grid/tools/**</exclude>
+            <exclude>org/gridgain/grid/util/jms/**</exclude>
+            <exclude>org/gridgain/grid/util/mail/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,91 @@
+/*
+ * GRIDGAIN - OPEN CLOUD PLATFORM.
+ * COPYRIGHT (C) 2005-2008 GRIDGAIN SYSTEMS. ALL RIGHTS RESERVED.
+ * 
+ * THIS IS FREE SOFTWARE; YOU CAN REDISTRIBUTE IT AND/OR
+ * MODIFY IT UNDER THE TERMS OF THE GNU LESSER GENERAL PUBLIC
+ * LICENSE AS PUBLISHED BY THE FREE SOFTWARE FOUNDATION; EITHER
+ * VERSION 2.1 OF THE LICENSE, OR (AT YOUR OPTION) ANY LATER 
+ * VERSION.
+ * 
+ * THIS LIBRARY IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL,
+ * BUT WITHOUT ANY WARRANTY; WITHOUT EVEN THE IMPLIED WARRANTY OF
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  SEE THE 
+ * GNU LESSER GENERAL PUBLIC LICENSE FOR MORE DETAILS.
+ * 
+ * YOU SHOULD HAVE RECEIVED A COPY OF THE GNU LESSER GENERAL PUBLIC
+ * LICENSE ALONG WITH THIS LIBRARY; IF NOT, WRITE TO THE FREE 
+ * SOFTWARE FOUNDATION, INC., 51 FRANKLIN ST, FIFTH FLOOR, BOSTON, MA  
+ * 02110-1301 USA
+ */
+
+package org.gridgain.grid.spi.communication.jgroups;
+
+import java.net.*;
+import org.gridgain.grid.spi.*;
+import org.gridgain.grid.util.mbean.*;
+
+/**
+ * Management bean that provides read-only access to the JGroups communication
+ * SPI configuration.
+ *
+ * @author 2005-2009 Copyright (C) GridGain Systems. All Rights Reserved.
+ * @version 2.1.1
+ */
+@GridMBeanDescription("MBean that provides access to the JGroups communication SPI configuration.")
+public interface GridJgroupsCommunicationSpiMBean extends GridSpiManagementMBean {
+    /**
+     * Gets either absolute or relative to GridGain installation home folder path to JGroups XML
+     * configuration file.
+     *
+     * @return Path to JGroups configuration file.
+     */
+    @GridMBeanDescription("Path to JGroups configuration file.")
+    public String getConfigurationFile();
+
+    /**
+     * Gets JGroups channel local IP address.
+     *
+     * @return Channel address or <tt>null</tt> if channel is closed or
+     *      unconnected.
+     */
+    @GridMBeanDescription("Channel address or null if channel is closed or unconnected.")
+    public InetAddress getLocalAddress();
+
+    /**
+     * Gets JGroups channel local port number.
+     *
+     * @return Channel port or <tt>-1</tt> if channel is closed or
+     *      unconnected.
+     */
+    @GridMBeanDescription("Channel port or -1 if channel is closed or unconnected.")
+    public int getLocalPort();
+
+    /**
+     * Gets time limit in milliseconds to wait for message acknowledgements
+     * from remote nodes.
+     *
+     * @return Timeout to wait for responses.
+     */
+    @GridMBeanDescription("Timeout to wait for responses.")
+    public long getSendTimeout();
+
+    /**
+     * Gets JGroups group name. In order to communicate with
+     * each other, nodes must have the same group name.
+     *
+     * @return JGroups group name.
+     */
+    @GridMBeanDescription("JGroups group name.")
+    public String getGroupName();
+
+    /**
+     * Gets JGroups stack name. In order to use multiplexor 
+     * over the same channel SPIs must have the same stack name.
+     * Stack name is a name of configuration in the configuration file.
+     *
+     * @return JGroups group name.
+     */
+    @GridMBeanDescription("JGroups stack name.")
+    public String getStackName();
+}
