@@ -1,0 +1,33 @@
+syntax: glob
+
+.svn
+target
+*~
+bin
+*.log
+*.jar
+*.orig
+*.dot
+local.properties
+appl/plugins/config/generated
+
+# stuff created by PDE build
+assemble*
+#*org.eclipse.pde.build.container.feature*
+finalFeatures*
+finalPlugins*
+
+
+
+
+
+syntax: regexp
+^\.project$
+syntax: glob
+bin
+syntax: glob
+build
+syntax: regexp
+^appl/plugins/osm/generated$
+syntax: regexp
+^appl/plugins/main/OsmToNomMaker\.dot$

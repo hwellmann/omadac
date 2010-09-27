@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"
+               name="org.postgresql.Driver">
+               
+  <implementation class="org.postgresql.Driver"/>
+  <property name="subprotocol" value="postgresql"/>
+  <service>
+    <provide interface="java.sql.Driver"/>
+  </service>
+</scr:component>
