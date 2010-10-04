@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://omadac.org/xsd/sqldatabase"
+  xmlns:tns="http://omadac.org/xsd/sqldatabase"
+  elementFormDefault="qualified">
+
+  <xs:element name="database" type="tns:DatabaseType"></xs:element>
+
+  <xs:complexType name="DatabaseType">
+    <xs:sequence>
+      <xs:element name="schema" type="tns:SchemaType"
+        maxOccurs="unbounded" minOccurs="1">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SchemaType">
+    <xs:sequence>
+      <xs:element name="table" type="tns:TableType"  maxOccurs="unbounded" minOccurs="1"></xs:element>
+      <xs:element name="view" type="tns:ViewType"    maxOccurs="unbounded" minOccurs="0"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ColumnType">
+    <xs:sequence>
+      <xs:element name="description"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    <xs:attribute name="type" type="tns:SqlType" use="required"></xs:attribute>
+    <xs:attribute name="nullable" type="xs:boolean" use="required"></xs:attribute>
+    <xs:attribute name="primary_key" type="xs:boolean" use="optional"></xs:attribute>
+    <xs:attribute name="auto_increment" type="xs:boolean" use="optional"></xs:attribute>
+    <xs:attribute name="length" type="xs:int" use="optional"></xs:attribute>
+    <xs:attribute name="precision" type="xs:int" use="optional"></xs:attribute>
+    <xs:attribute name="scale" type="xs:int" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="TableType">
+    <xs:sequence>
+      <xs:element name="description"></xs:element>
+      <xs:element name="column" type="tns:ColumnType"
+        maxOccurs="unbounded" minOccurs="1">
+      </xs:element>
+      <xs:element name="index" type="tns:IndexType" maxOccurs="unbounded" minOccurs="0"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ViewType">
+    <xs:sequence>
+      <xs:element name="description"></xs:element>
+      <xs:element name="query" type="xs:string"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="SqlType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="int8"></xs:enumeration>
+      <xs:enumeration value="int16"></xs:enumeration>
+      <xs:enumeration value="int32"></xs:enumeration>
+      <xs:enumeration value="int64"></xs:enumeration>
+      <xs:enumeration value="char"></xs:enumeration>
+      <xs:enumeration value="varchar"></xs:enumeration>
+      <xs:enumeration value="blob"></xs:enumeration>
+      <xs:enumeration value="boolean"></xs:enumeration>
+      <xs:enumeration value="decimal"></xs:enumeration>
+      <xs:enumeration value="text"></xs:enumeration>
+      <xs:enumeration value="datetime"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:complexType name="IndexType">
+    <xs:sequence>
+      <xs:element name="column" type="tns:IndexColumnType"
+        maxOccurs="unbounded" minOccurs="1">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"></xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="IndexColumnType">
+    <xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"></xs:attribute>
+    <xs:attribute name="order" type="tns:OrderType"></xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="OrderType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="asc"></xs:enumeration>
+      <xs:enumeration value="desc"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

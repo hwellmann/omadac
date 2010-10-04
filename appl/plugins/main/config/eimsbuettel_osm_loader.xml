@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<omadac xmlns="http://omadac.org/xsd/configuration" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <jobs>
+    <job>
+      <name>OsmLoaderFileCreator</name>
+    </job>
+    <manager>local</manager>
+    <threads>2</threads>
+  </jobs>
+  
+  <server>
+    <jdbc>
+      <driver>org.postgresql.Driver</driver>
+      <subprotocol>postgresql</subprotocol>
+      <server>localhost</server>
+      <database>EimsbuettelOsm</database>
+      <user>omadac</user>
+      <password>omadac</password>
+      <initialConnections>4</initialConnections>
+      <maxConnections>8</maxConnections>
+    </jdbc>
+    <postgres>
+      <binDir>/usr/bin</binDir>
+      <adminUser>omadac</adminUser>
+      <adminPassword>omadac</adminPassword>
+      <dumpDir>/home/hwellmann/work/osm/eimsbuettel/dump</dumpDir>
+      <dropDb>false</dropDb>      
+    </postgres>    
+  </server>
+  <import>
+    <schema>osm</schema>
+    <inputDir></inputDir>
+    <osm>
+      <xmlInput>/home/hwellmann/work/osm/eimsbuettel/eimsbuettel.osm</xmlInput>
+      <dumpDir>/home/hwellmann/work/osm/eimsbuettel/dump</dumpDir>
+      <tmpDir>/tmp</tmpDir>
+    </osm>
+  </import>
+  <tmpDir>/tmp</tmpDir>
+</omadac>

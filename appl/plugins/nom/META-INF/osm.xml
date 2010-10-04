@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<entity-mappings version="2.0"
+  xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+  <package>org.omadac.osm.model</package>
+  <schema>"osm"</schema>
+  <entity class="OsmNode">
+    <table name="nodes" />
+    <attributes>
+      <id name="id">
+      </id>
+      <basic name="latitude">
+      </basic>
+      <basic name="longitude">
+      </basic>
+      <element-collection name="tags">
+        <map-key-column name="k"/>
+        <column name="v"/>
+        <collection-table name="node_tags">
+          <join-column name="id"/>         
+        </collection-table>
+      </element-collection>
+    </attributes>
+  </entity>
+  <entity class="OsmWay">
+    <table name="ways"/>
+    <attributes>
+      <id name="id"></id>
+      <many-to-many name="nodes" fetch="EAGER">
+        <order-column name="sequence_id"/>
+        <join-table name="way_nodes">
+          <join-column name="id"/>
+          <inverse-join-column name="node_id"/>           
+        </join-table>        
+      </many-to-many>
+      <element-collection name="tags">
+        <map-key-column name="k"/>
+        <column name="v"/>
+        <collection-table name="way_tags">
+          <join-column name="id"/>         
+        </collection-table>
+      </element-collection>
+    </attributes>
+  </entity>
+</entity-mappings>

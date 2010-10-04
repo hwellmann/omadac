@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Job Management and Make Engine
+Bundle-SymbolicName: org.omadac.make
+Bundle-Version: 0.1.0
+Bundle-Vendor: omadac.org.org
+JPA-PersistenceUnits: make
+Require-Bundle: org.omadac.jpa;bundle-version="0.1.0",
+ org.apache.openjpa;bundle-version="2.0.1"
+Export-Package: org.omadac.make,
+ org.omadac.make.util
+Import-Package: javax.persistence;version="1.1.0",
+ org.jgrapht,
+ org.jgrapht.event,
+ org.jgrapht.ext,
+ org.jgrapht.graph,
+ org.jgrapht.traverse,
+ org.osgi.framework;version="1.4.0",
+ org.osgi.service.component;version="1.0.0",
+ org.osgi.util.tracker;version="1.4.0",
+ org.slf4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Service-Component: OSGI-INF/*
+Meta-Persistence: META-INF/persistence.xml
+
+
+
+

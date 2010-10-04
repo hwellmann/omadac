@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<database xmlns="http://omadac.org/xsd/sqldatabase">
+  <schema name="osm">
+    <table name="nodes">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="latitude" type="int32" nullable="false">
+        <description></description>
+      </column>
+      <column name="longitude" type="int32" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="node_tags">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="k" type="varchar" length="255" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="v" type="varchar" length="10000" nullable="false">
+        <description></description>
+      </column>
+    </table>                  
+    
+    <table name="relation_members">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="member_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="member_role" type="varchar" length="255" nullable="true">
+        <description></description>
+      </column>
+      <column name="member_type" type="int8" nullable="false">
+        <description></description>
+      </column>
+      <column name="sequence_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="relation_tags">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="k" type="varchar" length="255" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="v" type="varchar" length="255" nullable="false">
+        <description></description>
+      </column>
+    </table>                  
+    <table name="relations">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="way_nodes">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="node_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="sequence_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="way_tags">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="k" type="varchar" length="255" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="v" type="varchar" length="10000" nullable="false">
+        <description></description>
+      </column>
+    </table>                  
+    <table name="ways">
+      <description></description>
+      <column name="id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>    
+  </schema>
+</database>
+

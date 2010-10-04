@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.omadac.make.ExecutionContext">
+   <implementation class="org.omadac.base.impl.ExecutionContextImpl"/>
+   <reference bind="setProductEntityManagerFactory" cardinality="1..1" interface="javax.persistence.EntityManagerFactory" name="ProductEntityManagerFactory" policy="static" target="(osgi.unit.name=org.omadac.nom)"/>
+   <reference bind="setEngineEntityManagerFactory" cardinality="1..1" interface="javax.persistence.EntityManagerFactory" name="EngineEntityManagerFactory" policy="static" target="(osgi.unit.name=org.omadac.engine)"/>
+   <reference bind="setConfigManager" cardinality="1..1" interface="org.omadac.config.ConfigManager" name="ConfigManager" policy="static"/>
+   <service>
+      <provide interface="org.omadac.make.ExecutionContext"/>
+   </service>
+</scr:component>

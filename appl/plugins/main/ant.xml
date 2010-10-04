@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<!--
+  Enhancement for OpenJPA entity classes
+  
+  Author: Harald Wellmann
+-->
+
+<project name="omadac-enhance" default="all" basedir=".">
+
+  <property file="local.properties" />
+
+
+
+  <path id="jpa.enhancement.classpath">
+    <!-- lib contains all of the jars that came with the OpenJPA binary download -->
+    <fileset dir="${platform.plugins}">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement location="${basedir}/src"/>
+    <pathelement location="${basedir}/../osm/bin"/>
+    <pathelement location="${basedir}/../nom/bin"/>
+    <pathelement location="${basedir}/../make/bin"/>
+  </path>
+
+  <!-- define the openjpac task -->
+  <taskdef name="openjpac" classname="org.apache.openjpa.ant.PCEnhancerTask">
+    <classpath refid="jpa.enhancement.classpath" />
+  </taskdef>
+
+  <target name="enhance">
+    <delete dir="../nom/bin/META-INF"/>
+    <copy todir="../nom/bin">
+      <fileset dir="../nom">
+        <include name="META-INF/**"/>
+      </fileset>
+    </copy>
+
+    <delete dir="../make/bin/META-INF"/>
+    <copy todir="../make/bin">
+      <fileset dir="../make">
+        <include name="META-INF/**"/>
+      </fileset>
+    </copy>
+
+    <!-- invoke the enhancer -->
+    <openjpac>
+      <classpath refid="jpa.enhancement.classpath" />
+      <fileset dir="..">
+        <!--include name="osm/bin/org/omadac/osm/model/*.class"/-->
+        <include name="nom/bin/org/omadac/nom/*.class"/>
+        <include name="nom/bin/org/omadac/osm/model/*.class"/>
+        <include name="make/bin/org/omadac/make/impl/TargetInfo.class"/>
+        <exclude name="nom/bin/org/omadac/nom/CityCentre.class"/>
+        </fileset>
+    </openjpac>
+
+    <delete dir="../nom/bin/META-INF"/>
+    <delete dir="../make/bin/META-INF"/>
+
+  </target>
+
+  <target name="all" depends="enhance" />
+
+</project>
+
