@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:complexType name="Node">
+      <xsd:sequence>
+        <xsd:element name="tag" type="Tag" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="AuthoringAttributes"></xsd:attributeGroup>
+      <xsd:attribute name="lat" type="xsd:double"></xsd:attribute>
+      <xsd:attribute name="lon" type="xsd:double"></xsd:attribute>
+    </xsd:complexType>
+    
+
+    <xsd:complexType name="Tag">
+      <xsd:attribute name="k" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="v" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+
+    <xsd:attributeGroup name="AuthoringAttributes">
+      <xsd:attribute name="id" type="xsd:long"></xsd:attribute>
+      <xsd:attribute name="timestamp" type="xsd:dateTime"></xsd:attribute>
+      <xsd:attribute name="uid" type="xsd:int"></xsd:attribute>
+      <xsd:attribute name="user" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="visible" type="xsd:boolean"></xsd:attribute>
+      <xsd:attribute name="version" type="xsd:int"></xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:complexType name="NodeRef">
+      <xsd:attribute name="ref" type="xsd:long"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="Way">
+      <xsd:sequence>
+        <xsd:element name="nd" type="NodeRef" maxOccurs="unbounded"
+          minOccurs="2">
+        </xsd:element>
+        <xsd:element name="tag" type="Tag" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="AuthoringAttributes"></xsd:attributeGroup>
+    </xsd:complexType>
+
+    <xsd:complexType name="RelationMember">
+      <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="ref" type="xsd:long"></xsd:attribute>
+      <xsd:attribute name="role" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+
+
+    <xsd:complexType name="Relation">
+      <xsd:sequence>
+        <xsd:element name="member" type="RelationMember" maxOccurs="unbounded"
+          minOccurs="1">
+        </xsd:element>
+        <xsd:element name="tag" type="Tag" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="AuthoringAttributes"></xsd:attributeGroup>
+    </xsd:complexType>
+
+    <xsd:complexType name="Bounds">
+      <xsd:attribute name="minlat" type="xsd:double"></xsd:attribute>
+      <xsd:attribute name="minlon" type="xsd:double"></xsd:attribute>
+      <xsd:attribute name="maxlat" type="xsd:double"></xsd:attribute>
+      <xsd:attribute name="maxlon" type="xsd:double"></xsd:attribute>
+      <xsd:attribute name="origin" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="Osm">
+      <xsd:sequence>
+        <xsd:element name="bounds" type="Bounds" maxOccurs="1" minOccurs="0"></xsd:element>
+        <xsd:element name="node" type="Node" maxOccurs="unbounded"
+          minOccurs="0">
+        </xsd:element>
+        <xsd:element name="way" type="Way" maxOccurs="unbounded"
+          minOccurs="0">
+        </xsd:element>
+        <xsd:element name="relation" type="Relation" maxOccurs="unbounded"
+          minOccurs="0">
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="version" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="generator" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:element name="osm" type="Osm"></xsd:element>
+    <xsd:element name="bounds" type="Bounds"></xsd:element>
+    <xsd:element name="node" type="Node"></xsd:element>
+    <xsd:element name="way" type="Way"></xsd:element>
+    <xsd:element name="relation" type="Relation"></xsd:element>
+
+
+</xsd:schema>

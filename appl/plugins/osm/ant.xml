@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<!--
+  JAXB code generation for OSM schema
+  
+  Author: Harald Wellmann
+-->
+
+<project name="omadac-osm" default="all" basedir=".">
+
+  <property file="local.properties" />
+  
+  <property name="gen.dir" value="${basedir}/generated" />
+  <property name="gen.pkg" value="org.omadac.osm.jaxb" />
+	
+  <target name="prepare">
+    <mkdir dir="${gen.dir}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${gen.dir}"/>      
+  </target>
+
+  <target name="generate" depends="prepare">
+    <exec executable="${jdk.home}/bin/xjc">
+      <arg value="-d"/>
+      <arg value="${gen.dir}"/>
+      <arg value="-p"/>
+      <arg value="${gen.pkg}"/>
+      <arg value="resources/xsd/osm.xsd"/>
+    </exec>
+  </target>
+  
+  <target name="all" depends="clean, generate"/>
+
+</project>
+

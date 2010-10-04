@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Normalized Object Model
+Bundle-SymbolicName: org.omadac.nom
+Bundle-Version: 0.1.0
+Eclipse-RegisterBuddy: org.geotools.metadata, org.apache.openjpa
+Export-Package: org.omadac.nom,
+ org.omadac.nom.convert,
+ org.omadac.nom.crs,
+ org.omadac.osm.model
+Import-Package: com.vividsolutions.jts.geom,
+ com.vividsolutions.jts.geom.impl,
+ com.vividsolutions.jts.io,
+ javax.measure.unit,
+ javax.persistence;version="1.1.0",
+ org.junit;version="4.7.0",
+ org.postgresql,
+ org.slf4j;version="1.5.0"
+Require-Bundle: org.geotools.referencing;bundle-version="2.6.0",
+ org.geotools.metadata;bundle-version="2.6.0",
+ org.opengis.geoapi;bundle-version="2.3.0",
+ org.geotools.api;bundle-version="2.6.0",
+ org.omadac.config;bundle-version="0.1.0",
+ org.apache.openjpa;bundle-version="2.0.1",
+ org.omadac.geom;bundle-version="0.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: omadac.org.org
+Meta-Persistence: META-INF/persistence.xml
+

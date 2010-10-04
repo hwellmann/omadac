@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Base Classes for Targets
+Bundle-SymbolicName: org.omadac.base
+Bundle-Version: 0.1.0
+Bundle-Vendor: omadac.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.omadac.make;bundle-version="0.1.0",
+ org.omadac.config;bundle-version="0.1.0",
+ org.omadac.jpa;bundle-version="0.1.0",
+ org.omadac.sql;bundle-version="0.1.0"
+Import-Package: javax.persistence;version="1.1.0",
+ org.osgi.framework;version="1.5.0",
+ org.osgi.service.component;version="1.1.0"
+Export-Package: org.omadac.base
+Service-Component: OSGI-INF/*

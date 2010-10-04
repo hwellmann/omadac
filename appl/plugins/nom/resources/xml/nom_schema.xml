@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+
+    Omadac - The Open Map Database Compiler http://omadac.org (C) 2010, Harald Wellmann and
+    Contributors This library is free software; you can redistribute it and/or modify it under the
+    terms of the GNU Lesser General Public License as published by the Free Software Foundation;
+    version 2.1 of the License. This library is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+    PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+  -->
+<database xmlns="http://omadac.org/xsd/sqldatabase">
+  <schema name="nom">
+    <table name="admin_region">
+      <description></description>
+      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="admin_order" type="int8" nullable="false">
+        <description></description>
+      </column>
+      <column name="order0_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="order1_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="order2_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="order8_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="order9_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="geom_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="country">
+      <description></description>
+      <column name="country_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="language_code" type="char" length="3" nullable="false">
+        <description>language code for default language</description>
+      </column>
+      <column name="driving_side" type="char" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="length_unit" type="char" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="speed_unit" type="char" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="iso_country_code" type="char" length="3" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="database_info">
+      <description></description>
+      <column name="provider" type="varchar" length="32" nullable="false">
+        <description></description>
+      </column>
+      <column name="schema_version" type="varchar" length="32" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="feature">
+      <description>stores all line and area features.</description>
+      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="discriminator" type="char" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="feature_type" type="int32" nullable="false">
+        <description></description>
+      </column>
+      <column name="source_id" type="int64" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="geometry" type="blob" nullable="true">
+        <description></description>
+      </column>
+      <index>
+        <column name="feature_type" />
+      </index>
+    </table>
+    <table name="feature_name">
+      <description></description>
+      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="feature_class" type="char" length="1" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="name_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="name_type" type="char" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="admin_region_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <index>
+        <column name="name_id" />
+      </index>
+    </table>
+    <table name="junction">
+      <description>
+      </description>
+      <column name="junction_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="x" type="int32" nullable="false">
+        <description>x coordinate (longitude).</description>
+      </column>
+      <column name="y" type="int32" nullable="false">
+        <description>y coordinate (latitude).</description>
+      </column>
+      <column name="z" type="int32" nullable="true">
+        <description>z coordinate (absolute height).</description>
+      </column>
+      <column name="z_level" type="int16" nullable="true">
+        <description>z level (relative height).</description>
+      </column>
+    </table>
+    <table name="link_admin">
+      <description>
+      </description>
+      <column name="link_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="side" type="char" length="1" nullable="false" primary_key="true">
+        <description>
+        </description>
+      </column>
+      <column name="admin_id" type="int64" nullable="false">
+        <description>
+        </description>
+      </column>
+      <index>
+        <column name="admin_id" />
+      </index>
+    </table>
+    <table name="link_junction">
+      <description>
+      </description>
+      <column name="link_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="seq_num" type="int8" nullable="false" primary_key="true">
+        <description>
+        </description>
+      </column>
+      <column name="junction_id" type="int64" nullable="false">
+        <description>
+        </description>
+      </column>
+      <index>
+        <column name="junction_id" />
+      </index>
+    </table>
+    <table name="link_postal_area">
+      <description>
+      </description>
+      <column name="link_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="postal_area_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="side" type="char" length="1" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <index>
+        <column name="link_id" />
+      </index>
+    </table>
+    <table name="link">
+      <description></description>
+      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="road_attr_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="length" type="int32" nullable="false">
+        <description>length of link in cm.</description>
+      </column>
+    </table>
+    <table name="names">
+      <description>defines names with language codes.</description>
+      <column name="name_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="language" type="char" length="3" nullable="false">
+        <description></description>
+      </column>
+      <column name="name" type="varchar" length="60" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="nom_feature_type">
+      <description></description>
+      <column name="feature_type" type="int32" nullable="false" primary_key="true">
+        <description>
+        </description>
+      </column>
+      <column name="seq_num" type="int32" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="dimension" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="description" type="varchar" length="100" nullable="false">
+        <description></description>
+      </column>
+      <index>
+        <column name="seq_num" />
+      </index>
+    </table>
+    <table name="postal_area">
+      <description></description>
+      <column name="postal_area_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="postal_code" type="varchar" length="15" nullable="false">
+        <description></description>
+      </column>
+      <column name="order0_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="poi">
+      <description>
+      </description>
+      <column name="feature_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="road_link_id" type="int32" nullable="true">
+        <description></description>
+      </column>
+      <column name="side" type="char" length="1" nullable="true">
+        <description></description>
+      </column>
+      <column name="relative_pos" type="int32" nullable="true">
+        <description></description>
+      </column>
+      <column name="house_number" type="varchar" length="10" nullable="true">
+        <description></description>
+      </column>
+      <column name="street_name" type="varchar" length="200" nullable="true">
+        <description></description>
+      </column>
+      <column name="language" type="char" length="3" nullable="true">
+        <description></description>
+      </column>
+      <column name="postal_code" type="varchar" length="15" nullable="true">
+        <description></description>
+      </column>
+      <column name="phone_number" type="varchar" length="50" nullable="true">
+        <description></description>
+      </column>
+      <column name="url" type="varchar" length="100" nullable="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="poi_address">
+      <description>
+      </description>
+      <column name="poi_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="poi_relation">
+      <description></description>
+      <column name="poi_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="related_poi_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="relation_type" type="char" length="1" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="road">
+      <description>
+      </description>
+      <column name="road_id" type="int32" nullable="false" primary_key="true" auto_increment="true">
+        <description></description>
+      </column>
+      <column name="order8_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="order9_id" type="int64" nullable="true">
+        <description></description>
+      </column>
+      <column name="admin_class" type="int8" nullable="false">
+        <description></description>
+      </column>
+      <column name="road_name_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="exit" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="junction" type="boolean" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="road_attributes">
+      <description></description>
+      <column name="road_attr_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="bridge" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="tunnel" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="functional_class" type="int8" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="speed_class" type="int8" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="max_speed" type="int16" length="1" nullable="false">
+        <description></description>
+      </column>
+      <column name="travel_direction" type="char" length="1" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="paved" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="private" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="tollway" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="ferry" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="car_train" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="multi_link" type="boolean" nullable="false">
+        <description>
+        </description>
+      </column>
+      <column name="buses" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="cars" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="deliveries" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="emergency" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="pedestrians" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="taxis" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="trucks" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="through_traffic" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="ramp" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="roundabout" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="square" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="parking" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="controlled_access" type="boolean" nullable="false">
+        <description></description>
+      </column>
+      <column name="service" type="boolean" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="road_link">
+      <description>
+      </description>
+      <column name="road_link_id" type="int32" nullable="false" primary_key="true"
+        auto_increment="true">
+        <description></description>
+      </column>
+      <column name="road_id" type="int32" nullable="false">
+        <description></description>
+      </column>
+      <column name="link_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="left_range_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="right_range_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <index>
+        <column name="road_id" />
+      </index>
+      <index>
+        <column name="link_id" />
+      </index>
+    </table>
+    <table name="house_number_range">
+      <description>
+      </description>
+      <column name="range_id" type="int32" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="first" type="varchar" length="15" nullable="true">
+        <description></description>
+      </column>
+      <column name="last" type="varchar" length="15" nullable="true">
+        <description></description>
+      </column>
+      <column name="increment" type="char" length="1" nullable="true">
+        <description></description>
+      </column>
+    </table>
+    <table name="road_name">
+      <description></description>
+      <column name="road_name_id" type="int64" nullable="false" primary_key="true"
+        auto_increment="true">
+        <description></description>
+      </column>
+      <column name="language" type="char" length="3" nullable="true">
+        <description></description>
+      </column>
+      <column name="admin_class" type="int8" nullable="true">
+        <description></description>
+      </column>
+      <column name="name" type="varchar" length="100" nullable="false">
+        <description></description>
+      </column>
+    </table>
+    <table name="turn_restriction">
+      <description></description>
+      <column name="restriction_id" type="int64" nullable="false" primary_key="true">
+        <description></description>
+      </column>
+      <column name="restriction_type" type="int8" nullable="false">
+        <description></description>
+      </column>
+      <column name="junction_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="from_link_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <column name="to_link_id" type="int64" nullable="false">
+        <description></description>
+      </column>
+      <index>
+        <column name="junction_id" />
+        <column name="from_link_id" />
+      </index>
+    </table>
+  </schema>
+</database>

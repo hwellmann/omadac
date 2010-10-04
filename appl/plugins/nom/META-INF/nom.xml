@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<entity-mappings version="2.0"
+  xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+  <package>org.omadac.nom</package>
+  <schema>"nom"</schema>
+  <mapped-superclass class="NameBase">
+    <attributes>
+      <id name="id">
+        <column name="name_id" />
+      </id>
+      <basic name="language">
+      </basic>
+      <basic name="name">
+      </basic>
+    </attributes>
+  </mapped-superclass>
+  <entity class="Feature">
+    <table name="feature" />
+    <inheritance strategy="JOINED"/>
+    <discriminator-value>F</discriminator-value>
+    <discriminator-column name="discriminator"/>    
+    <attributes>
+      <id name="id">
+        <column name="feature_id" />
+      </id>
+      <basic name="featureType">
+        <column name="feature_type" />
+      </basic>
+      <basic name="sourceId">
+        <column name="source_id" />
+      </basic>
+    </attributes>
+  </entity>
+  <entity class="RoadAttributes">
+    <table name="road_attributes" />
+    <attributes>
+      <id name="id">
+        <column name="road_attr_id" />
+      </id>
+      <basic name="bridge">
+      </basic>
+      <basic name="tunnel">
+      </basic>
+      <basic name="functionalClass">
+        <column name="functional_class" />
+      </basic>
+      <basic name="speedClass">
+        <column name="speed_class" />
+      </basic>
+      <basic name="maxSpeed">
+        <column name="max_speed" />
+      </basic>
+      <basic name="travelDirection">
+        <column name="travel_direction" />
+      </basic>
+      <basic name="paved">
+      </basic>
+      <basic name="privateRoad">
+        <column name="private" />
+      </basic>
+      <basic name="tollway">
+      </basic>
+      <basic name="ferry">
+      </basic>
+      <basic name="carTrain">
+        <column name="car_train"/>
+      </basic>
+      <basic name="multiLink">
+        <column name="multi_link" />
+      </basic>
+      <basic name="taxis">
+      </basic>
+      <basic name="pedestrians">
+      </basic>
+      <basic name="trucks">
+      </basic>
+      <basic name="throughTraffic">
+        <column name="through_traffic" />
+      </basic>
+      <basic name="deliveries">
+      </basic>
+      <basic name="emergency">
+      </basic>
+      <basic name="ramp">
+      </basic>
+      <basic name="roundabout">
+      </basic>
+      <basic name="square">
+      </basic>
+      <basic name="parking">
+        <column name="parking" />
+      </basic>
+      <basic name="controlledAccess">
+        <column name="controlled_access" />
+      </basic>
+      <basic name="service">
+      </basic>
+    </attributes>
+  </entity>
+  <entity class="NomJunction">
+    <table name="junction" />
+    <attributes>
+      <id name="id">
+        <column name="junction_id" />
+      </id>
+      <basic name="x">
+        <column name="x" />
+      </basic>
+      <basic name="y">
+        <column name="y" />
+      </basic>
+      <basic name="z">
+        <column name="z" />
+      </basic>
+      <basic name="zLevel">
+        <column name="z_level" />
+      </basic>
+      <many-to-many name="links" mapped-by="junctions">
+        <!--join-table name="link_junction">
+          <join-column name="junction_id" />
+          <inverse-join-column name="link_id" />
+        </join-table-->
+      </many-to-many>
+    </attributes>
+
+  </entity>
+  <entity class="NomLink">
+    <table name="link"></table>
+    <inheritance strategy="JOINED" />
+    <discriminator-value>L</discriminator-value>
+    <attributes>
+      <basic name="length">
+        <column name="length" />
+      </basic>
+      <many-to-one name="attr">
+        <join-column name="road_attr_id" />
+        <cascade><cascade-persist/></cascade>
+      </many-to-one>
+      <one-to-many name="namedRoadLinks" mapped-by="link"/>
+      <many-to-many name="junctions">
+        <order-column name="seq_num" />
+        <join-table name="link_junction">
+          <join-column name="link_id" />
+          <inverse-join-column name="junction_id" />
+        </join-table>
+      </many-to-many>
+    </attributes>
+  </entity>
+  <entity class="HouseNumberRange">
+    <table name="house_number_range" />
+    <attributes>
+      <id name="id">
+        <column name="range_id" />
+      </id>
+      <basic name="first">
+      </basic>
+      <basic name="last">
+      </basic>
+      <basic name="increment">
+      </basic>
+    </attributes>
+  </entity>
+  <entity class="NamedRoadLink">
+    <table name="road_link"></table>
+    <attributes>
+      <id name="id">
+        <column name="road_link_id" />
+      </id>
+      <basic name="leftRangeId">
+        <column name="left_range_id" />
+      </basic>
+      <basic name="rightRangeId">
+        <column name="right_range_id" />
+      </basic>
+      <many-to-one name="namedRoad">
+        <join-column name="road_id" />
+      </many-to-one>
+      <many-to-one name="link">
+        <join-column name="link_id" />
+      </many-to-one>
+    </attributes>
+  </entity>
+  <entity class="NamedRoad">
+    <table name="road" />
+    <attributes>
+      <id name="id">
+        <column name="road_id" />
+        <generated-value strategy="IDENTITY"/>
+      </id>
+      <basic name="exit">
+      </basic>
+      <basic name="junction">
+      </basic>
+      <basic name="adminClass">
+        <column name="admin_class" />
+      </basic>
+      <many-to-one name="order8">
+        <join-column name="order8_id" />
+      </many-to-one>
+      <many-to-one name="order9">
+        <join-column name="order9_id" />
+      </many-to-one>
+      <many-to-one name="roadName">
+        <join-column name="road_name_id" />
+      </many-to-one>
+      <one-to-many name="links" mapped-by="namedRoad">
+        <cascade><cascade-persist/></cascade>
+      </one-to-many>
+    </attributes>
+  </entity>
+  <entity class="AdminRegion">
+    <table name="admin_region" />
+    <attributes>
+      <id name="id">
+        <column name="feature_id" />
+      </id>
+      <basic name="adminOrder">
+        <column name="admin_order" />
+      </basic>
+      <many-to-one name="order0">
+        <join-column name="order0_id" />
+      </many-to-one>
+      <many-to-one name="feature">
+        <join-column name="geom_id" />
+      </many-to-one>
+      <many-to-one name="order1">
+        <join-column name="order1_id" />
+      </many-to-one>
+      <many-to-one name="order2">
+        <join-column name="order2_id" />
+      </many-to-one>
+      <many-to-one name="order8">
+        <join-column name="order8_id" />
+      </many-to-one>
+      <many-to-one name="order9">
+        <join-column name="order9_id" />
+      </many-to-one>
+      <many-to-many name="names">
+        <join-table name="feature_name">
+          <join-column name="feature_id" />
+          <inverse-join-column name="name_id" />
+        </join-table>
+      </many-to-many>
+    </attributes>
+  </entity>
+  <entity class="RegionName">
+    <table name="names" />
+  </entity>
+  <entity class="RoadName">
+    <table name="road_name" />
+    <attribute-override name="id">
+     <column name="road_name_id"/>
+    </attribute-override>
+    <attributes>
+      <basic name="adminClass">
+        <column name="admin_class" />
+      </basic>
+    </attributes>
+  </entity>
+  <entity class="Poi">
+    <table name="poi"/>
+    <inheritance strategy="JOINED" />
+    <discriminator-value>P</discriminator-value>
+    <attributes>
+      <basic name="side">
+      </basic>
+      <basic name="relativePosition">
+        <column name="relative_pos"/>        
+      </basic>
+      <basic name="houseNumber">
+        <column name="house_number"/>
+      </basic>
+      <basic name="streetName">
+        <column name="street_name"/>
+      </basic>
+      <basic name="language">
+      </basic>
+      <basic name="postalCode">
+        <column name="postal_code"/>
+      </basic>
+      <basic name="phoneNumber">
+        <column name="phone_number"/>
+      </basic>
+      <basic name="url">
+      </basic>
+      <many-to-one name="link">
+        <join-column name="road_link_id"/>
+      </many-to-one>
+    </attributes>
+  </entity>
+</entity-mappings>

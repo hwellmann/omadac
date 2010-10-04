@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://omadac.org/xsd/configuration"
+  elementFormDefault="qualified" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cfg="http://omadac.org/xsd/configuration">
+  
+  <xs:element name="omadac" type="cfg:OmadacSettings">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ImportSettings">
+    <xs:sequence>
+      <xs:element name="schema" type="xs:string"></xs:element>
+      <xs:element name="inputDir" type="xs:string" maxOccurs="unbounded" minOccurs="1"></xs:element>
+      <xs:element name="osm" type="cfg:OsmSettings" maxOccurs="1" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OmadacSettings">
+    <xs:sequence>
+      <xs:element name="jobs" type="cfg:JobSettings"></xs:element>
+      <xs:element name="server" type="cfg:ServerAccessSettings" maxOccurs="1"
+        minOccurs="0" />
+      <xs:element name="import" type="cfg:ImportSettings" maxOccurs="1"
+        minOccurs="0" />
+      <xs:element name="export" type="cfg:ExportSettings" maxOccurs="1"
+        minOccurs="0" />
+      <xs:element name="tmpDir" type="xs:string" maxOccurs="1" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="shutdown" type="xs:boolean" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExportSettings">
+    <xs:sequence>
+        <xs:element name="schema" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
+        <xs:element name="exportDir" type="xs:string" maxOccurs="1" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="JobSettings">
+    <xs:annotation>
+      <xs:documentation>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="job" type="cfg:Job" maxOccurs="unbounded" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="manager" type="cfg:JobManager">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="threads" type="xs:int">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Job">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="make" type="cfg:MakeSettings" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MakeSettings">
+    <xs:sequence>
+      <xs:element name="dotOutput" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+      <xs:element name="goal" type="xs:string" maxOccurs="unbounded"
+        minOccurs="1">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="forced" type="xs:string" minOccurs="0"
+        maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServerAccessSettings">
+    <xs:annotation>
+      <xs:documentation>Settings for accessing the Omadac
+        database server.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="jdbc" type="cfg:JdbcSettings">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="postgres" type="cfg:PostgresSettings" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="schemaVersion" type="xs:string" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="JdbcSettings">
+    <xs:annotation>
+      <xs:documentation>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="driver" type="xs:string" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="url" type="xs:string" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="subprotocol" type="xs:string">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="server" type="xs:string"> </xs:element>
+      <xs:element name="database" type="xs:string"> </xs:element>
+      <xs:element name="user" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
+      <xs:element name="password" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
+      <xs:element name="initialConnections" type="xs:int"> </xs:element>
+      <xs:element name="maxConnections" type="xs:int"> </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PostgresSettings">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="binDir" type="xs:string">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="adminUser" type="xs:string"></xs:element>
+      <xs:element name="adminPassword" type="xs:string"></xs:element>
+      <xs:element name="dumpDir" type="xs:string"></xs:element>
+      <xs:element name="dropDb" type="xs:boolean"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OsmSettings">
+    <xs:annotation>
+      <xs:documentation>Settings for OpenStreetMap import.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="xmlInput" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dumpDir" type="xs:string">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="tmpDir" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LocalJobManager">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+  <xs:complexType name="GridJobManager">
+    <xs:annotation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="jgroupsConfig" type="xs:string" maxOccurs="1" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="JobManager">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="local"></xs:enumeration>
+      <xs:enumeration value="grid"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

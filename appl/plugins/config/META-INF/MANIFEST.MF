@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Configuration Model and Access
+Bundle-SymbolicName: org.omadac.config
+Bundle-Version: 0.1.0
+Bundle-Vendor: omadac.org.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.osgi.framework;version="1.4.0",
+ org.osgi.service.component;version="1.0.0",
+ org.slf4j;version="1.5.0"
+Export-Package: org.omadac.config,
+ org.omadac.config.jaxb
+Service-Component: OSGI-INF/*
+

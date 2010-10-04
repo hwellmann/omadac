@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OpenStreetMap Import and NOM Conversion
+Bundle-SymbolicName: org.omadac.osm
+Bundle-Version: 0.1.0
+Bundle-Vendor: omadac.org.org
+Import-Package: com.vividsolutions.jts.geom,
+ javax.persistence;version="1.1.0",
+ org.junit;version="4.7.0",
+ org.osgi.service.component;version="1.1.0",
+ org.postgresql,
+ org.slf4j;version="1.0.4"
+Require-Bundle: org.omadac.make;bundle-version="0.1.0",
+ org.omadac.jpa;bundle-version="0.1.0",
+ org.omadac.nom;bundle-version="0.1.0",
+ org.geotools.referencing;bundle-version="2.6.0",
+ org.opengis.geoapi;bundle-version="2.3.0",
+ org.geotools.metadata;bundle-version="2.6.0",
+ org.omadac.loader;bundle-version="0.1.0",
+ org.omadac.config;bundle-version="0.1.0",
+ org.geotools.api;bundle-version="2.6.0",
+ org.apache.openjpa;bundle-version="2.0.1",
+ org.omadac.base;bundle-version="0.1.0",
+ org.omadac.sql;bundle-version="0.1.0",
+ org.omadac.geom;bundle-version="0.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Service-Component: OSGI-INF/*

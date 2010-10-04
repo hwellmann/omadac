@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SQL Database and Schema Tools
+Bundle-SymbolicName: org.omadac.sql
+Bundle-Version: 0.1.0
+Bundle-Vendor: omadac.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.omadac.sql,
+ org.omadac.sql.postgres
+Require-Bundle: org.omadac.config;bundle-version="0.1.0",
+ org.omadac.jpa;bundle-version="0.1.0"
+Import-Package: freemarker.core;version="2.3.12",
+ freemarker.ext.dom;version="2.3.12",
+ freemarker.template;version="2.3.12",
+ org.dom4j;version="1.6.1",
+ org.dom4j.io;version="1.6.1",
+ org.junit;version="4.7.0",
+ org.slf4j;version="1.5.0"
