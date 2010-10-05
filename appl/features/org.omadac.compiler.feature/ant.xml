@@ -1,0 +1,193 @@
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<!--
+  Omadac Map Compiler
+
+  Author: Harald Wellmann
+-->
+
+<project name="omadac" default="compiler" basedir="../.."
+  xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+
+  
+  <!-- need to set these version numbers BEFORE loading local properties -->
+  <property name="compiler.version" value="0.1.0" />
+  <property name="platform.version" value="0.1.0" />
+
+  <property name="omadac.properties" value="${user.home}/.omadac/local.properties" />
+  <property file="${omadac.properties}" />
+
+  <property name="build.dir" value="${basedir}/build"/>
+
+  <property name="plugin.path" value="${build.dir}/plugins"/>
+
+  <property name="platform.install" value="${build.dir}/OmadacPlatform-${platform.version}" />
+  <property name="compiler.install" value="${build.dir}/Omadac"/>
+
+  <property name="test.reports" value="${build.dir}/test-reports"/>
+
+  <!-- Name of Omadac platform zipfile -->
+  <property name="platform.zip" value="OmadacPlatform-${platform.version}.zip"/>
+
+  <!-- Check that the required properties have been set in local.properties -->
+  <target name="prepare">
+    <echo message="Checking properties in ${omadac.properties}"/>
+    <fail message="Property delta.pack is not set" unless="delta.pack"/>
+    <fail message="Property eclipse.home is not set" unless="eclipse.home"/>
+    <fail message="Property eclipse.pde.build is not set" unless="eclipse.pde.build"/>
+    <fail message="Property equinox.launcher is not set" unless="equinox.launcher"/>
+    <fail message="Property equinox.osgi is not set" unless="equinox.osgi"/>
+    <fail message="Property platform.url is not set" unless="platform.url"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <mkdir dir="${build.dir}"/>
+  </target>
+
+
+  <target name="copy">
+    <copy todir="${build.dir}">
+      <fileset dir="${basedir}" includes="features/**, plugins/**, runtime/**"/>
+    </copy>
+  </target>
+
+
+  <target name="generate">
+    <ant dir="${build.dir}/plugins/config" antfile="ant.xml"/>
+    <ant dir="${build.dir}/plugins/osm" antfile="ant.xml"/>
+  </target>
+
+
+  <target name="fetch.platform">
+    <get src="${platform.url}" dest="${build.dir}/${platform.zip}"/>
+    <unzip src="${build.dir}/${platform.zip}" dest="${platform.install}"/>
+  </target>  	
+
+  <target name="compile.plugins" >
+    <java jar="${equinox.launcher}" fork="true" dir="${build.dir}" failonerror="true">
+
+      <sysproperty key="baseLocation" value="${platform.install}"/>
+      <sysproperty key="buildDirectory" value="${build.dir}"/>
+      <sysproperty key="pluginPath" value="${delta.pack}"/>
+      <sysproperty key="builder" value="${build.dir}/features/org.omadac.compiler.feature" />
+      <sysproperty key="buildVersion" value="${compiler.version}"/>
+
+      <arg value="-noupdate" />
+      <arg value="-application" />
+      <arg value="org.eclipse.ant.core.antRunner" />
+      <!--arg value="-debug"/-->
+
+      <arg value="-buildfile" />
+      <arg value="${eclipse.home}/plugins/${eclipse.pde.build}/scripts/build.xml" />
+    </java>
+  </target>
+
+
+  <target name="unpack">
+    <property name="compiler.zip" value="org.omadac.compiler.feature-${compiler.version}.zip"/>
+    <unzip src="${build.dir}/pde/${compiler.zip}" dest="${build.dir}"/>
+  </target>	
+	
+
+  <target name="ncss">
+    <taskdef name="javancss" classname="javancss.JavancssAntTask"/>
+    <javancss srcdir="${build.dir}/plugins"
+              includes="**/*.java"
+              excludes="**/generated/**/*.java"
+              generateReport="true"
+              format="xml"
+              outputfile="${build.dir}/javancss.xml"/>
+  </target>
+
+  <target name="checkstyle">
+    <cs:checkstyle config="${basedir}/../etc/checkstyle/OmadacCheckstyle.xml"
+      failOnViolation="false">
+      
+      <fileset dir="${build.dir}/plugins">
+        <include name="**/*.java"/>
+        <exclude name="**/generated/**/*.java"/>
+      </fileset>
+    	
+      <cs:formatter type="xml" tofile="${build.dir}/checkstyle-report.xml"/>
+      <classpath>
+        <fileset dir="${compiler.install}/plugins/" includes="*.jar"/>
+        <fileset dir="${java.home}/lib" includes="rt.jar"/>
+      </classpath>
+    </cs:checkstyle>
+  </target>
+
+  <target name="javadoc">
+    <javadoc destdir="${build.dir}/apidoc"
+             source="1.6"
+             windowtitle="Omadac"
+             verbose="false"
+             private="false"
+             useexternalfile="yes"
+             DocTitle="Omadac ${compiler.version}"
+             Encoding="UTF-8"
+             >
+
+      <sourcepath>
+        <pathelement path="${plugin.path}/base/src" />
+        <pathelement path="${plugin.path}/config/src" />
+        <pathelement path="${plugin.path}/config/generated" />
+        <pathelement path="${plugin.path}/ds.postgresql/src" />
+        <pathelement path="${plugin.path}/geom/src" />
+        <pathelement path="${plugin.path}/jpa/src" />
+        <pathelement path="${plugin.path}/loader/src" />
+        <pathelement path="${plugin.path}/main/src" />
+        <pathelement path="${plugin.path}/make/src" />
+        <pathelement path="${plugin.path}/nom/src" />
+        <pathelement path="${plugin.path}/osm/src" />
+        <pathelement path="${plugin.path}/osm/generated" />
+        <pathelement path="${plugin.path}/postgis/src" />
+        <pathelement path="${plugin.path}/pu/src" />
+        <pathelement path="${plugin.path}/sql/src" />
+      </sourcepath>
+
+      <group title="Compiler">
+        <package name="org.omadac.base*"/>
+        <package name="org.omadac.config*"/>
+        <package name="org.omadac.core*"/>
+        <package name="org.omadac.ds*"/>
+        <package name="org.omadac.geom*"/>
+        <package name="org.omadac.jpa*"/>
+        <package name="org.omadac.loader*"/>
+        <package name="org.omadac.main*"/>
+        <package name="org.omadac.make*"/>
+        <package name="org.omadac.nom*"/>
+        <package name="org.omadac.osm*"/>
+        <package name="org.omadac.postgis*"/>
+        <package name="org.omadac.pu*"/>
+        <package name="org.omadac.sql*"/>
+      </group>
+
+      <classpath>
+        <fileset dir="${platform.install}/plugins" includes="*.jar"/>
+      </classpath>
+
+    </javadoc>
+  </target>
+
+  <target name="apidoc" depends="clean, prepare, fetch.platform, javadoc"/>
+
+  <target name="compiler" depends="clean, prepare, copy, fetch.platform, generate, compile.plugins, unpack, javadoc, ncss, checkstyle"/>
+
+</project>
+
