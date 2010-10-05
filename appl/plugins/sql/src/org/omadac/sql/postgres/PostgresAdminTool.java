@@ -91,8 +91,7 @@ public class PostgresAdminTool
     }
     
     
-    public void dumpTables(String backupFile, String host, String database, 
-            String... tableNames) 
+    public void dumpTables(String backupFile, String host, String database, String... tableNames)
     {
         
         List<String> cmd = new ArrayList<String>();
@@ -140,28 +139,28 @@ public class PostgresAdminTool
 
     public void alterSchema(String host, String database, String oldSchema, String newSchema)
     {
-        String sql = ("alter schema " + oldSchema + " rename to " + newSchema);
+        String sql = "alter schema " + oldSchema + " rename to " + newSchema;
         log.info(sql);
         executeSql(host, database, sql);
     }
     
     public void createSchema(String host, String database, String schema, String owner)
     {
-        String sql = ("create schema " + schema + " authorization " + owner);
+        String sql = "create schema " + schema + " authorization " + owner;
         log.info(sql);
         executeSql(host, database, sql);
     }
     
     public void dropSchema(String host, String database, String schema)
     {
-        String sql = ("drop schema if exists " + schema + " cascade");
+        String sql = "drop schema if exists " + schema + " cascade";
         log.info(sql + " on " + host + ":" + database);
         executeSql(host, database, sql);
     }
     
     public void createDatabase(String host, String database, String owner)
     {
-        log.info("creating " + host + ":" + database + " ("+ owner + ")");
+        log.info("creating " + host + ":" + database + " (" + owner + ")");
         
         List<String> cmd = new ArrayList<String>();
         cmd.add(createdb);
@@ -193,23 +192,6 @@ public class PostgresAdminTool
     }
     
 
-    
-    public void executeSql(String host, String sql)
-    {
-        List<String> cmd = new ArrayList<String>();
-        cmd.add(pgsql);
-        cmd.add("-c");
-        cmd.add(sql);
-        cmd.add("-h");
-        cmd.add(host);
-        cmd.add("-U");
-        cmd.add("postgres");
-        cmd.add("-d");
-        cmd.add("postgres");
-        cmd.add("-e");
-        
-        executeCommand(cmd, false);
-    }
     
     public void executeSql(String host, String database, String sql)
     {
