@@ -16,7 +16,6 @@
  */
 package org.omadac.base;
 
-import org.omadac.base.impl.ExecutionContextImpl;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Target;
 

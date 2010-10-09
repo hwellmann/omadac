@@ -39,6 +39,7 @@ import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
 import org.omadac.make.MakeEngine;
 import org.omadac.make.MakeException;
+import org.omadac.make.NoOpTarget;
 import org.omadac.make.Target;
 import org.omadac.make.Target.Status;
 import org.omadac.make.impl.dot.MakeGraphDotWriter;
