@@ -75,6 +75,7 @@ public class GridWorker implements Runnable
         gridCfg.setCollisionSpi(collisionSpi);
         gridCfg.setFailoverSpi(failoverSpi);
         gridCfg.setPeerClassLoadingEnabled(false);
+        gridCfg.setGridGainHome(config.getTmpDir());
         try
         {
             log.info("starting grid node");
