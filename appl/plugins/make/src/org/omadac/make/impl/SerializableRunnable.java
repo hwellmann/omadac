@@ -18,6 +18,9 @@ package org.omadac.make.impl;
 
 import java.io.Serializable;
 
+/**
+ * Interface used for constructing anonymous serializable and runnable classes.
+ */
 public interface SerializableRunnable extends Serializable, Runnable
 {
 }

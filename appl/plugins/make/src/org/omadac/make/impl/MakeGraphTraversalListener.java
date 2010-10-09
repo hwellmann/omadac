@@ -32,17 +32,33 @@ import org.omadac.make.Target.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Listener for a depth first traversal of the make graph computing the current target status
+ * based on the saved status of a target and the current status of its prerequisites.
+ * @author hwellmann
+ *
+ */
 public class MakeGraphTraversalListener extends TraversalListenerAdapter<Target, DefaultEdge>
 {
     private static Logger log = LoggerFactory.getLogger(MakeGraphTraversalListener.class);
 
+    /** Associated make engine. */
     private GraphMakeEngine makeEngine;
 
+    /** 
+     * Constructs a traversal listener for the given make engine.
+     * @param makeEngine make engine 
+     */
     public MakeGraphTraversalListener(GraphMakeEngine makeEngine)
     {
         this.makeEngine = makeEngine;
     }
 
+    /**
+     * Called by the depth-first iterator when all prerequisites of the current target
+     * have been visited.
+     * @param e   traversal event, indicating the current target
+     */
     @Override
     public void vertexFinished(VertexTraversalEvent<Target> e)
     {

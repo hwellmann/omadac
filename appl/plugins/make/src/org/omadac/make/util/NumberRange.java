@@ -19,23 +19,45 @@ package org.omadac.make.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A number range represents a closed interval of integer numbers.
+ * @author hwellmann
+ *
+ * @param <T>
+ */
 public class NumberRange<T extends Number>
 {
+    /** Lower bound of range. */
     private T minId;
     
+    
+    /** Upper bound of range. */
     private T maxId;
     
+    /**
+     * Constructs a number range with given lower and upper bounds.
+     * @param minId  lower bound
+     * @param maxId  upper bound
+     */
     public NumberRange(T minId, T maxId)
     {
         this.minId = minId;
         this.maxId = maxId;
     }
     
+    /**
+     * Returns the lower bound.
+     * @return lower bound.
+     */
     public T getMinId()
     {
         return minId;
     }
 
+    /**
+     * Returns the upper bound.
+     * @return upper bound.
+     */
     public T getMaxId()
     {
         return maxId;
@@ -53,6 +75,15 @@ public class NumberRange<T extends Number>
         return sb.toString();
     }
     
+    /**
+     * Splits a <em>sorted</em> list of numbers into a list of intervals, such that each 
+     * interval (possibly except the last one) contains a given number of elements from the
+     * list. The union of the intervals contains all elements of the original list.
+     * @param <T>   number type
+     * @param ids   sorted list of numbers
+     * @param rangeSize  maximum size of intersection of each interval with number list
+     * @return  list of intervals
+     */
     public static <T extends Number> List<NumberRange<T>> split(List<T> ids, int rangeSize)
     {
         List<NumberRange<T>> ranges = new ArrayList<NumberRange<T>>();

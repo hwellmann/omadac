@@ -26,13 +26,22 @@ import org.omadac.make.impl.MakeGraph;
 import org.jgrapht.ext.VertexNameProvider;
 import org.jgrapht.graph.DefaultEdge;
 
-
+/**
+ * Outputs the make graph in DOT syntax to a given file.
+ * @author hwellmann
+ *
+ */
 public class MakeGraphDotWriter
 {
     private MakeGraph makeGraph;    
     private String dotOutput;
     private VertexNameProvider<Target> vnp;
     
+    /**
+     * Creates a writer for a given graph and a given file.
+     * @param graph     make graph
+     * @param dotOutput DOT output file
+     */
     public MakeGraphDotWriter(MakeGraph graph, String dotOutput)
     {
         this.makeGraph = graph;
@@ -47,6 +56,9 @@ public class MakeGraphDotWriter
         };
     }
     
+    /**
+     * Writes the graph to the file.
+     */
     public void writeDotFile()
     {
         PrintWriter writer;

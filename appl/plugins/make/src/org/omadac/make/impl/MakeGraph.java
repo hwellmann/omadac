@@ -21,7 +21,14 @@ import org.omadac.make.Target;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
-
+/**
+ * Directed graph representation of targets and dependencies. The targets are the graph nodes.
+ * The edges indicate the dependencies, pointing from a target to a prerequisite. The graph
+ * must be acyclic. The root node is the default target.
+ * 
+ * @author hwellmann
+ *
+ */
 public class MakeGraph extends DefaultDirectedGraph<Target, DefaultEdge>
 {
     private static final long serialVersionUID = 1L;

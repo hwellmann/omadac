@@ -39,19 +39,39 @@ import org.omadac.make.Target.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Local job manager, using a thread pool on the local node.
+ * 
+ * @author hwellmann
+ *
+ */
 public class ThreadPoolJobManager implements JobManager
 {
     private static Logger log = LoggerFactory.getLogger(ThreadPoolJobManager.class);
-    
+   
+    /**
+     * Maps complex targets to the number of pending subtargets. The map gets initialized with
+     * the number of subtargets of each complex target. The number gets decremented on completion
+     * of each subtarget. When the number is zero, the complex target is completed.
+     */
     private Map<String, Integer> subtargetMap;
     
+    /**
+     * Action listeners to be notified.
+     */
     private Vector<ActionListener> listeners;
 
+    /**
+     * Executor for running actions.
+     */
     private ThreadPoolExecutor executor;
     
+    /**
+     * Target execution context.
+     */
     private ExecutionContext context;
 
+    /** Number of worker threads. */
     private int numThreads;
 
     public ThreadPoolJobManager()
@@ -60,6 +80,10 @@ public class ThreadPoolJobManager implements JobManager
         this.listeners = new Vector<ActionListener>(1);
     }
     
+    /**
+     * Used by Service Component Runtime to inject execution context.
+     * @param executionContext
+     */
     protected void setExecutionContext(ExecutionContext executionContext)
     {
         this.context = executionContext;
@@ -108,14 +132,20 @@ public class ThreadPoolJobManager implements JobManager
         Target target = action.getTarget();
         target.setExecutionContext(context);
         
+        
         if (target instanceof ComplexTarget)
         {
             ComplexTarget complexTarget = (ComplexTarget) target;
             Action complexAction = complexTarget.getAction();
             log.info("submitting job for {}", complexTarget);
 
+            /*
+             * Create subtargets and check status for each subtarget. There may be a large
+             * number of subtargets, so we update all subtargets statuses within a single
+             * transaction.
+             */
             List<Target> subtargets = complexTarget.split();
-            List<Action> subactions = new ArrayList<Action>(subtargets.size());
+            List<Action> subactions = new ArrayList<Action>(subtargets.size());                      
             EntityManager em = complexTarget.getEngineEntityManager();
             for (Target subtarget : subtargets)
             {
@@ -129,6 +159,11 @@ public class ThreadPoolJobManager implements JobManager
                     subtarget.saveStatus(em);
                 }
                 
+                /*
+                 * If the subtarget is up to date then the complex target must be incomplete, i.e.
+                 * a previous run of the make engine was interrupted. In this case, we leave the
+                 * subtarget unchanged.
+                 */
                 if (subtarget.getStatus() == Status.UPTODATE)
                 {
                     assert complexTarget.getStatus() == Status.INCOMPLETE;
@@ -139,6 +174,9 @@ public class ThreadPoolJobManager implements JobManager
                 subaction.setTarget(subtarget);
                 subactions.add(subaction);
                 
+                /*
+                 * 
+                 */
                 if (subtarget.getStatus() == Status.MISSING)
                 {
                     subtarget.setStatus(Status.CREATING);
@@ -149,6 +187,10 @@ public class ThreadPoolJobManager implements JobManager
                 }
                 log.info("submitting job for {}", subtarget);
             }
+            
+            /*
+             * An incomplete complex target is now in the process of updating.
+             */
             if (complexTarget.getStatus() == Status.INCOMPLETE)
             {
                 complexTarget.setStatus(Status.UPDATING);
@@ -166,6 +208,7 @@ public class ThreadPoolJobManager implements JobManager
         }
         else
         {
+            // simple target: directly submit the action
             log.info("submitting job for ", target);
             executor.submit(action, action);
         }
@@ -177,11 +220,16 @@ public class ThreadPoolJobManager implements JobManager
         
         subtargetMap.put(complexTarget.getName(), subactions.size());
     
+        /*
+         * For an updating complex target, we need to run the clean method before updating
+         * the subtargets.
+         */
         if (complexTarget.getStatus() == Status.UPDATING)
         {
             runComplexTargetAction(complexTarget);
         }
     
+        // Submit the subtarget actions
         for (Action subaction : subactions)
         {
             executor.submit(subaction, subaction);
@@ -206,6 +254,12 @@ public class ThreadPoolJobManager implements JobManager
         
     }
 
+    /**
+     * Callback on action completion. For the last subtarget of a complex target, this will
+     * trigger a completion event for the complex target.
+     * @param r
+     * @param t
+     */
     @SuppressWarnings("unchecked")
     protected synchronized void afterExecute(Runnable r, Throwable t)
     {

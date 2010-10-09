@@ -18,7 +18,12 @@ package org.omadac.make.impl;
 
 import org.omadac.make.Target.Status;
 
-
+/**
+ * Entity class for persisting targets.
+ * 
+ * @author hwellmann
+ *
+ */
 public class TargetInfo
 {
     private String name;

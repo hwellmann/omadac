@@ -26,7 +26,11 @@ import org.omadac.make.Target;
 import org.omadac.make.Target.Status;
 import org.omadac.make.impl.GraphMakeEngine;
 
-
+/**
+ * Make engine MBean implementation for managing the make engine via JMX.
+ * @author hwellmann
+ *
+ */
 public class MakeEngineMBeanImpl implements MakeEngineMXBean
 {
     private GraphMakeEngine engine;

@@ -18,6 +18,13 @@ package org.omadac.make.impl;
 
 import org.omadac.make.Target;
 
+/**
+ * A no-op target, useful in contexts where a target is expected even when there is nothing
+ * to do.
+ * 
+ * @author hwellmann
+ *
+ */
 public class NoOpTarget extends Target
 {
     private static final long serialVersionUID = 1L;

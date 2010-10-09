@@ -20,6 +20,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A thread pool executor used by the ThreadPoolJobManager providing callbacks on after
+ * execution.
+ * 
+ * @author hwellmann
+ *
+ */
 public class NotifyingThreadPoolExecutor extends ThreadPoolExecutor
 {
     private ThreadPoolJobManager manager;
