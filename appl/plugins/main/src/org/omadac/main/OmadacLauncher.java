@@ -79,9 +79,9 @@ public class OmadacLauncher implements Runnable
         } 
         finally
         {
-            log.info("end of Omadac Main Thread, OSGi framework is shutting down");
             if (shutdownOsgi)
             {
+                log.info("end of Omadac Main Thread, OSGi framework is shutting down");
                 shutdownOsgiFramework(exitCode);
             }
             else

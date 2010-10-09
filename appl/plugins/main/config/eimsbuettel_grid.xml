@@ -39,4 +39,5 @@
     </jdbc>
   </server>
   <tmpDir>/tmp</tmpDir>
+  <shutdown>false</shutdown>
 </omadac>
