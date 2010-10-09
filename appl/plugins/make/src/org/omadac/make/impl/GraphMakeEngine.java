@@ -48,24 +48,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * Make engine implementation keeping the dependency graph in memory. 
+ * @author hwellmann
+ *
+ */
 public class GraphMakeEngine implements MakeEngine
 {
     private static Logger log = LoggerFactory.getLogger(GraphMakeEngine.class);
 
+    /** Job manager for executing actions. */
     private JobManager manager;
     
+    /** Execution context for all targets. */
     private ExecutionContext context;
 
+    /** File name of DOT file for rendering dependency graph. */
     private String dotOutput;
     
+    /* Queue of targets to be processed. */
     private BlockingQueue<Target> pendingTargets;
 
+    /** Default target which depends on all goals. */
     private Target defaultTarget;
     
+    /** Are all targets up to date? */
     private boolean allUpToDate;
 
+    /** Dependency graph. */
     private MakeGraph graph;
 
+    /** Constructs a make engine with an empty graph. */
     public GraphMakeEngine()
     {
         graph = new MakeGraph();
@@ -79,11 +92,15 @@ public class GraphMakeEngine implements MakeEngine
         this.manager = jobManager;
     }
         
+    /**
+     * Used by Service Component Runtime to inject execution context.
+     * @param executionContext
+     */
     protected void setExecutionContext(ExecutionContext executionContext)
     {
         this.context = executionContext;
     }
-
+   
     @Override
     public void setDotOutput(String fileName)
     {
@@ -142,11 +159,16 @@ public class GraphMakeEngine implements MakeEngine
     {
         createExecutionContext();
         registerMBean();        
-        drawGraph();        
+        drawGraph();
+        
+        /*
+         * Retrieve last known target status from persistent storage and update status.
+         * This is done within a single transaction for all targets. 
+         */
         computeTargetStatus();
         EntityManagerFactory emf = context.getEngineEntityManagerFactory();
         JpaUtil.getCurrentEntityManager(emf).getTransaction().commit();
-        
+                
         updateTargets();
     }
 
@@ -181,6 +203,9 @@ public class GraphMakeEngine implements MakeEngine
         pendingTargets.add(target);
     }
 
+    /**
+     * Propagate execution context to all targets.
+     */
     private void createExecutionContext()
     {
         for (Target target : graph.vertexSet())
@@ -189,6 +214,9 @@ public class GraphMakeEngine implements MakeEngine
         }
     }
 
+    /**
+     * Registers an MBean for monitoring the make engine via JMX.
+     */
     private void registerMBean()
     {
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -206,6 +234,9 @@ public class GraphMakeEngine implements MakeEngine
     }
     
 
+    /**
+     * Renders the make graph to a DOT file.
+     */
     private void drawGraph()
     {
         if (dotOutput != null)
@@ -216,6 +247,10 @@ public class GraphMakeEngine implements MakeEngine
     }
     
 
+    /**
+     * Computes the current status of all targets based on the persisted value and current
+     * dependencies.
+     */
     private void computeTargetStatus()
     {
         DepthFirstIterator<Target, DefaultEdge> it = 
@@ -229,6 +264,10 @@ public class GraphMakeEngine implements MakeEngine
         }
     }
 
+    /**
+     * Updates all targets, taking one target at a time from the pending target queue and
+     * processing it, until the default target is up-to-date or the queue is empty.
+     */
     private void updateTargets()
     {
         assert !pendingTargets.isEmpty();
@@ -281,6 +320,10 @@ public class GraphMakeEngine implements MakeEngine
         manager.removeActionListener(this);
     }
 
+    /**
+     * Updates the given target, provided its prerequisites are up to date.
+     * @param target target to be updated
+     */
     private void updateTarget(Target target)
     {
         Status newStatus = getNewStatus(target);
@@ -301,6 +344,11 @@ public class GraphMakeEngine implements MakeEngine
         }
     }
 
+    /**
+     * Updates the target status and submits the updating action to the job manager.
+     * @param target    target to be updated
+     * @param newStatus new status of target
+     */
     private void submitTargetAction(Target target, Status newStatus)
     {
         target.setStatus(newStatus);
@@ -309,6 +357,11 @@ public class GraphMakeEngine implements MakeEngine
         manager.submitAction(action);
     }
 
+    /**
+     * Computes the new status of the target.
+     * @param target
+     * @return
+     */
     private Status getNewStatus(Target target)
     {
         assert target.getStatus() != null : target.getName();
@@ -328,6 +381,10 @@ public class GraphMakeEngine implements MakeEngine
         }
     }
 
+    /**
+     * Adds an outdated target to the pending queue, provided its prerequisites are up to date.
+     * @param target  outdated target
+     */
     void addOutdatedTarget(Target target)
     {
         if (canBuild(target))
@@ -336,6 +393,11 @@ public class GraphMakeEngine implements MakeEngine
         }
     }
 
+    /**
+     * Checks if a target is ready to be updated.
+     * @param target  given target
+     * @return true iff all prerequisites are up to date
+     */
     private boolean canBuild(Target target)
     {
         for (Target prerequisite : getPrerequisites(target))
