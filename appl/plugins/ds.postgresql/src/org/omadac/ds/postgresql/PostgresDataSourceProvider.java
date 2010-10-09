@@ -29,6 +29,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 import org.postgresql.ds.PGPoolingDataSource;
 
+/**
+ * Constructs a pooling Postgres data source based on the Omadac runtime configuration and
+ * registers it as an OSGi service.
+ * 
+ * @author hwellmann
+ *
+ */
 public class PostgresDataSourceProvider
 {
     private ConfigManager cm;

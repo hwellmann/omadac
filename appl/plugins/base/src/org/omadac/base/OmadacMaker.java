@@ -24,6 +24,13 @@ import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.AbstractMaker;
 import org.omadac.make.JobManager;
 
+/**
+ * Base class for Omadac makers. Decorates an AbstractMaker with Omadac run-time configuration
+ * information.
+ * 
+ * @author hwellmann
+ *
+ */
 public abstract class OmadacMaker extends AbstractMaker
 {
     private Job makerJob;

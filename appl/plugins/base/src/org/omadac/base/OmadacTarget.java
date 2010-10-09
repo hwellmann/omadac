@@ -20,6 +20,11 @@ import org.omadac.base.impl.ExecutionContextImpl;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Target;
 
+/**
+ * Base class for Omadac targets. Decorates a Target with Omadac runtime configuration.
+ * @author hwellmann
+ *
+ */
 public abstract class OmadacTarget extends Target
 {
     public OmadacSettings getConfiguration()

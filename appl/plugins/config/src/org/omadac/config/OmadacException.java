@@ -16,6 +16,15 @@
  */
 package org.omadac.config;
 
+/**
+ * A runtime exception thrown or propagated by Omadac. The default policy is to shutdown
+ * the application on each exception. To avoid declaring managed exceptions throughout the
+ * call stack, all managed exceptions thrown by library classes are wrapped in this runtime
+ * exception. Theses exceptions are caught in the top-level execution loops of Omadac main and
+ * worker threads.
+ * @author hwellmann
+ *
+ */
 public class OmadacException extends RuntimeException
 {
     private static final long serialVersionUID = 1L;
