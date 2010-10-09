@@ -18,6 +18,11 @@ package org.omadac.make.impl;
 
 import org.omadac.make.Target;
 
+/**
+ * Default target used by the make engine as the dependent of all goals.
+ * @author hwellmann
+ *
+ */
 public class DefaultTarget extends Target
 {
     public DefaultTarget()
