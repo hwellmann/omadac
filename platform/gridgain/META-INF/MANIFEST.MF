@@ -246,8 +246,8 @@ Export-Package: org.gridgain.apache,
  org.gridgain.grid.util.test,
  org.gridgain.grid.util.tostring,
  org.gridgain.jsr305
-Import-Package: org.w3c.tidy;resolution:=optional,
- org.jboss.serial.io;resolution:=optional
+Import-Package: org.jboss.serial.io,
+ org.w3c.tidy
 Require-Bundle: com.springsource.org.junit;bundle-version="4.4.0",
  org.springframework.aop;bundle-version="2.5.4",
  org.springframework.beans;bundle-version="2.5.4",
