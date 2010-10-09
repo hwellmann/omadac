@@ -18,6 +18,11 @@ package org.omadac.make.impl.jmx;
 
 import java.util.List;
 
+/**
+ * Interface for managing the make engine via JMX.
+ * @author hwellmann
+ *
+ */
 public interface MakeEngineMXBean
 {
     int getNumTargets();

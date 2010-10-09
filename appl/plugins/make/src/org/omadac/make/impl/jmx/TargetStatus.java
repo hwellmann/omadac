@@ -18,6 +18,11 @@ package org.omadac.make.impl.jmx;
 
 import org.omadac.make.Target.Status;
 
+/**
+ * Represents the current status of a target.
+ * @author hwellmann
+ *
+ */
 public class TargetStatus
 {
     private String name;

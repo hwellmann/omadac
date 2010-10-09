@@ -16,7 +16,7 @@
  */
 package org.omadac.make;
 
-import java.io.Serializable;
+import org.omadac.make.impl.SerializableRunnable;
 
 /**
  * An Action encapsulates a target and a Runnable for updating that target.
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author hwellmann
  *
  */
-public class Action implements Runnable, Serializable
+public class Action implements SerializableRunnable
 {
     private static final long serialVersionUID = 1;
 
