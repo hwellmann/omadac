@@ -19,6 +19,7 @@ package org.omadac.make;
 import static org.omadac.make.Target.Status.MISSING;
 import static org.omadac.make.Target.Status.UPTODATE;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -66,7 +67,7 @@ import org.osgi.service.component.ComponentContext;
  * @author hwellmann
  * 
  */
-public abstract class Target
+public abstract class Target implements Serializable
 {
     /**
      * Status of a target.
@@ -394,7 +395,7 @@ public abstract class Target
     }
     
     /**
-     * Exeutes the given callable within a separate transaction of the product persistence unit.
+     * Executes the given callable within a separate transaction of the product persistence unit.
      * @param <T>  return type of the callable
      * @param work  callable to be executed
      * @return result of the callable
@@ -407,7 +408,7 @@ public abstract class Target
     }
 
     /**
-     * Exeutes the given runnable within a separate transaction of the product persistence unit.
+     * Executes the given runnable within a separate transaction of the product persistence unit.
      * @param work  runnable to be executed
      */
     public void executeTransaction(TxRunnable work)
