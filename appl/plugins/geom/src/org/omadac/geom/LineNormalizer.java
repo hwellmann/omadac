@@ -24,6 +24,16 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * Converts a line string into a list of normalized line strings. The union of the normalized
+ * line is equal to the original line. Each normalized part is simple and not closed. Normalized
+ * parts do not contain duplicate points. The coordinates of the original line are assumed to
+ * be integral. The coordinates of the normalized parts are also integral, which may result in 
+ * rounding errors when the original line has a self-intersection with non-integral coordinates. 
+ * 
+ * @author hwellmann
+ *
+ */
 public class LineNormalizer
 {
     private RoundingCoordinateFilter rounder;

@@ -22,6 +22,9 @@ import org.omadac.config.ConfigManager;
 import org.omadac.jpa.ScopedEntityManagerFactory;
 import org.omadac.make.ExecutionContext;
 
+/**
+ * Execution context implementation, enriched by Omadac runtime configuration.
+ */
 public class ExecutionContextImpl implements ExecutionContext
 {
     private EntityManagerFactory emfProduct;

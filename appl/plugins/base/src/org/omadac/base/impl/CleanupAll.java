@@ -21,7 +21,11 @@ import javax.persistence.EntityManagerFactory;
 import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.MetadataInspector;
 
-
+/**
+ * Cleans all compilation results, equivalent to importing a new OSM database.
+ * @author hwellmann
+ *
+ */
 public class CleanupAll implements Runnable
 {
     private static final long serialVersionUID = 1;
@@ -33,7 +37,6 @@ public class CleanupAll implements Runnable
     public void run()
     {
         MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
-        inspector.dropSchema("engine");
         inspector.dropSchema("nom");
         inspector.dropSchema("pg");
         JpaUtil.commit();

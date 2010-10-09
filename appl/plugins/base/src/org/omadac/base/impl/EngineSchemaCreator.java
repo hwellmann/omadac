@@ -20,7 +20,11 @@ import java.net.URL;
 
 import org.omadac.sql.SqlSchemaCreator;
 
-
+/**
+ * Create the database schema and tables for the engine persistence unit.
+ * @author hwellmann
+ *
+ */
 public class EngineSchemaCreator implements Runnable
 {
     @Override

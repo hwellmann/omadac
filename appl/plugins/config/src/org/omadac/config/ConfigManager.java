@@ -20,9 +20,19 @@ import java.util.UUID;
 
 import org.omadac.config.jaxb.OmadacSettings;
 
-
+/**
+ * A ConfigManager returns the Omadac runtime configuration. In a multi-master scenario with 
+ * n worker threads receiving jobs from m master nodes, the configuration is not globally unique.
+ * A worker node may depend on some configuration for its local node and on configuration defined
+ * by the master owning the job to be processed by the worker.
+ * @author hwellmann
+ *
+ */
 public interface ConfigManager
 {
+    /** Returns the configuration for the local node. */
     OmadacSettings getConfiguration();
+    
+    /** Returns the configuration for the (local or remote) master indicated by the given uuid. */
     OmadacSettings getConfiguration(UUID uuid);
 }

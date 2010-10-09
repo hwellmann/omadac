@@ -23,6 +23,12 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * Implements the CoordinateSequence interface for a wrapped list of coordinates to avoid
+ * copying the list to an array. Used in combination with GeometryFactory methods.
+ * @author hwellmann
+ *
+ */
 public class CoordinateListSequence implements CoordinateSequence, Cloneable
 {
     private List<Coordinate> coords;

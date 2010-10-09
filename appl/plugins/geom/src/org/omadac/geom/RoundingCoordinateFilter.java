@@ -19,6 +19,11 @@ package org.omadac.geom;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
 
+/**
+ * Rounds the x, y and z values of a coordinate.
+ * @author hwellmann
+ *
+ */
 public class RoundingCoordinateFilter implements CoordinateFilter
 {
     @Override
@@ -26,5 +31,6 @@ public class RoundingCoordinateFilter implements CoordinateFilter
     {
         coord.x = Math.round(coord.x);
         coord.y = Math.round(coord.y);
+        coord.z = Math.round(coord.z);
     }
 }
