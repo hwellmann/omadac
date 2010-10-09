@@ -23,7 +23,6 @@ import org.omadac.config.jaxb.JobSettings;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.AbstractMaker;
 import org.omadac.make.JobManager;
-import org.omadac.make.Target;
 
 public abstract class OmadacMaker extends AbstractMaker
 {
@@ -67,8 +66,7 @@ public abstract class OmadacMaker extends AbstractMaker
     {
         for (String forced : makerJob.getMake().getForced())
         {
-            Target target = lookupTarget(forced);
-            engine.addForcedTarget(target);
+            addForcedTarget(forced);
         }
     }
 

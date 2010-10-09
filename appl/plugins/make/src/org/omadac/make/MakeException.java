@@ -16,6 +16,12 @@
  */
 package org.omadac.make;
 
+/**
+ * A runtime exception thrown by the make engine.
+ * 
+ * @author hwellmann
+ *
+ */
 public class MakeException extends RuntimeException
 {
     private static final long serialVersionUID = 1L;

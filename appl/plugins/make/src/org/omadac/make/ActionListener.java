@@ -16,9 +16,22 @@
  */
 package org.omadac.make;
 
-
+/**
+ * Listener interface for Actions.
+ * @author hwellmann
+ *
+ */
 public interface ActionListener
 {
+    /**
+     * Called when an action completes normally.
+     * @param action  the action completed
+     */
     void onCompleted(Action action);
+    
+    /**
+     * Called when an action has an error.
+     * @param action   the action with error
+     */
     void onError(Action action);
 }
