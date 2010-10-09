@@ -20,7 +20,14 @@ import java.util.List;
 
 import org.omadac.make.impl.SerializableRunnable;
 
-
+/**
+ * A complex target is split into a number of subtargets which may be compiled in parallel. The
+ * merge() method is invoked when all subtargets are completed to aggregrate the results of the
+ * subtargets.
+ * 
+ * @author hwellmann
+ *
+ */
 public abstract class ComplexTarget extends Target
 {
     private static final long serialVersionUID = 1;

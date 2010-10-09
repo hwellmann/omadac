@@ -18,8 +18,25 @@ package org.omadac.make;
 
 import javax.persistence.EntityManagerFactory;
 
+/**
+ * The execution context for a target provides external resources to be used by target
+ * implementations.
+ * 
+ * @author hwellmann
+ *
+ */
 public interface ExecutionContext
 {
+    /**
+     * Returns the entity manager factory for the product persistence unit. 
+     * @return product EMF
+     */
     EntityManagerFactory getProductEntityManagerFactory();
+
+    /**
+     * Returns the entity manager factory for the engine persistence unit.
+     * For internal use within the make engine only. 
+     * @return engine EMF
+     */
     EntityManagerFactory getEngineEntityManagerFactory();
 }
