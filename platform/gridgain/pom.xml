@@ -84,15 +84,10 @@
       <artifactId>org.omadac.org.jboss.serialization</artifactId>
       <version>1.0.3.GA</version>
     </dependency>
-    <!-- 
-         This version uses some old style XML interfaces which may
-         cause conflicts at runtime with other bundles. In that case,
-         get the sources, modify them and build your own bundle.
-    -->
     <dependency>
-      <groupId>org.w3c.tidy</groupId>
-      <artifactId>com.springsource.org.w3c.tidy</artifactId>
-      <version>0.0.0.04aug2000r7-dev</version>
+      <groupId>org.w3c</groupId>
+      <artifactId>org.omadac.org.w3c.tidy</artifactId>
+      <version>4.8.2000.r7dev</version>
     </dependency>
   </dependencies>
 

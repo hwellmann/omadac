@@ -39,6 +39,7 @@
     <module>jgrapht</module>
     <module>postgis</module>
     <module>postgresql</module>
+    <module>tidy</module>
     <module>trove</module>
   </modules>
   
