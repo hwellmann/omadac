@@ -46,13 +46,13 @@ import org.slf4j.LoggerFactory;
 public class GridJobManager implements JobManager, GridTaskListener
 {
     private static Logger log = LoggerFactory.getLogger(GridJobManager.class);
+    private static ExecutionContextImpl executionContext;
     
     private int numThreads;
     private Grid grid;
     private Vector<ActionListener> listeners = new Vector<ActionListener>();
     private Map<String, Action> targetMap = new HashMap<String, Action>();
     
-    private static ExecutionContextImpl executionContext;
     private OmadacSettings config;
     
     protected void setExecutionContext(ExecutionContext executionContext)
