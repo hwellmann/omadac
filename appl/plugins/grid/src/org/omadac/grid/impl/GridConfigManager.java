@@ -16,6 +16,7 @@
  */
 package org.omadac.grid.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,6 +32,12 @@ public class GridConfigManager implements ConfigManager
     
     private Grid grid;
     private Map<UUID, OmadacSettings> configMap;
+    
+    public GridConfigManager(Grid grid)
+    {
+        this.grid = grid;
+        this.configMap = new HashMap<UUID, OmadacSettings>();
+    }
     
     @Override
     public OmadacSettings getConfiguration()

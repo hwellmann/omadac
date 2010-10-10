@@ -66,7 +66,7 @@
         <!--include name="osm/bin/org/omadac/osm/model/*.class"/-->
         <include name="nom/bin/org/omadac/nom/*.class"/>
         <include name="nom/bin/org/omadac/osm/model/*.class"/>
-        <include name="make/bin/org/omadac/make/impl/TargetInfo.class"/>
+        <include name="make/bin/org/omadac/make/TargetInfo.class"/>
         <exclude name="nom/bin/org/omadac/nom/CityCentre.class"/>
         </fileset>
     </openjpac>

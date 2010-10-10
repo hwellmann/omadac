@@ -25,6 +25,8 @@ import org.omadac.make.Target;
  */
 public class DefaultTarget extends Target
 {
+    private static final long serialVersionUID = 1L;
+
     public DefaultTarget()
     {
         super("<default>");

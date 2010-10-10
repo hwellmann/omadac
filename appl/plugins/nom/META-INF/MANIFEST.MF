@@ -24,6 +24,6 @@ Require-Bundle: org.geotools.referencing;bundle-version="2.6.0",
  org.apache.openjpa;bundle-version="2.0.1",
  org.omadac.geom;bundle-version="0.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-Vendor: omadac.org.org
+Bundle-Vendor: omadac.org
 Meta-Persistence: META-INF/persistence.xml
 

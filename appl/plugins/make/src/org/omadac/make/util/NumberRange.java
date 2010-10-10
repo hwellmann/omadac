@@ -16,6 +16,7 @@
  */
 package org.omadac.make.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,11 @@ import java.util.List;
  *
  * @param <T>
  */
-public class NumberRange<T extends Number>
+public class NumberRange<T extends Number> implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
+
     /** Lower bound of range. */
     private T minId;
     

@@ -34,7 +34,6 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.omadac.jpa.JpaUtil;
 import org.omadac.make.Action;
-import org.omadac.make.ComplexTarget;
 import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
 import org.omadac.make.MakeEngine;
@@ -176,10 +175,6 @@ public class GraphMakeEngine implements MakeEngine
     public void onCompleted(Action action)
     {
         Target target = action.getTarget();
-        if (target instanceof ComplexTarget)
-        {
-            ((ComplexTarget) target).merge();
-        }
         target.setStatus(Status.COMPLETED);
         pendingTargets.add(target);
         for (Target dep : getDependents(target))

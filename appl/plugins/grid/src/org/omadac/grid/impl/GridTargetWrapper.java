@@ -41,22 +41,25 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
     private static final long serialVersionUID = 1L;
 
     private static final Logger log = LoggerFactory.getLogger(GridTargetWrapper.class);
+    
+    private Target target;
 
     @Override
     public String reduce(List<GridJobResult> results) throws GridException
     {
-        return results.get(0).getData();
+        if (target instanceof ComplexTarget)
+        {
+            ComplexTarget complexTarget = (ComplexTarget) target;
+            complexTarget.merge();            
+        }
+        return target.getName();
     }
 
     @Override
     protected Collection<? extends GridJob> split(int gridSize, Target target) throws GridException
     {
-        if (target.getParent() == null)
-        {
-            GridJob job = new TargetGridJobAdapter(target);
-            return Collections.singleton(job);
-        }
-        else
+        this.target = target;
+        if (target instanceof ComplexTarget)           
         {
             ComplexTarget complexTarget = (ComplexTarget) target;
             List<Target> subtargets = complexTarget.split();
@@ -93,6 +96,11 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
             }
             complexTarget.getEngineEntityManager().getTransaction().commit();
             return gridJobs;          
+        }
+        else
+        {
+            GridJob job = new TargetGridJobAdapter(target);
+            return Collections.singleton(job);
         }
     }
 }

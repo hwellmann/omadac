@@ -308,6 +308,12 @@ public class ThreadPoolJobManager implements JobManager
 
     private void onCompleted(Action action)
     {
+        Target target = action.getTarget();
+        if (target instanceof ComplexTarget)
+        {
+            ComplexTarget complexTarget = (ComplexTarget) target;
+            complexTarget.merge();            
+        }
         for (ActionListener listener : listeners)
         {
             listener.onCompleted(action);
