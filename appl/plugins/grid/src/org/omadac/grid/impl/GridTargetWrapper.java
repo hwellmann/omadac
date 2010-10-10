@@ -40,7 +40,7 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
 {
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = LoggerFactory.getLogger(GridTargetWrapper.class);
+    private static Logger log = LoggerFactory.getLogger(GridTargetWrapper.class);
     
     private Target target;
 
@@ -56,9 +56,9 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
     }
 
     @Override
-    protected Collection<? extends GridJob> split(int gridSize, Target target) throws GridException
+    protected Collection<? extends GridJob> split(int gridSize, Target t) throws GridException
     {
-        this.target = target;
+        this.target = t;
         if (target instanceof ComplexTarget)           
         {
             ComplexTarget complexTarget = (ComplexTarget) target;
