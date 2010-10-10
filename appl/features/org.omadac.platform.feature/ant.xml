@@ -70,9 +70,11 @@
   <target name="patch">
     <property name="openjpa.jar" value="${build.dir}/eclipse-target-${platform.deps.version}/plugins/openjpa-2.0.1.jar"/>
     <unzip src="${openjpa.jar}" dest="${build.dir}/openjpa"/>
-    <echo file="${build.dir}/openjpa/META-INF/MANIFEST.MF" 
-      append="true">Eclipse-BuddyPolicy: registered
-</echo>
+  	<replace file="${build.dir}/openjpa/META-INF/MANIFEST.MF">
+      <replacetoken>Bundle-ManifestVersion: 2</replacetoken>
+  	  <replacevalue><![CDATA[Bundle-ManifestVersion: 2
+Eclipse-BuddyPolicy: registered]]></replacevalue>	
+  	</replace>
     <zip basedir="${build.dir}/openjpa" destfile="${openjpa.jar}"/>
   </target>
   
