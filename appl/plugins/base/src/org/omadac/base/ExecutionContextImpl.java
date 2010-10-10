@@ -42,7 +42,7 @@ public class ExecutionContextImpl implements ExecutionContext
         this.emfProduct = new ScopedEntityManagerFactory(emf);
     }
     
-    protected void setConfigManager(ConfigManager configManager)
+    public void setConfigManager(ConfigManager configManager)
     {
         this.configManager = configManager;
     }

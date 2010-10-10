@@ -26,6 +26,7 @@ import org.gridgain.grid.resources.GridInstanceResource;
 import org.gridgain.grid.resources.GridTaskSessionResource;
 import org.omadac.base.ExecutionContextImpl;
 import org.omadac.config.jaxb.OmadacSettings;
+import org.omadac.make.ExecutionContext;
 import org.omadac.make.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +52,11 @@ public class TargetGridJobAdapter extends GridJobAdapter<Target>
     @Override
     public Serializable execute() throws GridException
     {
-        ExecutionContextImpl ec = (ExecutionContextImpl) GridJobManager.getExecutionContext();
-        GridConfigManager cm = new GridConfigManager(grid);
+        ExecutionContextImpl ec = OmadacGridNode.getExecutionContext();
+        GridConfigManager cm = (GridConfigManager) ec.getConfigManager();
+        assert cm != null;
+        cm.setGrid(grid);
+        
         OmadacSettings settings = cm.getConfiguration(taskSession.getTaskNodeId());
         
         log.debug("configuration = {}", settings);

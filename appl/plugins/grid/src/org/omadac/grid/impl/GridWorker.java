@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridConfigurationAdapter;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridFactory;
@@ -39,13 +40,13 @@ public class GridWorker implements Runnable
 {
     private static Logger log = LoggerFactory.getLogger(GridWorker.class);
     
-    private ExecutionContextImpl executionContext;
     private OmadacSettings config;
+
+    private OmadacGridNode omadacGridNode;
     
-    protected void setExecutionContext(ExecutionContext executionContext)
+    protected void setOmadacGridNode(OmadacGridNode omadacGridNode)
     {
-        this.executionContext = (ExecutionContextImpl) executionContext;
-        
+        this.omadacGridNode = omadacGridNode;        
     }
     
     @Override
@@ -57,13 +58,11 @@ public class GridWorker implements Runnable
     
     public void start()
     {
-        config = executionContext.getConfigManager().getConfiguration();
+        GridConfigManager cm = new GridConfigManager();
+        config = cm.getConfiguration();
         int numThreads = config.getJobs().getThreads();
         GridConfigurationAdapter gridCfg = new GridConfigurationAdapter();
 
-        Map<String, Serializable> userAttrs = new HashMap<String, Serializable>();
-        userAttrs.put("omadac.master.config", config);
-        gridCfg.setUserAttributes(userAttrs);
         ExecutorService service = new GridThreadPoolExecutorService(numThreads, numThreads, Long.MAX_VALUE, new LinkedBlockingQueue<Runnable>());
         gridCfg.setExecutorService(service);
       
@@ -79,7 +78,7 @@ public class GridWorker implements Runnable
         try
         {
             log.info("starting grid node");
-            GridFactory.start(gridCfg);
+            Grid grid = GridFactory.start(gridCfg);
         }
         catch (GridException exc)
         {

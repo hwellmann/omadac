@@ -39,7 +39,7 @@ import org.osgi.util.tracker.ServiceTracker;
 public abstract class AbstractMaker implements Runnable
 {
     /** Timeout for looking up an OSGi service. */
-    private static final long THREE_SECONDS = 3000;
+    private static final long THREE_SECONDS = 5000;
 
     /** Make engine that will run this maker. */
     protected MakeEngine engine;
