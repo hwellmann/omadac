@@ -55,10 +55,10 @@
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>             
             <Import-Package>!sun.*,*</Import-Package>
             <Export-Package>org.jboss.serial.*</Export-Package>
+            <DynamicImport-Package>*</DynamicImport-Package>
           </instructions>
         </configuration>
       </plugin>
     </plugins>
-  </build>
-  
+  </build>  
 </project>
