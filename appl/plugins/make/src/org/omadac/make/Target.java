@@ -30,7 +30,6 @@ import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.TxCallable;
 import org.omadac.jpa.TxRunnable;
 import org.omadac.make.impl.SerializableRunnable;
-import org.omadac.make.impl.TargetInfo;
 import org.osgi.service.component.ComponentContext;
 
 /**

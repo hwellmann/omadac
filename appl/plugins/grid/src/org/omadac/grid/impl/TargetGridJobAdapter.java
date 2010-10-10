@@ -21,11 +21,10 @@ import java.io.Serializable;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridJobAdapter;
-import org.gridgain.grid.GridNode;
 import org.gridgain.grid.GridTaskSession;
 import org.gridgain.grid.resources.GridInstanceResource;
 import org.gridgain.grid.resources.GridTaskSessionResource;
-import org.omadac.config.ConfigManager;
+import org.omadac.base.ExecutionContextImpl;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Target;
 import org.slf4j.Logger;
@@ -52,13 +51,13 @@ public class TargetGridJobAdapter extends GridJobAdapter<Target>
     @Override
     public Serializable execute() throws GridException
     {
-        GridNode node = grid.getLocalNode();
-        ConfigManager cm = (ConfigManager) node.getAttribute("omadac.config.manager");
+        ExecutionContextImpl ec = (ExecutionContextImpl) GridJobManager.getExecutionContext();
+        GridConfigManager cm = new GridConfigManager(grid);
         OmadacSettings settings = cm.getConfiguration(taskSession.getTaskNodeId());
         
         log.debug("configuration = {}", settings);
-        Target t = getArgument();
-        t.getAction().run();
+        target.setExecutionContext(ec);
+        target.getAction().run();
         return target.getName();
     }
 

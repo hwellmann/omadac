@@ -32,6 +32,7 @@ import org.gridgain.grid.GridTaskListener;
 import org.gridgain.grid.spi.collision.jobstealing.GridJobStealingCollisionSpi;
 import org.gridgain.grid.spi.failover.jobstealing.GridJobStealingFailoverSpi;
 import org.gridgain.grid.thread.GridThreadPoolExecutorService;
+import org.omadac.base.ExecutionContextImpl;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Action;
@@ -49,13 +50,14 @@ public class GridJobManager implements JobManager, GridTaskListener
     private int numThreads;
     private Grid grid;
     private Vector<ActionListener> listeners = new Vector<ActionListener>();
-    private static ExecutionContext executionContext;
-    private OmadacSettings config;
     private Map<String, Action> targetMap = new HashMap<String, Action>();
+    
+    private static ExecutionContextImpl executionContext;
+    private OmadacSettings config;
     
     protected void setExecutionContext(ExecutionContext executionContext)
     {
-        GridJobManager.executionContext = executionContext;
+        GridJobManager.executionContext = (ExecutionContextImpl) executionContext;
         
     }
     
@@ -74,6 +76,7 @@ public class GridJobManager implements JobManager, GridTaskListener
     @Override
     public void start()
     {
+        config = executionContext.getConfigManager().getConfiguration();
         GridConfigurationAdapter gridCfg = new GridConfigurationAdapter();
 
         Map<String, Serializable> userAttrs = new HashMap<String, Serializable>();
@@ -90,6 +93,8 @@ public class GridJobManager implements JobManager, GridTaskListener
         gridCfg.setCollisionSpi(collisionSpi);
         gridCfg.setFailoverSpi(failoverSpi);
         gridCfg.setPeerClassLoadingEnabled(false);
+        gridCfg.setGridGainHome(config.getTmpDir());
+        
         try
         {
             grid = GridFactory.start(gridCfg);
