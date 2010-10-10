@@ -175,6 +175,10 @@ public class GraphMakeEngine implements MakeEngine
     public void onCompleted(Action action)
     {
         Target target = action.getTarget();
+        if (target.getExecutionContext() == null)
+        {
+            target.setExecutionContext(context);
+        }
         target.setStatus(Status.COMPLETED);
         pendingTargets.add(target);
         for (Target dep : getDependents(target))

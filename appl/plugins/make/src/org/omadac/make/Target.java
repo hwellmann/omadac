@@ -279,7 +279,7 @@ public abstract class Target implements Serializable
         info.setStatus(status);
     }
 
-    protected ExecutionContext getExecutionContext()
+    public ExecutionContext getExecutionContext()
     {
         return executionContext;
     }

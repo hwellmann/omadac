@@ -78,7 +78,7 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
             for (Target subtarget : subtargets)
             {
                 subtarget.setParent(complexTarget);
-                subtarget.setExecutionContext(GridJobManager.getExecutionContext());
+                subtarget.setExecutionContext(OmadacGridNode.getExecutionContext());
                 subtarget.refreshTargetStatus();
                 if (parentStatus == UPDATING)
                 {

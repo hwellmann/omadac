@@ -33,6 +33,7 @@ import org.gridgain.grid.spi.collision.jobstealing.GridJobStealingCollisionSpi;
 import org.gridgain.grid.spi.failover.jobstealing.GridJobStealingFailoverSpi;
 import org.gridgain.grid.thread.GridThreadPoolExecutorService;
 import org.omadac.base.ExecutionContextImpl;
+import org.omadac.config.ConfigManager;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Action;
@@ -54,17 +55,11 @@ public class GridJobManager implements JobManager, GridTaskListener
     private Map<String, Action> targetMap = new HashMap<String, Action>();
     
     private OmadacSettings config;
+    private OmadacGridNode omadacGridNode;
     
-    protected void setExecutionContext(ExecutionContext executionContext)
+    protected void setOmadacGridNode(OmadacGridNode omadacGridNode)
     {
-        GridJobManager.executionContext = (ExecutionContextImpl) executionContext;
-        
-    }
-    
-    public static ExecutionContext getExecutionContext()
-    {
-        assert executionContext != null;
-        return executionContext;
+        this.omadacGridNode = omadacGridNode;
     }
     
     @Override
@@ -76,12 +71,10 @@ public class GridJobManager implements JobManager, GridTaskListener
     @Override
     public void start()
     {
-        config = executionContext.getConfigManager().getConfiguration();
+        GridConfigManager cm = (GridConfigManager) OmadacGridNode.getExecutionContext().getConfigManager();
+        config = cm.getConfiguration();
         GridConfigurationAdapter gridCfg = new GridConfigurationAdapter();
 
-        Map<String, Serializable> userAttrs = new HashMap<String, Serializable>();
-        userAttrs.put("omadac.master.config", config);
-        gridCfg.setUserAttributes(userAttrs);
         ExecutorService service = new GridThreadPoolExecutorService(numThreads, numThreads, Long.MAX_VALUE, new LinkedBlockingQueue<Runnable>());
         gridCfg.setExecutorService(service);
       
@@ -98,6 +91,7 @@ public class GridJobManager implements JobManager, GridTaskListener
         try
         {
             grid = GridFactory.start(gridCfg);
+            cm.setGrid(grid);
         }
         catch (GridException exc)
         {
@@ -115,7 +109,7 @@ public class GridJobManager implements JobManager, GridTaskListener
     public void submitAction(Action action)
     {
         Target target = action.getTarget();
-        target.setExecutionContext(executionContext);
+        target.setExecutionContext(OmadacGridNode.getExecutionContext());
         targetMap.put(target.getName(), action);
         log.info("scheduling job " + target.getName());
         grid.execute(GridTargetWrapper.class, target, this);

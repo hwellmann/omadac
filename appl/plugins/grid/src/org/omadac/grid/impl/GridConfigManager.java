@@ -16,39 +16,45 @@
  */
 package org.omadac.grid.impl;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridNode;
-import org.omadac.config.ConfigManager;
+import org.omadac.config.LocalConfigManager;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
 
-public class GridConfigManager implements ConfigManager
+public class GridConfigManager extends LocalConfigManager implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     public static final String KEY_OMADAC_MASTER_CONFIG = "omadac.master.config";
     
     private Grid grid;
     private Map<UUID, OmadacSettings> configMap;
     
-    public GridConfigManager(Grid grid)
+    public GridConfigManager()
     {
-        this.grid = grid;
         this.configMap = new HashMap<UUID, OmadacSettings>();
     }
     
-    @Override
-    public OmadacSettings getConfiguration()
+    
+    public void setGrid(Grid grid)
     {
-        UUID uuid = grid.getLocalNode().getId();
-        return getConfiguration(uuid);
+        this.grid = grid;
     }
-
+    
     @Override
     public OmadacSettings getConfiguration(UUID uuid)
     {
+        if (uuid.equals(grid.getLocalNode().getId()))
+        {
+            return getConfiguration();
+        }
+        
         GridNode node = grid.getNode(uuid);
         if (node == null)
         {

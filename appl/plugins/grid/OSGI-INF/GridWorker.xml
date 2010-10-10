@@ -22,5 +22,5 @@
    <service>
       <provide interface="java.lang.Runnable"/>
    </service>
-   <reference bind="setExecutionContext" cardinality="1..1" interface="org.omadac.make.ExecutionContext" name="ExecutionContext" policy="static"/>
+   <reference bind="setOmadacGridNode" cardinality="1..1" interface="org.omadac.grid.impl.OmadacGridNode" name="OmadacGridNode" policy="static"/>
 </scr:component>

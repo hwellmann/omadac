@@ -16,11 +16,10 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
 -->
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" name="org.omadac.grid.impl.GridJobManager">
-   <implementation class="org.omadac.grid.impl.GridJobManager"/>
-   <property name="type" value="grid"/>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" name="org.omadac.grid.impl.OmadacGridNode">
+   <implementation class="org.omadac.grid.impl.OmadacGridNode"/>
+   <reference bind="setExecutionContext" cardinality="1..1" interface="org.omadac.make.ExecutionContext" name="ExecutionContext" policy="static"/>
    <service>
-      <provide interface="org.omadac.make.JobManager"/>
+      <provide interface="org.omadac.grid.impl.OmadacGridNode"/>
    </service>
-   <reference bind="setOmadacGridNode" cardinality="1..1" interface="org.omadac.grid.impl.OmadacGridNode" name="OmadacGridNode" policy="static"/>
 </scr:component>
