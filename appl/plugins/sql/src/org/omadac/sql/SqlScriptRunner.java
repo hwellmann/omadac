@@ -149,7 +149,8 @@ public class SqlScriptRunner
                     case '\n':
                         status = NORMAL;
                         break;
-
+                    default:
+                        // nothing
                 }
             }
             else

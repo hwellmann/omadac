@@ -68,7 +68,7 @@ public class MakeGraphDotWriter
             writer.println("strict digraph G {");
             writer.println("rankdir=BT");
             writer.println("node [fontname=Helvetica, fontsize=10, style=filled, shape=box, " +
-            		"width=0.4, height=0.3, fillcolor=\"yellow\"]");
+                "width=0.4, height=0.3, fillcolor=\"yellow\"]");
             for (Target target : makeGraph.vertexSet())
             {
                 writer.println(vnp.getVertexName(target));
