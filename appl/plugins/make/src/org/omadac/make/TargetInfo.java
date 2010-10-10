@@ -14,9 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.omadac.make.impl;
+package org.omadac.make;
 
 import org.omadac.make.Target.Status;
+
 
 /**
  * Entity class for persisting targets.
