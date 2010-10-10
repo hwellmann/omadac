@@ -29,12 +29,11 @@ import javax.persistence.TypedQuery;
 import org.omadac.make.Target;
 import org.omadac.make.util.NumberRange;
 import org.omadac.nom.AdminRegion;
+import org.omadac.nom.HouseNumberRange;
 import org.omadac.nom.NamedRoad;
 import org.omadac.nom.NamedRoadLink;
-import org.omadac.nom.HouseNumberRange;
 import org.omadac.nom.NomLink;
 import org.omadac.nom.RoadName;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,14 +165,14 @@ public class NamedRoadSubtarget extends Target
             lastRoad = currentRoad;
         }
 
-        NamedRoadLink NomLink = new NamedRoadLink();
-        NomLink.setId(linkId.intValue());
-        NomLink.setLink(new NomLink(linkId));
-        NomLink.setLeftRangeId(addressRange.getId());
-        NomLink.setRightRangeId(addressRange.getId());
-        NomLink.setNamedRoad(namedRoad);
+        NamedRoadLink nomLink = new NamedRoadLink();
+        nomLink.setId(linkId.intValue());
+        nomLink.setLink(new NomLink(linkId));
+        nomLink.setLeftRangeId(addressRange.getId());
+        nomLink.setRightRangeId(addressRange.getId());
+        nomLink.setNamedRoad(namedRoad);
 
-        namedRoad.getLinks().add(NomLink);
+        namedRoad.getLinks().add(nomLink);
     }
 
     private void saveNamedRoads()
