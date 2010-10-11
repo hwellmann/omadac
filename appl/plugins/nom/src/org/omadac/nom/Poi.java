@@ -34,9 +34,9 @@ public class Poi extends Feature
     {      
     }
     
-    public Poi(long id, int featureType, long sourceId, Geometry geometry)
+    public Poi(int featureType, long sourceId, Geometry geometry)
     {
-        super(id, featureType, sourceId, geometry);
+        super(featureType, sourceId, geometry);
     }
 
     public NamedRoadLink getLink()

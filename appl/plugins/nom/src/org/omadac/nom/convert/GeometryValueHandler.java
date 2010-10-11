@@ -33,6 +33,9 @@ public class GeometryValueHandler extends ByteArrayValueHandler
     @Override
     public Object toDataStoreValue(ValueMapping vm, Object val, JDBCStore store)
     {
+        if (val == null)
+            return null;
+        
         Geometry geom = (Geometry) val;
         try
         {
@@ -51,6 +54,9 @@ public class GeometryValueHandler extends ByteArrayValueHandler
     @Override
     public Object toObjectValue(ValueMapping vm, Object val)
     {
+        if (val == null)
+            return null;
+        
         try
         {
             Geometry geom = null;

@@ -69,7 +69,7 @@
     </table>
     <table name="feature">
       <description>stores all line and area features.</description>
-      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+      <column name="feature_id" type="int64" nullable="false" primary_key="true" auto_increment="true">
         <description></description>
       </column>
       <column name="discriminator" type="char" length="1" nullable="false">
@@ -114,7 +114,7 @@
     <table name="junction">
       <description>
       </description>
-      <column name="junction_id" type="int64" nullable="false" primary_key="true">
+      <column name="feature_id" type="int64" nullable="false" primary_key="true" auto_increment="true">
         <description></description>
       </column>
       <column name="x" type="int32" nullable="false">
@@ -184,7 +184,7 @@
     </table>
     <table name="link">
       <description></description>
-      <column name="feature_id" type="int64" nullable="false" primary_key="true">
+      <column name="feature_id" type="int64" nullable="false" primary_key="true" auto_increment="true">
         <description></description>
       </column>
       <column name="road_attr_id" type="int64" nullable="true">

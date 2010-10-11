@@ -139,6 +139,8 @@ public enum NomFeatureType
     LINE_POWER(1, 1),
 
 
+    POINT_JUNCTION(59, 0),
+    
     POI_DENTIST(60, 0),
     POI_HAIR_AND_BEAUTY(60, 0),
     POI_HEALTH_CARE_SERVICE(60, 0),
