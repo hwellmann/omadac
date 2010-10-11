@@ -40,6 +40,7 @@
     <attributes>
       <id name="id">
         <column name="feature_id" />
+        <generated-value strategy="IDENTITY"/>
       </id>
       <basic name="featureType">
         <column name="feature_type" />
@@ -117,10 +118,8 @@
   </entity>
   <entity class="NomJunction">
     <table name="junction" />
+    <discriminator-value>J</discriminator-value>
     <attributes>
-      <id name="id">
-        <column name="junction_id" />
-      </id>
       <basic name="x">
         <column name="x" />
       </basic>
@@ -161,6 +160,7 @@
           <join-column name="link_id" />
           <inverse-join-column name="junction_id" />
         </join-table>
+        <cascade><cascade-persist/></cascade>
       </many-to-many>
     </attributes>
   </entity>

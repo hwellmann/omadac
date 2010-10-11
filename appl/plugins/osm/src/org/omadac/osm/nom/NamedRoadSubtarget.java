@@ -134,7 +134,7 @@ public class NamedRoadSubtarget extends Target
     {
         for (Object[] result : linksAndNames)
         {
-            Long linkId = (Long) result[0];
+            Integer linkId = (Integer) result[0];
             String roadName = (String) result[1];
             Long roadNameId = (Long) result[2];
             handleRoadLink(linkId, roadName, roadNameId);
@@ -144,7 +144,7 @@ public class NamedRoadSubtarget extends Target
         log.info(numResults + " links");
     }
 
-    private void handleRoadLink(Long linkId, String streetName, long roadNameId)
+    private void handleRoadLink(Integer linkId, String streetName, long roadNameId)
     {
         log.debug("link = {}, name = {}, id = {}", new Object[] {linkId, streetName, roadNameId});
 

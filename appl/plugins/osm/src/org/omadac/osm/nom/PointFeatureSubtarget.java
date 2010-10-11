@@ -136,7 +136,7 @@ public class PointFeatureSubtarget extends Target
         {
             Coordinate c = new Coordinate(x, y);
             Point point = factory.createPoint(c);
-            Poi poi = new Poi(nodeId, type.getValue(), nodeId, point);
+            Poi poi = new Poi(type.getValue(), nodeId, point);
             log.debug("creating POI {}", nodeId);
             em.persist(poi);
             numFeatures++;

@@ -60,9 +60,8 @@ public class Feature implements Cloneable
         this.geometry = geometry;
     }
     
-    public Feature(long id, int featureType, long sourceId, Geometry geometry)
+    public Feature(int featureType, long sourceId, Geometry geometry)
     {
-        this.id = id;
         this.featureType = featureType;
         this.sourceId = sourceId;
         this.geometry = geometry;

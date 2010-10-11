@@ -53,9 +53,6 @@ public class LinkSubtarget extends Target
 
     private static Logger log = LoggerFactory.getLogger(LinkSubtarget.class);
 
-    private static AtomicLong newLinkId = new AtomicLong(-1);
-    private static AtomicLong newJunctionId = new AtomicLong(-1);
-
     private NumberRange<Long> range;
 
     private List<Coordinate> coords;
@@ -176,8 +173,8 @@ public class LinkSubtarget extends Target
     {
         String jpql;
         Query query;
-        jpql = "select distinct j from NomJunction j, OsmWay w join w.nodes as wn join w.tags as wt "
-                + "where key(wt) = 'highway' and j.id = wn.id and w.id between :minId and :maxId";
+        jpql = "select j from NomJunction j, OsmWay w join w.nodes as wn join w.tags as wt "
+                + "where key(wt) = 'highway' and j.sourceId = wn.id and w.id between :minId and :maxId";
         query = em.createQuery(jpql);
         query.setParameter("minId", range.getMinId());
         query.setParameter("maxId", range.getMaxId());
@@ -187,7 +184,7 @@ public class LinkSubtarget extends Target
         junctionMap = new HashMap<Long, NomJunction>();
         for (NomJunction junction : junctions)
         {
-            junctionMap.put(junction.getId(), junction);
+            junctionMap.put(junction.getSourceId(), junction);
             Coordinate coord = new Coordinate(junction.getX(), junction.getY());
             nodeMap.put(coord, junction);            
         }
@@ -229,7 +226,8 @@ public class LinkSubtarget extends Target
         for (OsmNode node : way.getNodes())
         {
             NomJunction junction = junctionMap.get(node.getId());
-            assert !(seqNum == 0) || (seqNum == way.getNodes().size()-1) || junction != null;
+            assert !((seqNum == 0) || (seqNum == way.getNodes().size()-1)) 
+                || junction != null;
 
             Coordinate coord = new Coordinate(node.getLongitude(), node.getLatitude());
             nodeMap.put(coord, junction);
@@ -285,7 +283,6 @@ public class LinkSubtarget extends Target
             assert part.getNumPoints() > 1 : "wayId = " + wayId;
 
             int length = LinkLengthCalculator.computeLinkLength(part);
-            long linkId = getNewLinkId(wayId);
             Coordinate fromCoord = part.getCoordinateN(0);
             Coordinate toCoord = part.getCoordinateN(part.getNumPoints() - 1);
             NomJunction fromNode = findOrCreateJunction(fromCoord);
@@ -295,7 +292,6 @@ public class LinkSubtarget extends Target
             assert !fromNode.equals(toNode);
 
             NomLink link = new NomLink();
-            link.setId(linkId);
             link.setAttr(highwayTypeMap.get(highwayType));
             if (link.getAttr() == null)
             {
@@ -304,7 +300,7 @@ public class LinkSubtarget extends Target
             }
             link.setLength(length);
 
-            link.setFeatureType(NomFeatureType.LINE_ROAD.getValue());
+            link.setFeatureType(NomFeatureType.LINE_ROAD.getValue());            
             link.setSourceId(wayId);
             link.setGeometry(part);
             link.getJunctions().add(fromNode);
@@ -318,24 +314,12 @@ public class LinkSubtarget extends Target
         NomJunction junction = nodeMap.get(coord);
         if (junction == null)
         {
-            long id = newJunctionId.getAndDecrement();
             int x = (int) coord.x;
             int y = (int) coord.y;
-            junction = new NomJunction(id, x, y);
+            junction = new NomJunction(x, y);
             newJunctions.add(junction);
         }
         return junction;        
     }
     
-    private long getNewLinkId(long sourceId)
-    {
-        if (lastSourceId != sourceId)
-        {
-            lastSourceId = sourceId;
-            return sourceId;
-        }
-
-        log.debug("way {} is not correctly noded", sourceId);
-        return newLinkId.getAndDecrement();
-    }
 }
