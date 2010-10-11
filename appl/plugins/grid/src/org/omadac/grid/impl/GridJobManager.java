@@ -16,7 +16,6 @@
  */
 package org.omadac.grid.impl;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -32,13 +31,10 @@ import org.gridgain.grid.GridTaskListener;
 import org.gridgain.grid.spi.collision.jobstealing.GridJobStealingCollisionSpi;
 import org.gridgain.grid.spi.failover.jobstealing.GridJobStealingFailoverSpi;
 import org.gridgain.grid.thread.GridThreadPoolExecutorService;
-import org.omadac.base.ExecutionContextImpl;
-import org.omadac.config.ConfigManager;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
-import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
 import org.omadac.make.Target;
 import org.slf4j.Logger;
@@ -47,7 +43,6 @@ import org.slf4j.LoggerFactory;
 public class GridJobManager implements JobManager, GridTaskListener
 {
     private static Logger log = LoggerFactory.getLogger(GridJobManager.class);
-    private static ExecutionContextImpl executionContext;
     
     private int numThreads;
     private Grid grid;
@@ -55,11 +50,10 @@ public class GridJobManager implements JobManager, GridTaskListener
     private Map<String, Action> targetMap = new HashMap<String, Action>();
     
     private OmadacSettings config;
-    private OmadacGridNode omadacGridNode;
     
     protected void setOmadacGridNode(OmadacGridNode omadacGridNode)
     {
-        this.omadacGridNode = omadacGridNode;
+        // just to make sure that component OmadacGridNode has been created
     }
     
     @Override
@@ -72,8 +66,12 @@ public class GridJobManager implements JobManager, GridTaskListener
     public void start()
     {
         GridConfigManager cm = (GridConfigManager) OmadacGridNode.getExecutionContext().getConfigManager();
-        config = cm.getConfiguration();
+        config = cm.getConfiguration();        
         GridConfigurationAdapter gridCfg = new GridConfigurationAdapter();
+        
+        Map<String,OmadacSettings> attrMap = new HashMap<String, OmadacSettings>();
+        attrMap.put(GridConfigManager.KEY_OMADAC_MASTER_CONFIG, config);
+        gridCfg.setUserAttributes(attrMap);
 
         ExecutorService service = new GridThreadPoolExecutorService(numThreads, numThreads, Long.MAX_VALUE, new LinkedBlockingQueue<Runnable>());
         gridCfg.setExecutorService(service);

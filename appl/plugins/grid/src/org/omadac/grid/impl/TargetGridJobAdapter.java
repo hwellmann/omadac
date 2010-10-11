@@ -26,7 +26,6 @@ import org.gridgain.grid.resources.GridInstanceResource;
 import org.gridgain.grid.resources.GridTaskSessionResource;
 import org.omadac.base.ExecutionContextImpl;
 import org.omadac.config.jaxb.OmadacSettings;
-import org.omadac.make.ExecutionContext;
 import org.omadac.make.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
