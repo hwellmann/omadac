@@ -63,11 +63,9 @@ public class GridConfigManager extends LocalConfigManager implements Serializabl
         OmadacSettings configuration = configMap.get(uuid);
         if (configuration == null)
         {
-            configuration = (OmadacSettings) node
-                    .getAttribute(KEY_OMADAC_MASTER_CONFIG);
+            configuration = (OmadacSettings) node.getAttribute(KEY_OMADAC_MASTER_CONFIG);
             configMap.put(uuid, configuration);
         }
         return configuration;
     }
-
 }

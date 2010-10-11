@@ -16,23 +16,17 @@
  */
 package org.omadac.grid.impl;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridConfigurationAdapter;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.spi.collision.jobstealing.GridJobStealingCollisionSpi;
 import org.gridgain.grid.spi.failover.jobstealing.GridJobStealingFailoverSpi;
 import org.gridgain.grid.thread.GridThreadPoolExecutorService;
-import org.omadac.base.ExecutionContextImpl;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
-import org.omadac.make.ExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,11 +36,10 @@ public class GridWorker implements Runnable
     
     private OmadacSettings config;
 
-    private OmadacGridNode omadacGridNode;
     
     protected void setOmadacGridNode(OmadacGridNode omadacGridNode)
     {
-        this.omadacGridNode = omadacGridNode;        
+        // just to make sure that component OmadacGridNode has been created
     }
     
     @Override
@@ -78,7 +71,7 @@ public class GridWorker implements Runnable
         try
         {
             log.info("starting grid node");
-            Grid grid = GridFactory.start(gridCfg);
+            GridFactory.start(gridCfg);
         }
         catch (GridException exc)
         {

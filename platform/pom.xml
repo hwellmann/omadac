@@ -1,20 +1,9 @@
-<!--
-
-    Omadac - The Open Map Database Compiler
-    http://omadac.org
- 
-    (C) 2010, Harald Wellmann and Contributors
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation;
-    version 2.1 of the License.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
--->
+<!-- Omadac - The Open Map Database Compiler http://omadac.org (C) 2010, Harald Wellmann and Contributors 
+  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser 
+  General Public License as published by the Free Software Foundation; version 2.1 of the License. This 
+  library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
+  implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+  License for more details. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -23,14 +12,14 @@
   <packaging>pom</packaging>
   <name>Open Map Database Compiler Platform</name>
   <version>0.1.0</version>
-  
+
   <properties>
     <geotools.version>2.6.2.osgi1</geotools.version>
     <output.dir>${project.build.directory}/platform/plugins</output.dir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
-  
+
+
   <modules>
     <module>eclipse-target</module>
     <module>gridgain</module>
@@ -42,20 +31,20 @@
     <module>tidy</module>
     <module>trove</module>
   </modules>
-  
+
   <dependencyManagement>
     <dependencies>
-    <dependency>
-      <groupId>org.omadac.osgi</groupId>
-      <artifactId>org.postgresql</artifactId>
-      <version>8.4.701-jdbc4</version>
-    </dependency>    
-    <dependency>
-      <groupId>org.junit</groupId>
-      <artifactId>com.springsource.org.junit</artifactId>
-      <version>4.7.0</version>
-    </dependency>
-  </dependencies>
+      <dependency>
+        <groupId>org.omadac.osgi</groupId>
+        <artifactId>org.postgresql</artifactId>
+        <version>8.4.701-jdbc4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>com.springsource.org.junit</artifactId>
+        <version>4.7.0</version>
+      </dependency>
+    </dependencies>
   </dependencyManagement>
 
   <repositories>
@@ -64,13 +53,24 @@
       <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
       <url>http://repository.springsource.com/maven/bundles/external</url>
     </repository>
-    <repository>  
+    <repository>
       <id>com.springsource.repository.bundles.release</id>
-      <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>  
+      <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
       <url>http://repository.springsource.com/maven/bundles/release</url>
-    </repository> 
+    </repository>
   </repositories>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>2.1.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <profiles>
     <profile>
       <id>win32</id>
