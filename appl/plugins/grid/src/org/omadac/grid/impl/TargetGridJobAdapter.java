@@ -30,6 +30,12 @@ import org.omadac.make.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Wraps a Target as a GridJob for GridGain.
+ * 
+ * @author hwellmann
+ *
+ */
 public class TargetGridJobAdapter extends GridJobAdapter<Target>
 {
     private static Logger log = LoggerFactory.getLogger(TargetGridJobAdapter.class);

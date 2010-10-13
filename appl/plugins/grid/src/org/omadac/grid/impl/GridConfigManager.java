@@ -27,6 +27,11 @@ import org.omadac.config.LocalConfigManager;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
 
+/**
+ * Configuration manager propagating a master configuration to grid worker nodes.
+ * @author hwellmann
+ *
+ */
 public class GridConfigManager extends LocalConfigManager implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -47,6 +52,10 @@ public class GridConfigManager extends LocalConfigManager implements Serializabl
         this.grid = grid;
     }
     
+    /**
+     * Returns the configuration for a given master node.
+     * @param uuid   master node ID
+     */
     @Override
     public OmadacSettings getConfiguration(UUID uuid)
     {

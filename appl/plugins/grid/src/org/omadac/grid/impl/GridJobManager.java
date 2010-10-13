@@ -40,6 +40,17 @@ import org.omadac.make.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Job manager of type @{code grid} which distributes target actions to multiple grid nodes.
+ * The master node (i.e. the one running this job manager) also acts as a worker. Additional
+ * worker nodes are created by running a {@link GridWorker}.
+ * <p>
+ * A multi-master scenario (i.e. n workers receiving tasks from m masters in parallel is not
+ * currently supported).
+ * 
+ * @author hwellmann
+ *
+ */
 public class GridJobManager implements JobManager, GridTaskListener
 {
     private static Logger log = LoggerFactory.getLogger(GridJobManager.class);

@@ -36,6 +36,12 @@ import org.omadac.make.Target.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Wraps a first-level Target as a GridTask for GridGain.
+ * 
+ * @author hwellmann
+ *
+ */
 public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
 {
     private static final long serialVersionUID = 1L;
