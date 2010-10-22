@@ -20,10 +20,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>parent</artifactId>
+    <artifactId>features-parent</artifactId>
     <groupId>org.omadac</groupId>
-    <version>1.0.0</version>
-    <relativePath>../../plugins/pom.xml</relativePath>
+    <version>0.1.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>org.omadac.compiler.feature</artifactId>
   <name>Omadac Compiler Feature</name>

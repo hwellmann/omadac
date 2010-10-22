@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Open Map Database Compiler" uid="org.omadac.compiler" version="0.1.0" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-initialize
+-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console</programArgs>
+      <vmArgs>-Declipse.ignoreApp=true 
+-Dosgi.noShutdown=true 
+-Dequinox.ds.debug=true 
+-Dequinox.ds.print=true</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <launcher name="omadac">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.omadac.compiler.feature" version="0.1.0"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.omadac.config" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.core" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.ds.postgresql" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.jpa" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.loader" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.main" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.make" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.nom" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.openjpa.provider" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.osm" autoStart="false" startLevel="0" />
+      <plugin id="org.omadac.pu" autoStart="false" startLevel="0" />
+   </configurations>
+
+</product>
