@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2010, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>features-parent</artifactId>
+    <groupId>org.omadac</groupId>
+    <version>0.1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <!--
+    P2 Generator takes artifact Id to locate .product file
+  -->
+  <artifactId>compiler</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <name>Omadac Compiler Product</name>
+	<properties>
+		<tycho-version>0.10.0</tycho-version>
+		<tycho-groupid>org.sonatype.tycho</tycho-groupid>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+  <build>
+    <plugins>
+      <!--plugin>
+        <groupId>org.sonatype.tycho</groupId>
+        <artifactId>maven-osgi-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>product-export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <productConfigurationFile>compiler.product</productConfigurationFile>
+          <expandedProductFile>${project.build.directory}/compiler.product</expandedProductFile>
+        </configuration>
+      </plugin-->
+			<plugin>
+				<groupId>${tycho-groupid}</groupId>
+				<artifactId>tycho-p2-publisher-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<publishArtifacts>true</publishArtifacts>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${tycho-groupid}</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<products>
+						<product>
+							<id>org.omadac.compiler</id>
+						</product>
+					</products>
+				</configuration>
+			</plugin>
+
+    </plugins>
+  </build>
+</project>
