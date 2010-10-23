@@ -21,11 +21,11 @@
 
 
   <modules>
-    <module>eclipse-target</module>
     <module>gridgain</module>
     <module>heap</module>
     <module>jboss.serialization</module>
     <module>jgrapht</module>
+    <module>openjpa</module>
     <module>postgis</module>
     <module>postgresql</module>
     <module>tidy</module>
