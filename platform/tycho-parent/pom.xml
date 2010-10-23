@@ -14,10 +14,10 @@
     <version>0.1.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>org.omadac.platform</artifactId>
-  <packaging>eclipse-repository</packaging>
+  <artifactId>tycho-parent</artifactId>
 
-  <name>Omadac Compiler Product</name>
+  <packaging>pom</packaging>
+  <name>Omadac Compiler Platform Parent for Tycho</name>
   <properties>
     <tycho-version>0.10.0</tycho-version>
     <tycho-groupid>org.sonatype.tycho</tycho-groupid>
@@ -25,6 +25,11 @@
     <aries.version>0.2-incubating</aries.version>
     <geotools.version>2.6.2.osgi1</geotools.version>
   </properties>
+  
+  <modules>
+    <module>org.omadac.platform.feature</module>
+    <module>org.omadac.platform.site</module>
+  </modules>
   
   
   <dependencies>
