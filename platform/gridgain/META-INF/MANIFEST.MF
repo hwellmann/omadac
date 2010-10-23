@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GridGain Cloud Computing
 Bundle-SymbolicName: org.omadac.org.gridgain
-Bundle-Version: 2.1.1.tycho
+Bundle-Version: 2.1.1
 Bundle-Vendor: omadac.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BuddyPolicy: registered
