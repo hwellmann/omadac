@@ -30,6 +30,8 @@
     <module>postgresql</module>
     <module>tidy</module>
     <module>trove</module>
+    <module>org.omadac.platform.feature</module>
+    <module>org.omadac.platform.product</module>
   </modules>
 
   <dependencyManagement>
