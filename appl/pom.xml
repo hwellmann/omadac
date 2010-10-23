@@ -29,7 +29,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho-version>0.10.0</tycho-version>
     <checkstyle-rule>OmadacCheckstyle.xml</checkstyle-rule>
-    <p2>file:/home/hwellmann/targets/OmadacP2</p2>
   </properties>
 
   <modules>
@@ -40,7 +39,7 @@
   <repositories>
     <repository>
       <id>omadac.platform</id>
-      <url>${p2}</url>
+      <url>${omadac_platform_p2}</url>
       <layout>p2</layout>
     </repository>
     <repository>
