@@ -39,6 +39,7 @@
   <repositories>
     <repository>
       <id>omadac.platform</id>
+      <!-- set this variable to a suitable target platform URL, e.g. an artifact URL from Hudson -->
       <url>${omadac_platform_p2}</url>
       <layout>p2</layout>
     </repository>
