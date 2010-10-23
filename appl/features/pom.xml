@@ -23,7 +23,7 @@
   <artifactId>features-parent</artifactId>
   <version>0.1.0</version>
   <packaging>pom</packaging>
-  <name>Open Map Database Compiler Parent</name>
+  <name>Omadac Features Parent</name>
 
   <parent>
     <artifactId>parent</artifactId>
