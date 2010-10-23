@@ -168,6 +168,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.omadac.org.apache.openjpa"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.omadac.org.jgrapht"
          download-size="0"
          install-size="0"
@@ -218,13 +225,6 @@
 
    <plugin
          id="org.omadac.org.teneighty.heap"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.openjpa"
          download-size="0"
          install-size="0"
          version="0.0.0"
