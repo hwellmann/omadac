@@ -19,7 +19,6 @@ Require-Bundle: org.omadac.make;bundle-version="0.1.0",
  org.omadac.loader;bundle-version="0.1.0",
  org.omadac.config;bundle-version="0.1.0",
  org.geotools.api;bundle-version="2.6.0",
- org.apache.openjpa;bundle-version="2.0.1",
  org.omadac.base;bundle-version="0.1.0",
  org.omadac.sql;bundle-version="0.1.0",
  org.omadac.geom;bundle-version="0.1.0"

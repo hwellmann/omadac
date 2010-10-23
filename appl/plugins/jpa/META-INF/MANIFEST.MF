@@ -8,8 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: javax.persistence;version="1.1.0",
  javax.persistence.criteria;version="1.1.0",
  javax.persistence.metamodel;version="1.1.0",
+ org.apache.openjpa.persistence,
  org.osgi.framework;version="1.3.0",
  org.slf4j;version="1.5.0"
-Require-Bundle: org.apache.openjpa;bundle-version="2.0.1"
 Export-Package: org.omadac.jpa
 Service-Component: OSGI-INF/JpaUtil.xml
