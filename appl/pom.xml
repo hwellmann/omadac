@@ -73,7 +73,7 @@
         </configuration>
       </plugin>
 
-      <!--plugin>
+      <plugin>
         <groupId>org.sonatype.tycho</groupId>
         <artifactId>maven-osgi-source-plugin</artifactId>
         <version>${tycho-version}</version>
@@ -86,7 +86,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin-->
+      </plugin>
 
       <plugin>
         <groupId>org.sonatype.tycho</groupId>
