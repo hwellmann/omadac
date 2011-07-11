@@ -19,7 +19,7 @@
   <packaging>pom</packaging>
   <name>Omadac Compiler Platform Parent for Tycho</name>
   <properties>
-    <tycho-version>0.12.0</tycho-version>
+    <tycho-version>0.13.0-SNAPSHOT</tycho-version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <aries.version>0.2-incubating</aries.version>
@@ -263,8 +263,20 @@
       <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
       <url>http://repository.springsource.com/maven/bundles/release</url>
     </repository>
+    <repository>
+      <id>sonatype-forge</id>
+      <name>Sonatype Forge</name>
+      <url>https://repository.sonatype.org/content/repositories/forge</url>
+    </repository>
   </repositories>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>sonatype-forge</id>
+      <name>Sonatype Forge</name>
+      <url>https://repository.sonatype.org/content/repositories/forge</url>
+    </pluginRepository>
+  </pluginRepositories>
   
   
   
@@ -320,4 +332,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

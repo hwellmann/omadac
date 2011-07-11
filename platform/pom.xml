@@ -11,7 +11,7 @@
   <artifactId>platform</artifactId>
   <packaging>pom</packaging>
   <name>Open Map Database Compiler Platform</name>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
 
   <properties>
     <geotools.version>2.6.2.osgi1</geotools.version>
@@ -30,7 +30,7 @@
     <module>postgresql</module>
     <module>tidy</module>
     <module>trove</module>
-    <!-- module>tycho-parent</module-->
+    <module>tycho-parent</module>
   </modules>
 
   <dependencyManagement>
