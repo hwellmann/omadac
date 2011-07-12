@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Normalized Object Model
 Bundle-SymbolicName: org.omadac.nom
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0.qualifier
 Eclipse-RegisterBuddy: org.geotools.metadata
 Export-Package: org.omadac.nom,
  org.omadac.nom.convert,

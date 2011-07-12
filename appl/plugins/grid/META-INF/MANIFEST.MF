@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Grid Job Manager and Worker
 Bundle-SymbolicName: org.omadac.grid
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: omadac.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.omadac.org.gridgain;bundle-version="2.1.1",

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Base Classes for Targets
 Bundle-SymbolicName: org.omadac.base
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: omadac.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.omadac.make;bundle-version="0.1.0",
