@@ -30,7 +30,7 @@
     <module>postgresql</module>
     <module>tidy</module>
     <module>trove</module>
-    <module>tycho-parent</module>
+    <!--module>tycho-parent</module-->
   </modules>
 
   <dependencyManagement>
