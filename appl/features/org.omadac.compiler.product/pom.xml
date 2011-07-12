@@ -22,7 +22,7 @@
   <parent>
     <artifactId>features-parent</artifactId>
     <groupId>org.omadac</groupId>
-    <version>0.1.0</version>
+    <version>0.2.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <!--
@@ -33,8 +33,6 @@
 
   <name>Omadac Compiler Product</name>
 	<properties>
-		<tycho-version>0.10.0</tycho-version>
-		<tycho-groupid>org.sonatype.tycho</tycho-groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
   <build>
@@ -57,7 +55,7 @@
         </configuration>
       </plugin-->
 			<plugin>
-				<groupId>${tycho-groupid}</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-publisher-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>

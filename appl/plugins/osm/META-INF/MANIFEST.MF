@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenStreetMap Import and NOM Conversion
 Bundle-SymbolicName: org.omadac.osm
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: omadac.org.org
 Import-Package: com.vividsolutions.jts.geom,
  javax.persistence;version="1.1.0",

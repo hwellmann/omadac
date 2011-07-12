@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Job Management and Make Engine
 Bundle-SymbolicName: org.omadac.make
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: omadac.org.org
 JPA-PersistenceUnits: make
 Require-Bundle: org.omadac.jpa;bundle-version="0.1.0"

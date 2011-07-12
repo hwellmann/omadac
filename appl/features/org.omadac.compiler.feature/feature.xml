@@ -19,7 +19,7 @@
 <feature
       id="org.omadac.compiler.feature"
       label="Open Map Database Compiler"
-      version="0.1.0">
+      version="0.2.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -35,7 +35,7 @@
 
    <includes
          id="org.omadac.platform.feature"
-         version="0.0.0"/>
+         version="0.2.0"/>
 
    <plugin
          id="org.omadac.config"
