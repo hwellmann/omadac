@@ -19,7 +19,7 @@
 <feature
       id="org.omadac.platform.feature"
       label="Open Map Database Compiler Platform"
-      version="0.1.0">
+      version="0.2.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -48,10 +48,10 @@
          unpack="false"/>
 
    <plugin
-         id="com.springsource.org.apache.commons.pool"
+         id="org.apache.commons.pool"
          download-size="0"
          install-size="0"
-         version="1.5.3"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -196,7 +196,7 @@
          unpack="false"/>
 
    <plugin
-         id="com.springsource.org.apache.commons.codec"
+         id="org.apache.commons.codec"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -238,14 +238,14 @@
          unpack="false"/>
 
    <plugin
-         id="com.springsource.org.apache.commons.collections"
+         id="org.apache.commons.collections"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="com.springsource.org.apache.commons.lang"
+         id="org.apache.commons.lang"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -253,6 +253,20 @@
 
    <plugin
          id="com.springsource.javax.transaction"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.blueprint.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.blueprint.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -294,6 +308,41 @@
          unpack="false"/>
 
    <plugin
+         id="org.apache.aries.jpa.container.context"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.proxy.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.proxy.impl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.transaction.blueprint"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.aries.transaction.manager"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.aries.util"
          download-size="0"
          install-size="0"
@@ -322,7 +371,28 @@
          unpack="false"/>
 
    <plugin
-         id="com.springsource.net.sf.cglib"
+         id="org.apache.geronimo.specs.geronimo-servlet_2.5_spec"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.servicemix.bundles.cglib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.servicemix.bundles.serp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.objectweb.asm.all"
          download-size="0"
          install-size="0"
          version="0.0.0"
