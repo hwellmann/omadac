@@ -11,5 +11,4 @@ Import-Package: org.omadac.config,
  org.osgi.util.tracker;version="1.4.0",
  org.slf4j;version="1.0.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Service-Component: OSGI-INF/*
 

@@ -27,7 +27,6 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.component.ComponentContext;
 import org.osgi.util.tracker.ServiceTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +38,10 @@ public class OmadacLauncher implements Runnable
     
     private static final long TEN_SECONDS = 10000;
     
-    private ComponentContext componentContext;
+    //@Inject
+    private BundleContext bundleContext;
 
+    //@Inject
     private ConfigManager configManager;
 
     private OmadacSettings config;
@@ -91,14 +92,18 @@ public class OmadacLauncher implements Runnable
         }
     }
 
-    protected void setConfigManager(ConfigManager mgr)
+    public void setConfigManager(ConfigManager mgr)
     {
         this.configManager = mgr;
     }
     
-    protected void activate(ComponentContext context)
+    public void setBundleContext(BundleContext bundleContext)
+    {
+        this.bundleContext = bundleContext;
+    }
+
+    public void activate()
     {     
-        this.componentContext = context;
         Thread worker = new Thread(this, "Omadac Main Thread");
         worker.setDaemon(false);
         worker.start();
@@ -112,10 +117,9 @@ public class OmadacLauncher implements Runnable
         
         try
         {
-            BundleContext bc = componentContext.getBundleContext();
-            Filter filter = bc.createFilter(String.format("(&(%s=java.lang.Runnable)(name=%s))", 
+            Filter filter = bundleContext.createFilter(String.format("(&(%s=java.lang.Runnable)(name=%s))", 
                 Constants.OBJECTCLASS, name));
-            ServiceTracker tracker = new ServiceTracker(bc, filter, null);
+            ServiceTracker tracker = new ServiceTracker(bundleContext, filter, null);
             tracker.open();
             service = (Runnable) tracker.waitForService(TEN_SECONDS);
             if (service == null)
@@ -141,7 +145,7 @@ public class OmadacLauncher implements Runnable
         try
         {
             log.info("stopping OSGi system bundle");
-            componentContext.getBundleContext().getBundle(0).stop();
+            bundleContext.getBundle(0).stop();
         }
         catch (BundleException exc)
         {
