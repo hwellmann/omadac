@@ -96,7 +96,7 @@ public class GraphMakeEngine implements MakeEngine
      * Used by Service Component Runtime to inject execution context.
      * @param executionContext
      */
-    protected void setExecutionContext(ExecutionContext executionContext)
+    public void setExecutionContext(ExecutionContext executionContext)
     {
         this.context = executionContext;
     }

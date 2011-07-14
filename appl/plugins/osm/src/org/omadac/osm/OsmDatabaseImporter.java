@@ -38,7 +38,7 @@ public class OsmDatabaseImporter implements Runnable
     private static Logger log = LoggerFactory.getLogger(OsmDatabaseImporter.class);
     
     // TODO make this configurable
-    private String scriptDir = "/usr/share/postgresql/8.4/contrib";
+    private String scriptDir = "/usr/share/postgresql/8.4/contrib/postgis-1.5";
     
     private EntityManagerFactory emf;
     private OmadacSettings config;
