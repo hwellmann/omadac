@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2011, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
+            default-activation="lazy">
+  
+  <bean id="threadPoolJobManager" class="org.omadac.make.impl.ThreadPoolJobManager">
+    <property name="executionContext" ref="executionContext"/>
+  </bean>
+  
+  <bean id="graphMakeEngine" class="org.omadac.make.impl.GraphMakeEngine">
+    <property name="executionContext" ref="executionContext"/>
+  </bean>
+  
+  <service ref="threadPoolJobManager" auto-export="interfaces">
+    <service-properties>
+      <entry key="type" value="local"/>
+    </service-properties>
+  </service>
+  
+  <service ref="graphMakeEngine" auto-export="interfaces"/>
+  
+  <reference id="executionContext" interface="org.omadac.make.ExecutionContext"/>
+  <reference id="engineSchemaCreator" interface="java.lang.Runnable" filter="(name=EngineSchemaCreator)"/>
+
+</blueprint>

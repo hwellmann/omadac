@@ -175,7 +175,7 @@
     </target>
 
   
-  <property name="platform.install" value="${basedir}/../../OmadacPlatform-1.0.0"/>
+  <property name="platform.install" value="/home/hwellmann/targets/omadac-0.2.0"/>
   
   <path id="jpa.enhancement.classpath">
     <fileset dir="${platform.install}/plugins">
