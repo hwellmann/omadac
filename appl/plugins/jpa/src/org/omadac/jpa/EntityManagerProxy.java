@@ -114,7 +114,7 @@ abstract class EntityManagerProxy implements EntityManager
         return delegate.createNativeQuery(string);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public Query createNativeQuery(String string, Class aClass)
     {
         return delegate.createNativeQuery(string, aClass);
