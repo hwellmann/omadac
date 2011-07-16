@@ -31,13 +31,13 @@ public class ExecutionContextImpl implements ExecutionContext
     private EntityManagerFactory emfEngine;
     private ConfigManager configManager;
     
-    protected void setEngineEntityManagerFactory(EntityManagerFactory emf)
+    public void setEngineEntityManagerFactory(EntityManagerFactory emf)
     {
         this.emfEngine = new ScopedEntityManagerFactory(emf);
     }
     
     
-    protected void setProductEntityManagerFactory(EntityManagerFactory emf)
+    public void setProductEntityManagerFactory(EntityManagerFactory emf)
     {
         this.emfProduct = new ScopedEntityManagerFactory(emf);
     }

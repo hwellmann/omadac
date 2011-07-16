@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2011, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
+            default-activation="lazy">
+  
+  <bean id="cleanupAll" class="org.omadac.base.impl.CleanupAll"/>
+  <service ref="cleanupAll" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="CleanupAll"/>
+    </service-properties>
+  </service>
+  
+  <bean id="engineSchemaCreator" class="org.omadac.base.impl.EngineSchemaCreator"/>
+  <service ref="cleanupAll" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="EngineSchemaCreator"/>
+    </service-properties>
+  </service>
+  
+  <bean id="executionContext" class="org.omadac.base.ExecutionContextImpl">
+    <property name="configManager" ref="configManager"/>
+    <property name="engineEntityManagerFactory" ref="engineEntityManagerFactory"/>
+    <property name="productEntityManagerFactory" ref="productEntityManagerFactory"/>
+  </bean>
+  <service ref="executionContext" interface="org.omadac.make.ExecutionContext"/>
+
+  <reference id="configManager" interface="org.omadac.config.ConfigManager"/>
+  <reference id="productEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)"/>
+  <reference id="engineEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.engine)"/>
+  
+</blueprint>
