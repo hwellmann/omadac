@@ -55,6 +55,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.apache.commons.dbcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="com.springsource.org.apache.log4j"
          download-size="0"
          install-size="0"
@@ -140,7 +147,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.osgi.services"
+         id="osgi.cmpn"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -168,7 +175,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.omadac.org.apache.openjpa"
+         id="org.apache.openjpa"
          download-size="0"
          install-size="0"
          version="0.0.0"
