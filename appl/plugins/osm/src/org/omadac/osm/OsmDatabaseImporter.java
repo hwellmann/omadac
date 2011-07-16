@@ -52,17 +52,17 @@ public class OsmDatabaseImporter implements Runnable
     {
     }
     
-    protected void setConfigManager(ConfigManager configManager)
+    public void setConfigManager(ConfigManager configManager)
     {
         config = configManager.getConfiguration();
     }
     
-    protected void setEngineSchemaCreator(Runnable engineSchemaCreator)
+    public void setEngineSchemaCreator(Runnable engineSchemaCreator)
     {
         this.engineSchemaCreator = engineSchemaCreator;
     }
     
-    protected void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
     {
         this.emf = entityManagerFactory;
     }

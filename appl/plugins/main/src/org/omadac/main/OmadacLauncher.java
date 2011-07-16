@@ -36,7 +36,7 @@ public class OmadacLauncher implements Runnable
 {
     private static Logger log = LoggerFactory.getLogger(OmadacLauncher.class);
     
-    private static final long TEN_SECONDS = 10000;
+    private static final long TEN_SECONDS = 10000 * 60;
     
     //@Inject
     private BundleContext bundleContext;

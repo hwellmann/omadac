@@ -65,7 +65,7 @@ public class OsmLoaderFileCreator implements Runnable
         handler.close();
     }
     
-    protected void setConfigManager(ConfigManager configManager)
+    public void setConfigManager(ConfigManager configManager)
     {
         config = configManager.getConfiguration();
     }

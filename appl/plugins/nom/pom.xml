@@ -26,7 +26,7 @@
         <artifactId>openjpa-maven-plugin</artifactId>
         <version>1.2</version>
         <configuration>
-          <persistenceXmlFile>${basedir}/resources/META-INF/persistence.xml</persistenceXmlFile>
+          <persistenceXmlFile>${basedir}/META-INF/persistence.xml</persistenceXmlFile>
           <includes>org/omadac/nom/*.class, org/omadac/osm/model/*.class</includes>
         </configuration>
         <executions>
