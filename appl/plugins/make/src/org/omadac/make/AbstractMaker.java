@@ -44,16 +44,16 @@ public abstract class AbstractMaker implements Runnable
     /** Make engine that will run this maker. */
     protected MakeEngine engine;
 
-    /** OSGi component context. */
-    private ComponentContext context;
+    /** OSGi budle context. */
+    private BundleContext bundleContext;
 
-    protected void activate(ComponentContext componentContext)
+    public void setBundleContext(BundleContext bundleContext)
     {
-        this.context = componentContext;
+        this.bundleContext = bundleContext;
     }
 
     /** Used by Service Component Runtime to inject make engine. */
-    protected void setMakeEngine(MakeEngine makeEngine)
+    public void setMakeEngine(MakeEngine makeEngine)
     {
         this.engine = makeEngine;
     }
@@ -202,7 +202,9 @@ public abstract class AbstractMaker implements Runnable
      */
     protected Target lookupTarget(String targetName)
     {
-        return findService(Target.class, "name", targetName);
+        Target service = findService(Target.class, "name", targetName);
+        service.setName(targetName);
+        return service;
     }
 
     /**
@@ -217,13 +219,11 @@ public abstract class AbstractMaker implements Runnable
      */
     protected <T> T findService(Class<T> clazz, String propName, String propValue)
     {
-        BundleContext bc = context.getBundleContext();
-
         try
         {
-            Filter filter = bc.createFilter(String.format(
+            Filter filter = bundleContext.createFilter(String.format(
                 "(&(%s=%s)(%s=%s))", Constants.OBJECTCLASS, clazz.getName(), propName, propValue));
-            ServiceTracker<T, T> tracker = new ServiceTracker<T, T>(bc, filter, null);
+            ServiceTracker<T, T> tracker = new ServiceTracker<T, T>(bundleContext, filter, null);
             tracker.open();
             T service = tracker.waitForService(THREE_SECONDS);
             tracker.close();
@@ -241,15 +241,6 @@ public abstract class AbstractMaker implements Runnable
         {
             throw new MakeException(exc);
         }
-    }
-
-    /**
-     * Returns the OSGi component context.
-     * @return component context
-     */
-    protected ComponentContext getContext()
-    {
-        return context;
     }
 
     /**

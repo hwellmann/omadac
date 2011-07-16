@@ -30,8 +30,8 @@ public abstract class OmadacTarget extends Target
 
     public OmadacSettings getConfiguration()
     {
-        ExecutionContextImpl ctx = (ExecutionContextImpl) getExecutionContext();
-        OmadacSettings config = ctx.getConfigManager().getConfiguration();
+        ExecutionContextImpl ctxImpl = getExecutionContext().as(ExecutionContextImpl.class);
+        OmadacSettings config = ctxImpl.getConfigManager().getConfiguration();
         return config;
     }
 }

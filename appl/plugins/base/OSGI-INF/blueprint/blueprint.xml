@@ -29,18 +29,18 @@
   </service>
   
   <bean id="engineSchemaCreator" class="org.omadac.base.impl.EngineSchemaCreator"/>
-  <service ref="cleanupAll" interface="java.lang.Runnable">
+  <service ref="engineSchemaCreator" interface="java.lang.Runnable">
     <service-properties>
       <entry key="name" value="EngineSchemaCreator"/>
     </service-properties>
   </service>
   
-  <bean id="executionContext" class="org.omadac.base.ExecutionContextImpl">
+  <bean id="executionContext" class="org.omadac.base.ExecutionContextImpl">  
     <property name="configManager" ref="configManager"/>
     <property name="engineEntityManagerFactory" ref="engineEntityManagerFactory"/>
     <property name="productEntityManagerFactory" ref="productEntityManagerFactory"/>
   </bean>
-  <service ref="executionContext" interface="org.omadac.make.ExecutionContext"/>
+  <service ref="executionContext" auto-export="all-classes"/>
 
   <reference id="configManager" interface="org.omadac.config.ConfigManager"/>
   <reference id="productEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)"/>

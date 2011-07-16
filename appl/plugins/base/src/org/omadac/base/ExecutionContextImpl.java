@@ -61,4 +61,11 @@ public class ExecutionContextImpl implements ExecutionContext
     {
         return configManager;
     }
+
+
+    @Override
+    public <T> T as(Class<T> klass)
+    {
+        return klass.cast(this);
+    }
 }

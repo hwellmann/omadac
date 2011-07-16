@@ -39,4 +39,6 @@ public interface ExecutionContext
      * @return engine EMF
      */
     EntityManagerFactory getEngineEntityManagerFactory();
+    
+    <T> T as(Class<T> klass);
 }
