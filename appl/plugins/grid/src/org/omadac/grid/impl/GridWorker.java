@@ -37,7 +37,7 @@ public class GridWorker implements Runnable
     private OmadacSettings config;
 
     
-    protected void setOmadacGridNode(OmadacGridNode omadacGridNode)
+    public void setOmadacGridNode(OmadacGridNode omadacGridNode)
     {
         // just to make sure that component OmadacGridNode has been created
     }
