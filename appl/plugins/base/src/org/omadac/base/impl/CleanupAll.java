@@ -28,8 +28,6 @@ import org.omadac.jpa.MetadataInspector;
  */
 public class CleanupAll implements Runnable
 {
-    private static final long serialVersionUID = 1;
-    
     private EntityManagerFactory emf;
 
 
@@ -41,5 +39,4 @@ public class CleanupAll implements Runnable
         inspector.dropSchema("pg");
         JpaUtil.commit();
     }
-
 }
