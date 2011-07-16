@@ -119,9 +119,9 @@ public class OmadacLauncher implements Runnable
         {
             Filter filter = bundleContext.createFilter(String.format("(&(%s=java.lang.Runnable)(name=%s))", 
                 Constants.OBJECTCLASS, name));
-            ServiceTracker tracker = new ServiceTracker(bundleContext, filter, null);
+            ServiceTracker<Runnable, Runnable> tracker = new ServiceTracker<Runnable, Runnable>(bundleContext, filter, null);
             tracker.open();
-            service = (Runnable) tracker.waitForService(TEN_SECONDS);
+            service = tracker.waitForService(TEN_SECONDS);
             if (service == null)
             {
                 throw new OmadacException("job service not found");

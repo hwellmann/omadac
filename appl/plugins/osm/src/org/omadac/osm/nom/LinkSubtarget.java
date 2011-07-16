@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -34,12 +33,11 @@ import org.omadac.jpa.TxRunnable;
 import org.omadac.make.Target;
 import org.omadac.make.util.NumberRange;
 import org.omadac.nom.NomFeatureType;
-import org.omadac.nom.RoadAttributes;
 import org.omadac.nom.NomJunction;
 import org.omadac.nom.NomLink;
+import org.omadac.nom.RoadAttributes;
 import org.omadac.osm.model.OsmNode;
 import org.omadac.osm.model.OsmWay;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,10 +62,6 @@ public class LinkSubtarget extends Target
     private GeometryFactory factory;
 
     private LineNormalizer normalizer;
-
-    private int numLinks;
-
-    private long lastSourceId;
 
     private List<NomLink> links;
 
@@ -268,7 +262,6 @@ public class LinkSubtarget extends Target
             return;
         }
 
-        numLinks++;
         LineString line = factory.createLineString(new CoordinateListSequence(
                 coords));
 
@@ -321,5 +314,5 @@ public class LinkSubtarget extends Target
         }
         return junction;        
     }
-    
+   
 }

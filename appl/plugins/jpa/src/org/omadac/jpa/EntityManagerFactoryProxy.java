@@ -36,7 +36,7 @@ abstract class EntityManagerFactoryProxy implements EntityManagerFactory
     }
 
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public EntityManager createEntityManager(Map map)
     {
         return delegate.createEntityManager(map);

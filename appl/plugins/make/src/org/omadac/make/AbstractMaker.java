@@ -215,7 +215,6 @@ public abstract class AbstractMaker implements Runnable
      * @param propValue property value for selecting a service
      * @return  matching service
      */
-    @SuppressWarnings("unchecked")
     protected <T> T findService(Class<T> clazz, String propName, String propValue)
     {
         BundleContext bc = context.getBundleContext();
@@ -224,9 +223,9 @@ public abstract class AbstractMaker implements Runnable
         {
             Filter filter = bc.createFilter(String.format(
                 "(&(%s=%s)(%s=%s))", Constants.OBJECTCLASS, clazz.getName(), propName, propValue));
-            ServiceTracker tracker = new ServiceTracker(bc, filter, null);
+            ServiceTracker<T, T> tracker = new ServiceTracker<T, T>(bc, filter, null);
             tracker.open();
-            T service = (T) tracker.waitForService(THREE_SECONDS);
+            T service = tracker.waitForService(THREE_SECONDS);
             tracker.close();
             if (service == null)
             {

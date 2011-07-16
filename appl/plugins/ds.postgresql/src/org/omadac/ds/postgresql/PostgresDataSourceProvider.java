@@ -16,17 +16,11 @@
  */
 package org.omadac.ds.postgresql;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 import javax.sql.DataSource;
 
 import org.omadac.config.ConfigManager;
 import org.omadac.config.jaxb.JdbcSettings;
 import org.omadac.config.jaxb.OmadacSettings;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.ComponentContext;
 import org.postgresql.ds.PGPoolingDataSource;
 
 /**
