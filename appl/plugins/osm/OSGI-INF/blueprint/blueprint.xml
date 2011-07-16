@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Omadac - The Open Map Database Compiler
+    http://omadac.org
+ 
+    (C) 2011, Harald Wellmann and Contributors
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
+            default-activation="lazy">
+  
+  <bean id="adminRegionTarget" class="org.omadac.osm.nom.AdminRegionTarget"/>
+  <service ref="adminRegionTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomAdminRegions"/>
+    </service-properties>
+  </service>
+  
+  <bean id="junctionTarget" class="org.omadac.osm.nom.JunctionTarget"/>
+  <service ref="junctionTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomJunctions"/>
+    </service-properties>
+  </service>
+  
+  <bean id="linkComplexTarget" class="org.omadac.osm.nom.LinkComplexTarget"/>
+  <service ref="linkComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomLinks"/>
+    </service-properties>
+  </service>
+  
+  <bean id="mapFeatureClassifierComplexTarget" class="org.omadac.osm.nom.MapFeatureClassifierComplexTarget"/>
+  <service ref="mapFeatureClassifierComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomMapFeatureClassifier"/>
+    </service-properties>
+  </service>
+  
+  <bean id="mapFeatureComplexTarget" class="org.omadac.osm.nom.MapFeatureComplexTarget"/>
+  <service ref="mapFeatureComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomMapFeatures"/>
+    </service-properties>
+  </service>
+  
+  <bean id="namedRoadComplexTarget" class="org.omadac.osm.nom.NamedRoadComplexTarget"/>
+  <service ref="namedRoadComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomNamedRoads"/>
+    </service-properties>
+  </service>
+  
+  <bean id="nomFeatureTypeTarget" class="org.omadac.osm.nom.NomFeatureTypeTarget"/>
+  <service ref="nomFeatureTypeTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomFeatureTypes"/>
+    </service-properties>
+  </service>
+  
+  <bean id="nomSchemaTarget" class="org.omadac.osm.nom.NomSchemaTarget"/>
+  <service ref="nomSchemaTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomSchema"/>
+    </service-properties>
+  </service>
+  
+  <bean id="pointFeatureComplexTarget" class="org.omadac.osm.nom.PointFeatureComplexTarget"/>
+  <service ref="pointFeatureComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomPointFeatures"/>
+    </service-properties>
+  </service>
+  
+  <bean id="roadNameTarget" class="org.omadac.osm.nom.RoadNameTarget"/>
+  <service ref="roadNameTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="NomRoadNames"/>
+    </service-properties>
+  </service>
+  
+  <bean id="osmDatabaseImporter" class="org.omadac.osm.OsmDatabaseImporter">
+    <property name="configManager" ref="configManager"/>
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    <property name="engineSchemaCreator" ref="engineSchemaCreator"/>
+  </bean>
+  <service ref="osmDatabaseImporter" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="OsmDatabaseImporter"/>
+    </service-properties>
+  </service>
+  
+  <bean id="osmLoaderFileCreator" class="org.omadac.osm.OsmLoaderFileCreator">
+    <property name="configManager" ref="configManager"/>
+  </bean>
+  <service ref="osmLoaderFileCreator" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="OsmLoaderFileCreator"/>
+    </service-properties>
+  </service>
+
+  <bean id="osmToNomMaker" class="org.omadac.osm.nom.OsmToNomMaker">
+    <property name="configManager" ref="configManager"/>
+    <property name="makeEngine" ref="makeEngine"/>    
+  </bean>  
+  <service ref="osmToNomMaker" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="OsmToNomMaker"/>
+    </service-properties>
+  </service>
+  
+  
+  <reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)"/>
+  <reference id="configManager" interface="org.omadac.config.ConfigManager"/>
+  <reference id="makeEngine" interface="org.omadac.make.MakeEngine"/>
+  <reference id="engineSchemaCreator" interface="java.lang.Runnable" filter="(name=EngineSchemaCreator)"/>
+  
+</blueprint>
