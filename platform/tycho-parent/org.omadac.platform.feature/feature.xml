@@ -175,7 +175,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.openjpa"
+         id="org.omadac.org.apache.openjpa"
          download-size="0"
          install-size="0"
          version="0.0.0"
