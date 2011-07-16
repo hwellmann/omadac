@@ -25,7 +25,7 @@
     <property name="executionContext" ref="executionContext"/>
   </bean>
   
-  <bean id="graphMakeEngine" class="org.omadac.make.impl.GraphMakeEngine">
+  <bean id="graphMakeEngine" class="org.omadac.make.impl.GraphMakeEngine" activation="eager">
     <property name="executionContext" ref="executionContext"/>
   </bean>
   

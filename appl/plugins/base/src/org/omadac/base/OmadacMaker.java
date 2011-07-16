@@ -91,7 +91,7 @@ public abstract class OmadacMaker extends AbstractMaker
         return configManager.getConfiguration();
     }
     
-    protected void setConfigManager(ConfigManager configManager)
+    public void setConfigManager(ConfigManager configManager)
     {
         this.configManager = configManager;
     }

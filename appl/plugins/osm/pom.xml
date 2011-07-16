@@ -29,6 +29,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>Omadac OpenStreetMap Import</name>
+  
   <build>
     <plugins>
       <plugin>

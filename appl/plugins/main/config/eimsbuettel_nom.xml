@@ -27,7 +27,7 @@
         <forced>NomSchema</forced>
       </make>
     </job>
-    <manager>grid</manager>
+    <manager>local</manager>
     <threads>4</threads>
   </jobs>
   

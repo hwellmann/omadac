@@ -24,7 +24,7 @@
   <bean id="adminRegionTarget" class="org.omadac.osm.nom.AdminRegionTarget"/>
   <service ref="adminRegionTarget" interface="org.omadac.make.Target">
     <service-properties>
-      <entry key="name" value="NomAdminRegions"/>
+      <entry key="name" value="NomAdminRegion"/>
     </service-properties>
   </service>
   
@@ -114,6 +114,7 @@
   <bean id="osmToNomMaker" class="org.omadac.osm.nom.OsmToNomMaker">
     <property name="configManager" ref="configManager"/>
     <property name="makeEngine" ref="makeEngine"/>    
+    <property name="bundleContext" ref="blueprintBundleContext"/>    
   </bean>  
   <service ref="osmToNomMaker" interface="java.lang.Runnable">
     <service-properties>
@@ -126,5 +127,5 @@
   <reference id="configManager" interface="org.omadac.config.ConfigManager"/>
   <reference id="makeEngine" interface="org.omadac.make.MakeEngine"/>
   <reference id="engineSchemaCreator" interface="java.lang.Runnable" filter="(name=EngineSchemaCreator)"/>
-  
+  <reference id="jobManager" interface="org.omadac.make.JobManager"/>
 </blueprint>
