@@ -40,18 +40,15 @@ public class PostgresDataSourceProvider
 {
     private ConfigManager cm;
 
-    protected void setConfigManager(ConfigManager configManager)
+    public void setConfigManager(ConfigManager configManager)
     {
         this.cm = configManager;
     }
     
-    protected void activate(ComponentContext cc)
+    public DataSource createDataSource()
     {
-        String name = (String) cc.getProperties().get("name");
         OmadacSettings config = cm.getConfiguration();
         JdbcSettings jdbc = config.getServer().getJdbc();
-        if (!"postgresql".equals(jdbc.getSubprotocol()))
-            return;
         
         PGPoolingDataSource dataSource = new PGPoolingDataSource();
         dataSource.setServerName(jdbc.getServer());
@@ -60,10 +57,6 @@ public class PostgresDataSourceProvider
         dataSource.setPassword(jdbc.getPassword());
         dataSource.setInitialConnections(jdbc.getInitialConnections());
         dataSource.setMaxConnections(jdbc.getMaxConnections());
-        
-        BundleContext bc = cc.getBundleContext();
-        Dictionary<String, String> map = new Hashtable<String, String>();
-        map.put("name", name);
-        bc.registerService(DataSource.class.getName(), dataSource, map);                
+        return dataSource;
     }
 }
