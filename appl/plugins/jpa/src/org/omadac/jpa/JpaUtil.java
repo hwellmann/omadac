@@ -30,7 +30,7 @@ public class JpaUtil
 {
     private static ScopedEntityManagerFactory factory;
 
-    protected void setEntityManagerFactory(EntityManagerFactory emf)
+    public void setEntityManagerFactory(EntityManagerFactory emf)
     {
         JpaUtil.factory = new ScopedEntityManagerFactory(emf);
     }
