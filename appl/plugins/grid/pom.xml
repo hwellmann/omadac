@@ -18,32 +18,15 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>plugins-parent</artifactId>
-  <packaging>pom</packaging>
-  <name>Omadac Plug-Ins Parent</name>
-
   <parent>
-    <artifactId>parent</artifactId>
+    <artifactId>plugins-parent</artifactId>
     <groupId>org.omadac</groupId>
     <version>0.2.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>org.omadac.grid</artifactId>
+  <packaging>eclipse-plugin</packaging>
 
-  <modules>
-    <module>base</module>
-    <module>config</module>
-    <module>ds.postgresql</module>
-    <module>geom</module>
-    <module>grid</module>
-    <module>jpa</module>
-    <module>loader</module>
-    <module>main</module>
-    <module>make</module>
-    <module>nom</module>
-    <module>osm</module>
-    <module>sql</module>
-  </modules>
-
-</project>
-
+  <name>Omadac Grid Job Manager</name>
+  </project>
