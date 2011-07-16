@@ -9,6 +9,8 @@ Require-Bundle: org.omadac.jpa;bundle-version="0.1.0"
 Export-Package: org.omadac.make,
  org.omadac.make.util
 Import-Package: javax.persistence;version="1.1.0",
+ org.apache.openjpa.enhance,
+ org.apache.openjpa.util,
  org.jgrapht,
  org.jgrapht.event,
  org.jgrapht.ext,
