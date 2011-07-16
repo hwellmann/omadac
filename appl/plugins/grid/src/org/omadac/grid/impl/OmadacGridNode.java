@@ -10,9 +10,9 @@ public class OmadacGridNode
     private static ExecutionContextImpl executionContext;
     private static ConfigManager cm;
 
-    protected void setExecutionContext(ExecutionContext executionContext)
+    public void setExecutionContext(ExecutionContext executionContext)
     {
-        OmadacGridNode.executionContext = (ExecutionContextImpl) executionContext;
+        OmadacGridNode.executionContext = executionContext.as(ExecutionContextImpl.class);
     }
     
     public static synchronized ExecutionContextImpl getExecutionContext()
