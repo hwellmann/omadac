@@ -26,6 +26,8 @@ import org.omadac.make.Target;
  */
 public abstract class OmadacTarget extends Target
 {
+    private static final long serialVersionUID = 1L;
+
     public OmadacSettings getConfiguration()
     {
         ExecutionContextImpl ctx = (ExecutionContextImpl) getExecutionContext();
