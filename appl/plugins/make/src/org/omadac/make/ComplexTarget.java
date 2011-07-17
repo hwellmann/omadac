@@ -52,7 +52,6 @@ public abstract class ComplexTarget extends Target
     {
     }
     
-    @Override
     protected Runnable update()
     {
         Runnable runnable = new SerializableRunnable() 

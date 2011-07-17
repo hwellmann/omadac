@@ -50,6 +50,8 @@ public interface JobManager
      * @param action
      */
     void submitAction(Action action);
+
+    void submitTarget(Target target);
     
     /**
      * Adds an action listener to be notified on action completion.

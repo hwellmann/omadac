@@ -16,6 +16,8 @@
  */
 package org.omadac.make.impl;
 
+import static org.omadac.engine.Status.UPTODATE;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +29,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.omadac.engine.Status;
+import org.omadac.engine.TargetInfo;
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
 import org.omadac.make.ComplexStep;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
+import org.omadac.make.Step;
 import org.omadac.make.Target;
 import org.omadac.make.TargetDao;
 import org.slf4j.Logger;
@@ -135,14 +139,22 @@ public class ThreadPoolJobManager implements JobManager
     }
 
     @Override
+    public void submitTarget(Target target)
+    {
+        Action action = getAction(target);
+        submitAction(action);
+    }
+
+    @Override
     public void submitAction(Action action)
     {
         Target target = action.getTarget();
         target.setExecutionContext(context);
         
-        
-        if (target.getStep() != null) {
-            processStep(action, (ComplexStep)target.getStep());
+        Step step = target.getStep();
+        if (step != null && target instanceof ComplexTarget) {
+            ComplexStep complexStep = (ComplexStep) step;
+            processComplexStep(action, complexStep);                
             return;
         }
         
@@ -225,7 +237,15 @@ public class ThreadPoolJobManager implements JobManager
         }
     }
 
-    private void processStep(Action action, ComplexStep step)
+    private void processStep(Action action, Step step)
+    {
+        // simple target: directly submit the action
+        Target target = action.getTarget();
+        log.info("submitting job for ", target);
+        executor.submit(action, action);
+    }
+
+    private void processComplexStep(Action action, ComplexStep step)
     {
             ComplexTarget complexTarget = (ComplexTarget) action.getTarget();
             Action complexAction = complexTarget.getAction();
@@ -261,7 +281,7 @@ public class ThreadPoolJobManager implements JobManager
                     continue;
                 }
 
-                Action subaction = subtarget.getAction();
+                Action subaction = getAction(subtarget);
                 subaction.setTarget(subtarget);
                 subactions.add(subaction);
                 
@@ -276,6 +296,7 @@ public class ThreadPoolJobManager implements JobManager
                 {
                     subtarget.setStatus(Status.UPDATING);
                 }
+                targetDao.saveStatus(subtarget);
                 log.info("submitting job for {}", subtarget);
             }
             
@@ -284,7 +305,7 @@ public class ThreadPoolJobManager implements JobManager
              */
             if (complexTarget.getStatus() == Status.INCOMPLETE)
             {
-                complexTarget.setStatus(Status.UPDATING);
+                //complexTarget.setStatus(Status.UPDATING);
             }
             
             if (subtargets.isEmpty())
@@ -409,5 +430,102 @@ public class ThreadPoolJobManager implements JobManager
         {
             listener.onError(action);
         }
+    }
+    
+    /**
+     * Returns the action for updating this target, based on its current status.
+     * @return action
+     */
+    public synchronized Action getAction(Target target)
+    {
+        Action action = target.getAction();
+        if (action == null)
+        {
+            Runnable runnable;
+            TargetInfo info = target.getInfo();
+            switch (info.getStatus())
+            {
+                case MISSING:
+                case CREATING:
+                    runnable = create(target);
+                    break;
+
+                case INCOMPLETE:
+                case OUTDATED:
+                case UPDATING:
+                    runnable = update(target);
+                    break;
+
+                default:
+                    String msg = String.format("target %s is %s", info.getName(), info.getStatus());
+                    throw new IllegalStateException(msg);
+            }
+            action = new Action(target, runnable);
+            target.setAction(action);
+        }
+        return action;
+    }
+
+    /**
+     * Returns a runnable for creating this target, when it does not exist.
+     * @return  creating action
+     */
+    protected Runnable create(final Target target)
+    {
+        Runnable runnable = new SerializableRunnable() 
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void run()
+            {
+                Step step = target.getStep();
+                if (step == null) {
+                    target.compile();
+                }
+                else {
+                    step.compile(target);
+                }
+                target.setStatus(UPTODATE);
+                targetDao.saveStatus(target);
+            }
+
+        };
+        return runnable;
+    }
+    
+    /**
+     * Returns a runnable for updating this target when it exists already.
+     * @return updating action
+     */
+    protected Runnable update(final Target target)
+    {
+        Runnable runnable = new SerializableRunnable() 
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void run()
+            {
+                Step step = target.getStep();
+                if (step == null) {
+                    target.clean();
+                    target.compile();
+                }
+                else {
+                    if (target instanceof ComplexTarget) {
+                        ComplexStep complexStep = (ComplexStep) step;
+                        complexStep.cleanAll(target);
+                    }
+                    else {
+                        step.clean(target);
+                        step.compile(target);
+                        target.setStatus(UPTODATE);
+                        targetDao.saveStatus(target);
+                    }
+                }
+            }
+        };
+        return runnable;
     }
 }
