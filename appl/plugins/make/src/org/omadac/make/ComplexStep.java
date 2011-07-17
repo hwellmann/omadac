@@ -16,9 +16,11 @@
  */
 package org.omadac.make;
 
+import java.util.List;
 
-public interface Step<T extends Target>
+public interface ComplexStep<C extends Target, S extends Target> extends Step<S>
 {
-    void compile(T target);
-    void clean(T target);
+    List<S> split(C target);
+    void merge(C target);
+    void cleanAll(C target);
 }

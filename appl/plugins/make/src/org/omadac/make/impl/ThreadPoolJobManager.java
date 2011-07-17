@@ -28,13 +28,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
+import org.omadac.make.ComplexStep;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
-import org.omadac.make.Step;
 import org.omadac.make.Target;
-import org.omadac.make.TargetDao;
 import org.omadac.make.Target.Status;
+import org.omadac.make.TargetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,7 +142,7 @@ public class ThreadPoolJobManager implements JobManager
         
         
         if (target.getStep() != null) {
-            processStep(action, target.getStep());
+            processStep(action, (ComplexStep)target.getStep());
             return;
         }
         
@@ -225,7 +225,7 @@ public class ThreadPoolJobManager implements JobManager
         }
     }
 
-    private void processStep(Action action, Step step)
+    private void processStep(Action action, ComplexStep step)
     {
             ComplexTarget complexTarget = (ComplexTarget) action.getTarget();
             Action complexAction = complexTarget.getAction();

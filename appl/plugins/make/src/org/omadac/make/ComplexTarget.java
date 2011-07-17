@@ -66,7 +66,7 @@ public abstract class ComplexTarget extends Target
                     clean();
                 }
                 else {
-                    getStep().cleanAll(ComplexTarget.this);
+                    ((ComplexStep)getStep()).cleanAll(ComplexTarget.this);
                 }
             }
 

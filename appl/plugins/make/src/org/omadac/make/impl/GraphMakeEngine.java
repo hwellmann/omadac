@@ -422,7 +422,7 @@ public class GraphMakeEngine implements MakeEngine
     }
 
     @Override
-    public Step<? extends Target, ? extends Target> findStep(Target target)
+    public Step<? extends Target> findStep(Target target)
     {
         return target.getStep();
     }

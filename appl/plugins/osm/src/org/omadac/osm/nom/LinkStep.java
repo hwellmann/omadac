@@ -8,14 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.omadac.geom.CoordinateListSequence;
 import org.omadac.geom.LineNormalizer;
 import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.MetadataInspector;
-import org.omadac.make.Step;
+import org.omadac.make.ComplexStep;
 import org.omadac.make.util.NumberRange;
 import org.omadac.nom.NomFeatureType;
 import org.omadac.nom.NomJunction;
@@ -30,7 +29,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
-public class LinkStep implements Step<LinkComplexTarget, LinkSubtarget> 
+public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget> 
 {
     private static Logger log = LoggerFactory.getLogger(LinkStep.class);
 
