@@ -28,6 +28,8 @@ public class AdminRegionTarget extends Target
 {
     private static final long serialVersionUID = 1L;
 
+    private EntityManager em;
+    
     @Override
     public void clean()
     {
@@ -38,10 +40,8 @@ public class AdminRegionTarget extends Target
     @Override
     public void compile()
     {
-        EntityManager em = getCurrentEntityManager();
         Connection connection = JpaUtil.getConnection(em);
         SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
         scriptRunner.executeScript(getClass(), "/sql/admin_region.sql");
-        em.getTransaction().commit();
     }
 }

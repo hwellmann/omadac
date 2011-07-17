@@ -31,6 +31,8 @@ public class MapFeatureClassifierComplexTarget extends ComplexTarget
 {
     private static final long serialVersionUID = 1L;
     private static final int NUM_LINKS = 5000;
+    
+    private EntityManager em;
 
     public MapFeatureClassifierComplexTarget()
     {
@@ -54,10 +56,8 @@ public class MapFeatureClassifierComplexTarget extends ComplexTarget
     @Override
     public void merge()
     {
-        EntityManager em = getCurrentEntityManager();
         String hql = "delete from Feature f where f.featureType = 0";
         em.createQuery(hql).executeUpdate();
-        em.getTransaction().commit();
     }    
 
     private List<NumberRange<Long>> getRanges(int rangeSize)
@@ -65,13 +65,11 @@ public class MapFeatureClassifierComplexTarget extends ComplexTarget
         String sql = "select f.feature_id from nom.feature f " 
             + "where f.feature_type != " + NomFeatureType.LINE_ROAD.getValue();
 
-        EntityManager em = getCurrentEntityManager();
         Query query = em.createNativeQuery(sql);
         
         @SuppressWarnings("unchecked")
         List<Long> ids = query.getResultList();
         
-        em.getTransaction().commit();
         List<NumberRange<Long>> ranges = NumberRange.split(ids, rangeSize);
         return ranges;
     }

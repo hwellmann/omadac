@@ -88,7 +88,6 @@ public class NamedRoadSubtarget extends Target
         roadNameMap = new HashMap<Long, RoadName>();
         namedRoads = new ArrayList<NamedRoad>();
         
-        em = getCurrentEntityManager();
         addressRange = em.find(HouseNumberRange.class, 1);
     }
 
@@ -98,7 +97,6 @@ public class NamedRoadSubtarget extends Target
         numResults = 0;
         
         String jpql = "select r from RoadName r where r.id between :minId and :maxId";
-        em = getCurrentEntityManager();
         TypedQuery<RoadName> q = em.createQuery(jpql, RoadName.class);
         q.setParameter("minId", range.getMinId());
         q.setParameter("maxId", range.getMaxId());

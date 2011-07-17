@@ -43,6 +43,7 @@
     <module>nom</module>
     <module>osm</module>
     <module>sql</module>
+    <module>test</module>
   </modules>
 
 </project>

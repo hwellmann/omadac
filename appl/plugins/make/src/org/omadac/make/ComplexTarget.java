@@ -62,7 +62,12 @@ public abstract class ComplexTarget extends Target
             @Override
             public void run()
             {
-                clean();
+                if (getStep() == null) {
+                    clean();
+                }
+                else {
+                    getStep().cleanAll(ComplexTarget.this);
+                }
             }
 
         };

@@ -74,7 +74,6 @@ public class MapFeatureSubtarget extends Target
                 + "and l.feature_id is null "
                 + "order by w.id, seq_num";
 
-        em = getCurrentEntityManager();
         Query query = em.createNativeQuery(sql);
         query.setParameter(1, range.getMinId());
         query.setParameter(2, range.getMaxId());
@@ -89,7 +88,6 @@ public class MapFeatureSubtarget extends Target
         long wayId = -1;
         long lastWayId = -1;
         numFeatures = 0;
-        em = getCurrentEntityManager();
         for (Object[] result : results)
         {
             wayId = (Long) result[0];
@@ -113,7 +111,6 @@ public class MapFeatureSubtarget extends Target
         }
         createFeature(wayId);
         log.info(numFeatures + " features");
-        em.getTransaction().commit();
     }
 
     private void createFeature(long wayId)

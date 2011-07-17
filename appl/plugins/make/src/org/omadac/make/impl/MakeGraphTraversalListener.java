@@ -28,6 +28,7 @@ import org.jgrapht.event.TraversalListenerAdapter;
 import org.jgrapht.event.VertexTraversalEvent;
 import org.jgrapht.graph.DefaultEdge;
 import org.omadac.make.Target;
+import org.omadac.make.TargetDao;
 import org.omadac.make.Target.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +46,16 @@ public class MakeGraphTraversalListener extends TraversalListenerAdapter<Target,
     /** Associated make engine. */
     private GraphMakeEngine makeEngine;
 
+    private TargetDao targetDao;
+
     /** 
      * Constructs a traversal listener for the given make engine.
      * @param makeEngine make engine 
      */
-    public MakeGraphTraversalListener(GraphMakeEngine makeEngine)
+    public MakeGraphTraversalListener(GraphMakeEngine makeEngine, TargetDao targetDao)
     {
         this.makeEngine = makeEngine;
+        this.targetDao = targetDao;
     }
 
     /**
@@ -64,7 +68,7 @@ public class MakeGraphTraversalListener extends TraversalListenerAdapter<Target,
     {
         Target target = e.getVertex();
         Status oldStatus = target.getStatus();
-        target.refreshTargetStatus();
+        targetDao.refreshTargetStatus(target);
 
         Status newStatus = target.getStatus();
 

@@ -17,7 +17,6 @@
 package org.omadac.osm.nom;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.omadac.jpa.JpaUtil;
@@ -30,6 +29,8 @@ public class NomFeatureTypeTarget extends Target
 {
     private static final long serialVersionUID = 1;
 
+    private EntityManager em;
+    
     public NomFeatureTypeTarget()
     {
     }
@@ -37,19 +38,13 @@ public class NomFeatureTypeTarget extends Target
     @Override
     public void clean()
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "nom_feature_type");
-        
-        JpaUtil.commit();
     }
 
     @Override
     public void compile()
     {
-        // insert content
-        EntityManager em = getCurrentEntityManager();
-        
         String sql = "insert into nom.nom_feature_type "
                 + "(feature_type, seq_num, dimension, description) "
                 + "values "

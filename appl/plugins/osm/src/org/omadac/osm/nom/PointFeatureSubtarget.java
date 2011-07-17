@@ -75,14 +75,12 @@ public class PointFeatureSubtarget extends Target
             + "where n.id between ?1 and ?2 "
             + "order by n.id";
 
-        em = getCurrentEntityManager();
         Query query = em.createNativeQuery(sql);
         query.setParameter(1, range.getMinId());
         query.setParameter(2, range.getMaxId());
         
         @SuppressWarnings("unchecked")
         List<Object[]> results = query.getResultList();
-        em.getTransaction().commit();
         return results;
     }
 
@@ -97,7 +95,6 @@ public class PointFeatureSubtarget extends Target
         String value;
         Long lastNodeId = null;
         numFeatures = 0;
-        em = getCurrentEntityManager();
         for (Object[] result : results)
         {
             nodeId = (Long) result[0];
@@ -122,7 +119,6 @@ public class PointFeatureSubtarget extends Target
         }
         createFeature(nodeId, x, y, tagMap);
         log.info(numFeatures + " features");
-        em.getTransaction().commit();
     }
 
     private void createFeature(long nodeId, int x, int y, Map<String, String> tags)

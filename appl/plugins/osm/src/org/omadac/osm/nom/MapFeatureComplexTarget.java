@@ -31,6 +31,8 @@ public class MapFeatureComplexTarget extends ComplexTarget
     private static final long serialVersionUID = 1L;
     private static final int NUM_LINKS = 5000;
 
+    private EntityManager em;
+    
     public MapFeatureComplexTarget()
     {
     }
@@ -53,12 +55,9 @@ public class MapFeatureComplexTarget extends ComplexTarget
     @Override
     public void merge()
     {
-        EntityManager em = getCurrentEntityManager();
         em.createNativeQuery("ALTER TABLE nom.feature " +
                 "ADD CONSTRAINT pk_feature " +
                 "PRIMARY KEY(feature_id)").executeUpdate();
-
-        em.getTransaction().commit();
     }    
 
     private List<NumberRange<Long>> getRanges(int rangeSize)
@@ -69,14 +68,12 @@ public class MapFeatureComplexTarget extends ComplexTarget
             + "where l.feature_id is null "
             + "order by w.id"; 
 
-        EntityManager em = getCurrentEntityManager();
         em.clear();
         Query query = em.createNativeQuery(sql);
         
         @SuppressWarnings("unchecked")
         List<Long> ids = query.getResultList();
         
-        em.getTransaction().commit();
         List<NumberRange<Long>> ranges = NumberRange.split(ids, rangeSize);
         return ranges;
     }
@@ -86,8 +83,6 @@ public class MapFeatureComplexTarget extends ComplexTarget
     public void clean()
     {
         String sql = "delete from nom.feature where discriminator = 'F'";
-        EntityManager em = getCurrentEntityManager();
         em.createNativeQuery(sql).executeUpdate();
-        em.getTransaction().commit();        
     }
 }

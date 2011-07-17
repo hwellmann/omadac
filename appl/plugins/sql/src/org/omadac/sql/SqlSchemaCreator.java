@@ -96,7 +96,7 @@ public class SqlSchemaCreator
         try
         {
             scriptRunner.executeScript(reader);
-            JpaUtil.commit();
+            //JpaUtil.commit();
         }
         catch (IOException exc)
         {
