@@ -26,6 +26,6 @@
   </bean>  
   <service ref="jpaUtil" interface="org.omadac.jpa.JpaUtil"/>
   
-  <reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)"/>
+  <reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)" availability="optional"/>
   
 </blueprint>

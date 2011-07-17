@@ -20,12 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.MetadataInspector;
-import org.omadac.jpa.TxRunnable;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.Target;
 import org.omadac.make.util.NumberRange;

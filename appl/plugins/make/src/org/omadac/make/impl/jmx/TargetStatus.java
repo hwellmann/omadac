@@ -16,7 +16,7 @@
  */
 package org.omadac.make.impl.jmx;
 
-import org.omadac.make.Target.Status;
+import org.omadac.engine.Status;
 
 /**
  * Represents the current status of a target.

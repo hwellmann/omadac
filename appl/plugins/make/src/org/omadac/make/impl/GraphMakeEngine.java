@@ -32,6 +32,7 @@ import javax.persistence.EntityManagerFactory;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
+import org.omadac.engine.Status;
 import org.omadac.jpa.JpaUtil;
 import org.omadac.make.Action;
 import org.omadac.make.ExecutionContext;
@@ -42,7 +43,6 @@ import org.omadac.make.NoOpTarget;
 import org.omadac.make.Step;
 import org.omadac.make.Target;
 import org.omadac.make.TargetDao;
-import org.omadac.make.Target.Status;
 import org.omadac.make.impl.dot.MakeGraphDotWriter;
 import org.omadac.make.impl.jmx.MakeEngineMBeanImpl;
 import org.omadac.make.impl.jmx.MakeEngineMXBean;
@@ -174,10 +174,7 @@ public class GraphMakeEngine implements MakeEngine
          * Retrieve last known target status from persistent storage and update status.
          * This is done within a single transaction for all targets. 
          */
-        computeTargetStatus();
-        EntityManagerFactory emf = context.getEngineEntityManagerFactory();
-        JpaUtil.getCurrentEntityManager(emf).getTransaction().commit();
-                
+        computeTargetStatus();                
         updateTargets();
     }
 

@@ -22,7 +22,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.component.ComponentContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -202,9 +201,11 @@ public abstract class AbstractMaker implements Runnable
      */
     protected Target lookupTarget(String targetName)
     {
-        Target service = findService(Target.class, "name", targetName);
-        service.setName(targetName);
-        return service;
+        Target target = findService(Target.class, "name", targetName);
+        target.setName(targetName);
+        Step<?> step = findService(Step.class, "target", targetName);
+        target.setStep(step);
+        return target;
     }
 
     /**

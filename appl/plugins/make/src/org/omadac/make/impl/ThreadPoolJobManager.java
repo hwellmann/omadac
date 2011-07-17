@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.omadac.engine.Status;
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
 import org.omadac.make.ComplexStep;
@@ -33,7 +34,6 @@ import org.omadac.make.ComplexTarget;
 import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
 import org.omadac.make.Target;
-import org.omadac.make.Target.Status;
 import org.omadac.make.TargetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

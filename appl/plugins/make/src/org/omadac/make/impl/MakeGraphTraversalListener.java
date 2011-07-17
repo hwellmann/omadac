@@ -16,20 +16,20 @@
  */
 package org.omadac.make.impl;
 
-import static org.omadac.make.Target.Status.CREATING;
-import static org.omadac.make.Target.Status.FORCED;
-import static org.omadac.make.Target.Status.INCOMPLETE;
-import static org.omadac.make.Target.Status.MISSING;
-import static org.omadac.make.Target.Status.OUTDATED;
-import static org.omadac.make.Target.Status.UPDATING;
-import static org.omadac.make.Target.Status.UPTODATE;
+import static org.omadac.engine.Status.CREATING;
+import static org.omadac.engine.Status.FORCED;
+import static org.omadac.engine.Status.INCOMPLETE;
+import static org.omadac.engine.Status.MISSING;
+import static org.omadac.engine.Status.OUTDATED;
+import static org.omadac.engine.Status.UPDATING;
+import static org.omadac.engine.Status.UPTODATE;
 
 import org.jgrapht.event.TraversalListenerAdapter;
 import org.jgrapht.event.VertexTraversalEvent;
 import org.jgrapht.graph.DefaultEdge;
+import org.omadac.engine.Status;
 import org.omadac.make.Target;
 import org.omadac.make.TargetDao;
-import org.omadac.make.Target.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
