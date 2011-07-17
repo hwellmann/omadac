@@ -104,4 +104,6 @@ public interface MakeEngine extends ActionListener
      * @return first-level targets.
      */
     Collection<Target> getTargets();
+    
+    Step<? extends Target, ? extends Target> findStep(Target target);
 }

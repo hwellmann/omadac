@@ -95,6 +95,12 @@ public class JpaUtil
         return new MetadataInspector(dbc);
     }
 
+    public static MetadataInspector getMetadataInspector(EntityManager em)
+    {
+        Connection dbc = getConnection(em);
+        return new MetadataInspector(dbc);
+    }
+
     public static void commit(Connection dbc)
     {
         try

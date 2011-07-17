@@ -36,9 +36,12 @@ public class NomSchemaTarget extends OmadacTarget
     private static final long serialVersionUID = 1L;
 
     private static Logger log = LoggerFactory.getLogger(NomSchemaTarget.class);
-
-    public NomSchemaTarget()
+    
+    private EntityManager em;
+    
+    public void setEntityManager(EntityManager em)
     {
+        this.em = em;
     }
 
     @Override
@@ -46,10 +49,8 @@ public class NomSchemaTarget extends OmadacTarget
     {
         log.info("dropping NOM schema");
 
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.dropSchema("nom");
-        JpaUtil.commit(inspector.getConnection());
     }
 
     @Override
@@ -57,23 +58,18 @@ public class NomSchemaTarget extends OmadacTarget
     {
         log.info("creating NOM schema");
         
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.dropSchema("nom");
-        JpaUtil.commit();
 
-        String dialect = getConfiguration().getServer().getJdbc().getSubprotocol();
+        String dialect = "postgresql";//getConfiguration().getServer().getJdbc().getSubprotocol();
         SqlSchemaCreator schemaCreator = new SqlSchemaCreator(dialect);
         URL schema = Feature.class.getResource("/xml/nom_schema.xml");
         schemaCreator.loadSchema(schema);
         schemaCreator.createTables();
         
-        EntityManager em = getCurrentEntityManager();
         String sql = "insert into nom.DATABASE_INFO (PROVIDER, SCHEMA_VERSION) " +
                      "values ('OSM', '0.6')";
         Query q = em.createNativeQuery(sql);
         q.executeUpdate();
-
-        em.getTransaction().commit();
     }
 }

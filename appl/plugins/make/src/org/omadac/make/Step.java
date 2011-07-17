@@ -14,27 +14,15 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.omadac.make.impl;
+package org.omadac.make;
 
-import org.omadac.make.Target;
+import java.util.List;
 
-/**
- * Default target used by the make engine as the dependent of all goals.
- * @author hwellmann
- *
- */
-public class DefaultTarget extends Target
+public interface Step<C extends ComplexTarget, S extends Target>
 {
-    private static final long serialVersionUID = 1L;
-
-    public DefaultTarget()
-    {
-        super("<default>");
-        setStatus(Status.MISSING);
-    }
-    
-    @Override
-    public void compile()
-    {
-    }    
+    List<S> split(C target);
+    void merge(C target);
+    void compile(S target);
+    void clean(S target);
+    void cleanAll(C target);
 }

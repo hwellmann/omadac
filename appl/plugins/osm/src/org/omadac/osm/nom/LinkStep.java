@@ -1,19 +1,3 @@
-/*
- *    Omadac - The Open Map Database Compiler
- *    http://omadac.org
- * 
- *    (C) 2010, Harald Wellmann and Contributors
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
 package org.omadac.osm.nom;
 
 import java.util.ArrayList;
@@ -24,14 +8,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.omadac.geom.CoordinateListSequence;
 import org.omadac.geom.LineNormalizer;
-import org.omadac.jpa.TxCallable;
-import org.omadac.jpa.TxRunnable;
-import org.omadac.make.Target;
+import org.omadac.jpa.JpaUtil;
+import org.omadac.jpa.MetadataInspector;
+import org.omadac.make.Step;
 import org.omadac.make.util.NumberRange;
 import org.omadac.nom.NomFeatureType;
 import org.omadac.nom.NomJunction;
@@ -46,16 +30,13 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
-public class LinkSubtarget extends Target
+public class LinkStep implements Step<LinkComplexTarget, LinkSubtarget> 
 {
-    private static final long serialVersionUID = 1L;
+    private static Logger log = LoggerFactory.getLogger(LinkStep.class);
 
-    private static Logger log = LoggerFactory.getLogger(LinkSubtarget.class);
-    
-    @PersistenceContext
+    private static final int NUM_LINKS = 1000;
+
     private EntityManager em;
-
-    private NumberRange<Long> range;
 
     private List<Coordinate> coords;
 
@@ -75,22 +56,10 @@ public class LinkSubtarget extends Target
 
     private Map<Long, NomJunction> junctionMap;
     
-    public LinkSubtarget(NumberRange<Long> range)
-    {
-        super(String.format("NomLinks_%d_%d", range.getMinId(), range.getMaxId()));
-        this.range = range;        
-    }
-    
-    
 
     public void setEntityManager(EntityManager em)
     {
         this.em = em;
-    }
-
-    public NumberRange<Long> getRange()
-    {
-        return range;
     }
 
     private void init()
@@ -106,15 +75,80 @@ public class LinkSubtarget extends Target
         createRoadAttributes();
     }
 
+    
+    
+    @Override
+    public List<LinkSubtarget> split(LinkComplexTarget target)
+    {
+        createRoadAttributes();
+        
+        List<LinkSubtarget> subtargets = new ArrayList<LinkSubtarget>();
+        List<NumberRange<Long>> ranges = getRanges(NUM_LINKS);
+        for (NumberRange<Long> range : ranges)
+        {
+            LinkSubtarget subtarget = new LinkSubtarget(range);
+            subtargets.add(subtarget);
+        }
+        
+        return subtargets;
+    }
+
+    @Override
+    public void merge(LinkComplexTarget target)
+    {
+        em.clear();
+        em.createNativeQuery(
+            "alter table nom.link "
+            + "add constraint pk_link "
+            + "primary key (feature_id)").executeUpdate();
+    }
+
+    @Override
+    public void compile(LinkSubtarget target)
+    {
+        init();
+        
+        List<Object[]> results = loadWays(target);
+        loadJunctions(target);
+        
+        for (Object[] result : results)
+        {
+            OsmWay way = (OsmWay) result[0];
+            String tagValue = (String) result[1];
+            createLink(way, tagValue);
+        }        
+        
+        saveFeatures();
+    }
+
+    @Override
+    public void clean(LinkSubtarget target)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void cleanAll(LinkComplexTarget target)
+    {
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
+        inspector.cleanTable("nom", "link");        
+        JpaUtil.commit();
+
+        String sql = "delete from nom.feature where discriminator = 'L'";
+        em.createNativeQuery(sql).executeUpdate();
+        em.getTransaction().commit();        
+    }
+
     private void createRoadAttributes()
     {
         for (int i = 0; i < 8; i++)
         {
             RoadAttributes attr = new RoadAttributes();
-            attr.setId(i + 1);
+            attr.setId(i+1);
             attr.setFunctionalClass(i);
             attr.setTravelDirection('B');
-            roadAttr.add(attr);
+            em.persist(attr);
         }
 
         highwayTypeMap.put("bridlepath", roadAttr.get(7));
@@ -142,30 +176,28 @@ public class LinkSubtarget extends Target
         highwayTypeMap.put("trunk_link", roadAttr.get(2));
         highwayTypeMap.put("unclassified", roadAttr.get(7));
         highwayTypeMap.put("unsurfaced", roadAttr.get(7));
-    }
+    }    
 
-    @Override
-    public void compile()
+    private List<NumberRange<Long>> getRanges(int rangeSize)
     {
-        init();
+        Query query = em
+                .createNativeQuery("select distinct id from osm.way_tags wt "
+                        + "where wt.k = 'highway' order by id");
         
-        List<Object[]> results = loadWays();
-        loadJunctions();
+        @SuppressWarnings("unchecked")
+        List<Long> ids = query.getResultList();
         
-        for (Object[] result : results)
-        {
-            OsmWay way = (OsmWay) result[0];
-            String tagValue = (String) result[1];
-            createLink(way, tagValue);
-        }        
-        
-        saveFeatures();
+        em.getTransaction().commit();
+        List<NumberRange<Long>> ranges = NumberRange.split(ids, rangeSize);
+        return ranges;
     }
-
-    private void loadJunctions()
+    
+    
+    private void loadJunctions(LinkSubtarget subtarget)
     {
         String jpql;
         Query query;
+        NumberRange<Long> range = subtarget.getRange();
         jpql = "select j from NomJunction j, OsmWay w join w.nodes as wn join w.tags as wt "
                 + "where key(wt) = 'highway' and j.sourceId = wn.id and w.id between :minId and :maxId";
         query = em.createQuery(jpql);
@@ -183,8 +215,9 @@ public class LinkSubtarget extends Target
         }
     }
 
-    private List<Object[]> loadWays()
+    private List<Object[]> loadWays(LinkSubtarget subtarget)
     {
+        NumberRange<Long> range = subtarget.getRange();
         String jpql = "select w, wt from OsmWay w join fetch w.nodes join w.tags as wt "
                 + "where key(wt) = 'highway' and w.id between :minId and :maxId order by w.id";
 
@@ -312,4 +345,5 @@ public class LinkSubtarget extends Target
         return junction;        
     }
    
+    
 }

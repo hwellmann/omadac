@@ -67,7 +67,6 @@ public class MapFeatureClassifierSubtarget extends Target
                 + "and w.id between ?1 and ?2 "
                 + "order by w.id, wt.k    ";
 
-        em = getCurrentEntityManager();
         Query query = em.createNativeQuery(sql);
         query.setParameter(1, range.getMinId());
         query.setParameter(2, range.getMaxId());
@@ -82,7 +81,6 @@ public class MapFeatureClassifierSubtarget extends Target
         String value = null;
         numFeatures = 0;
         
-        em = getCurrentEntityManager();
         for (Object[] results : resultList)
         {
             wayId = (Long) results[0];

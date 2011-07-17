@@ -35,6 +35,8 @@ public class NamedRoadComplexTarget extends ComplexTarget
     private static final long serialVersionUID = 1L;
     private static final int NUM_ROAD_NAMES = 200;
 
+    private EntityManager em;
+    
     public NamedRoadComplexTarget()
     {
     }
@@ -60,7 +62,6 @@ public class NamedRoadComplexTarget extends ComplexTarget
     {
         String jpql = "select n.id from RoadName n order by n.id"; 
 
-        EntityManager em = getCurrentEntityManager();
         Query query = em.createQuery(jpql);
         
         @SuppressWarnings("unchecked")
@@ -75,24 +76,19 @@ public class NamedRoadComplexTarget extends ComplexTarget
     @Override
     public void clean()
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "road");
         inspector.cleanTable("nom", "road_link");
-        JpaUtil.commit();
     }
     
     private void createDefaultAddressRange()
     {
-        EntityManager em = getCurrentEntityManager();
         HouseNumberRange range = new HouseNumberRange();
         range.setId(1);
         range.setFirst("0");
         range.setLast("0");
         range.setIncrement('0');
         em.persist(range);        
-
-        em.getTransaction().commit();
     }
     
 

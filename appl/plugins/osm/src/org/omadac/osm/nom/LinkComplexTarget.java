@@ -36,6 +36,8 @@ public class LinkComplexTarget extends ComplexTarget
     private static final long serialVersionUID = 1L;
     private static final int NUM_LINKS = 1000;
 
+    private EntityManager em;
+    
     public LinkComplexTarget()
     {
     }
@@ -59,7 +61,6 @@ public class LinkComplexTarget extends ComplexTarget
     
     private void createRoadAttributes()
     {
-        EntityManager em = getCurrentEntityManager();
         for (int i = 0; i < 8; i++)
         {
             RoadAttributes attr = new RoadAttributes();
@@ -73,20 +74,15 @@ public class LinkComplexTarget extends ComplexTarget
     @Override
     public void merge()
     {
-        executeTransaction(new TxRunnable() {            
-            @Override
-            public void run(EntityManager em) {
-                em.clear();
-                em.createNativeQuery(
-                    "alter table nom.link "
-                    + "add constraint pk_link "
-                    + "primary key (feature_id)").executeUpdate();
-            }});
+        em.clear();
+        em.createNativeQuery(
+            "alter table nom.link "
+            + "add constraint pk_link "
+            + "primary key (feature_id)").executeUpdate();
     }    
 
     private List<NumberRange<Long>> getRanges(int rangeSize)
     {
-        EntityManager em = getCurrentEntityManager();
         Query query = em
                 .createNativeQuery("select distinct id from osm.way_tags wt "
                         + "where wt.k = 'highway' order by id");
@@ -103,14 +99,11 @@ public class LinkComplexTarget extends ComplexTarget
     @Override
     public void clean()
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "link");        
         JpaUtil.commit();
 
         String sql = "delete from nom.feature where discriminator = 'L'";
-        EntityManager em = getCurrentEntityManager();
         em.createNativeQuery(sql).executeUpdate();
-        em.getTransaction().commit();        
     }
 }

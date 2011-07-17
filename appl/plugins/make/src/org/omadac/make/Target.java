@@ -142,6 +142,8 @@ public abstract class Target implements Serializable
      */
     private transient ExecutionContext executionContext;
     
+    private transient Step step;
+    
     /**
      * Creates an anonymous target.
      */
@@ -227,9 +229,14 @@ public abstract class Target implements Serializable
             @Override
             public void run()
             {
-                compile();
+                if (step == null) {
+                    compile();
+                }
+                else {
+                    step.compile(Target.this);
+                }
                 setStatus(UPTODATE);
-                saveStatus();
+                //saveStatus();
             }
 
         };
@@ -249,10 +256,16 @@ public abstract class Target implements Serializable
             @Override
             public void run()
             {
-                clean();
-                compile();
+                if (step == null) {
+                    clean();
+                    compile();
+                }
+                else {
+                    step.clean(Target.this);
+                    step.compile(Target.this);
+                }
                 setStatus(UPTODATE);
-                saveStatus();
+                //saveStatus();
             }
         };
         return runnable;
@@ -264,7 +277,7 @@ public abstract class Target implements Serializable
         return info.getName();
     }
    
-    protected void setName(String name)
+    public void setName(String name)
     {
         info.setName(name);
     }
@@ -298,123 +311,17 @@ public abstract class Target implements Serializable
     {
         this.parent = parent;
     }
-
-    /**
-     * Refreshes the target status from persistent storage.
-     * For internal use within the make engine. This method shall not be called from derived
-     * classes or other clients.
-     * @return true, unless the target is new
-     */
-    @SuppressWarnings("unchecked")
-    public boolean refreshTargetStatus()
-    {
-        EntityManager em = getEngineEntityManager();
-        Query query = em.createQuery("select ti from TargetInfo ti where ti.name = :name");
-        query.setParameter("name", getName());
-        List<TargetInfo> results = query.getResultList();
-
-        if (results.isEmpty())
-        {
-            info = new TargetInfo(getName());
-        }
-        else
-        {
-            info = results.get(0);
-        }
-        setStatus(info.getStatus());
-        return info.getStatus() != MISSING;
-    }
-
-    /**
-     * Persists the target status.
-     * For internal use within the make engine. 
-     */
-    public void saveStatus()
-    {
-        EntityManager em = getEngineEntityManager();
-        saveStatus(em);
-        em.getTransaction().commit();
-    }
-
-    /**
-     * Persists the target status with a given entity manager.
-     * For internal use within the make engine. 
-     * @param em entity manager
-     */
-    public void saveStatus(EntityManager em)
-    {
-        TargetInfo savedInfo = em.find(TargetInfo.class, info.getName());
-        if (savedInfo == null)
-        {
-            em.persist(info);            
-        }
-        else
-        {
-            savedInfo.setStatus(info.getStatus());
-            info = savedInfo;
-        }
-    }
-
-    /**
-     * Returns the entity manager factory for the product persistence unit.
-     * @return
-     */
-    public EntityManagerFactory getEntityManagerFactory()
-    {
-        return executionContext.getProductEntityManagerFactory();
-    }
     
-    /**
-     * Returns the current entity manager for the product persistence unit with an active
-     * transaction. The entity manager is tied to the current thread. The method may create 
-     * a new entity manager or use an existing one. If the entity manager has no active 
-     * transaction, a new transaction will be started. The caller is responsible for committing
-     * the transaction.
-     * 
-     * @return entity manager
-     */
-    protected EntityManager getCurrentEntityManager()
-    {
-        EntityManagerFactory emf = executionContext.getProductEntityManagerFactory();
-        EntityManager em = JpaUtil.getCurrentEntityManager(emf);
-        return em;
-    }
     
-    /**
-     * Returns the current entity manager for the engine persistence unit with an active
-     * transaction. 
-     * 
-     * @return entity manager
-     */
-    public EntityManager getEngineEntityManager()
+
+    public TargetInfo getInfo()
     {
-        EntityManagerFactory emf = executionContext.getEngineEntityManagerFactory();
-        EntityManager em = JpaUtil.getCurrentEntityManager(emf);
-        return em;
-    }
-    
-    /**
-     * Executes the given callable within a separate transaction of the product persistence unit.
-     * @param <T>  return type of the callable
-     * @param work  callable to be executed
-     * @return result of the callable
-     */
-    public <T> T executeTransaction(TxCallable<T> work)
-    {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        EntityManager em = emf.createEntityManager();
-        return JpaUtil.executeTransaction(em, work);
+        return info;
     }
 
-    /**
-     * Executes the given runnable within a separate transaction of the product persistence unit.
-     * @param work  runnable to be executed
-     */
-    public void executeTransaction(TxRunnable work)
+    public void setInfo(TargetInfo info)
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        EntityManager em = emf.createEntityManager();
-        JpaUtil.executeTransaction(em, work);
+        this.info = info;
     }
 
     @Override
@@ -455,4 +362,16 @@ public abstract class Target implements Serializable
     {
         return info.getName();
     }
+
+    public Step getStep()
+    {
+        return step;
+    }
+
+    public void setStep(Step step)
+    {
+        this.step = step;
+    }
+    
+    
 }

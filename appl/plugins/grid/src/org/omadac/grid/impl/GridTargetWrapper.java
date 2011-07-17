@@ -33,6 +33,7 @@ import org.omadac.make.ComplexTarget;
 import org.omadac.make.NoOpTarget;
 import org.omadac.make.Target;
 import org.omadac.make.Target.Status;
+import org.omadac.make.TargetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,8 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
     private static Logger log = LoggerFactory.getLogger(GridTargetWrapper.class);
     
     private Target target;
+    
+    private TargetDao targetDao;
 
     @Override
     public String reduce(List<GridJobResult> results) throws GridException
@@ -85,11 +88,11 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
             {
                 subtarget.setParent(complexTarget);
                 subtarget.setExecutionContext(OmadacGridNode.getExecutionContext());
-                subtarget.refreshTargetStatus();
+                targetDao.refreshTargetStatus(subtarget);
                 if (parentStatus == UPDATING)
                 {
                     subtarget.setStatus(OUTDATED);
-                    subtarget.saveStatus();
+                    targetDao.saveStatus(subtarget);
                    
                 }
                 if (subtarget.getStatus() == UPTODATE)
@@ -100,7 +103,6 @@ public class GridTargetWrapper extends GridTaskSplitAdapter<Target, String>
                 GridJob gridJob = new TargetGridJobAdapter(subtarget);
                 gridJobs.add(gridJob);
             }
-            complexTarget.getEngineEntityManager().getTransaction().commit();
             return gridJobs;          
         }
         else

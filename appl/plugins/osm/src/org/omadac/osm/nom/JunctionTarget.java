@@ -30,11 +30,13 @@ public class JunctionTarget extends Target
 {
     private static final long serialVersionUID = 1L;
 
+    private EntityManager em;
+    
+    
     @Override
     public void clean()
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "junction");
         JpaUtil.commit();
     }
@@ -42,11 +44,8 @@ public class JunctionTarget extends Target
     @Override
     public void compile()
     {
-        EntityManager em = getCurrentEntityManager();
         Connection connection = JpaUtil.getConnection(em);
         SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
         scriptRunner.executeScript(getClass(), "/sql/create_junctions.sql");
-        //JpaUtil.commit();
-        em.getTransaction().commit();
     }
 }

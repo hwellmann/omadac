@@ -26,16 +26,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.EntityManager;
-
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.ExecutionContext;
 import org.omadac.make.JobManager;
+import org.omadac.make.Step;
 import org.omadac.make.Target;
+import org.omadac.make.TargetDao;
 import org.omadac.make.Target.Status;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +47,8 @@ import org.slf4j.LoggerFactory;
 public class ThreadPoolJobManager implements JobManager
 {
     private static Logger log = LoggerFactory.getLogger(ThreadPoolJobManager.class);
+    
+    private TargetDao targetDao;
    
     /**
      * Maps complex targets to the number of pending subtargets. The map gets initialized with
@@ -93,6 +94,13 @@ public class ThreadPoolJobManager implements JobManager
     {
         this.numThreads = numThreads;
     }
+    
+    
+
+    public void setTargetDao(TargetDao targetDao)
+    {
+        this.targetDao = targetDao;
+    }
 
     @Override
     public void addActionListener(ActionListener listener)
@@ -133,6 +141,11 @@ public class ThreadPoolJobManager implements JobManager
         target.setExecutionContext(context);
         
         
+        if (target.getStep() != null) {
+            processStep(action, target.getStep());
+            return;
+        }
+        
         if (target instanceof ComplexTarget)
         {
             ComplexTarget complexTarget = (ComplexTarget) target;
@@ -146,17 +159,16 @@ public class ThreadPoolJobManager implements JobManager
              */
             List<Target> subtargets = complexTarget.split();
             List<Action> subactions = new ArrayList<Action>(subtargets.size());                      
-            EntityManager em = complexTarget.getEngineEntityManager();
             for (Target subtarget : subtargets)
             {
                 subtarget.setParent(complexTarget);
                 subtarget.setExecutionContext(context);
-                subtarget.refreshTargetStatus();
+                targetDao.refreshTargetStatus(subtarget);
                 
                 if (complexTarget.getStatus() == Status.UPDATING)
                 {
                     subtarget.setStatus(Status.OUTDATED);
-                    subtarget.saveStatus(em);
+                    targetDao.saveStatus(subtarget);
                 }
                 
                 /*
@@ -195,7 +207,6 @@ public class ThreadPoolJobManager implements JobManager
             {
                 complexTarget.setStatus(Status.UPDATING);
             }
-            em.getTransaction().commit();
             
             if (subtargets.isEmpty())
             {
@@ -212,6 +223,78 @@ public class ThreadPoolJobManager implements JobManager
             log.info("submitting job for ", target);
             executor.submit(action, action);
         }
+    }
+
+    private void processStep(Action action, Step step)
+    {
+            ComplexTarget complexTarget = (ComplexTarget) action.getTarget();
+            Action complexAction = complexTarget.getAction();
+            log.info("submitting job for step {}", complexTarget);
+
+            /*
+             * Create subtargets and check status for each subtarget. There may be a large
+             * number of subtargets, so we update all subtargets statuses within a single
+             * transaction.
+             */
+            List<Target> subtargets = step.split(complexTarget);
+            List<Action> subactions = new ArrayList<Action>(subtargets.size());                      
+            for (Target subtarget : subtargets)
+            {
+                subtarget.setParent(complexTarget);
+                subtarget.setExecutionContext(context);
+                targetDao.refreshTargetStatus(subtarget);
+                
+                if (complexTarget.getStatus() == Status.UPDATING)
+                {
+                    subtarget.setStatus(Status.OUTDATED);
+                    targetDao.saveStatus(subtarget);
+                }
+                
+                /*
+                 * If the subtarget is up to date then the complex target must be incomplete, i.e.
+                 * a previous run of the make engine was interrupted. In this case, we leave the
+                 * subtarget unchanged.
+                 */
+                if (subtarget.getStatus() == Status.UPTODATE)
+                {
+                    assert complexTarget.getStatus() == Status.INCOMPLETE;
+                    continue;
+                }
+
+                Action subaction = subtarget.getAction();
+                subaction.setTarget(subtarget);
+                subactions.add(subaction);
+                
+                /*
+                 * 
+                 */
+                if (subtarget.getStatus() == Status.MISSING)
+                {
+                    subtarget.setStatus(Status.CREATING);
+                }
+                else
+                {
+                    subtarget.setStatus(Status.UPDATING);
+                }
+                log.info("submitting job for {}", subtarget);
+            }
+            
+            /*
+             * An incomplete complex target is now in the process of updating.
+             */
+            if (complexTarget.getStatus() == Status.INCOMPLETE)
+            {
+                complexTarget.setStatus(Status.UPDATING);
+            }
+            
+            if (subtargets.isEmpty())
+            {
+                onCompleted(complexAction);
+            }
+            else
+            {
+                submitComplexTargetAction(complexAction, subactions);
+            }
     }
 
     private void submitComplexTargetAction(Action complexAction, List<Action> subactions)

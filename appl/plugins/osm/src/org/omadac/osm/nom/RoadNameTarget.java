@@ -19,7 +19,6 @@ package org.omadac.osm.nom;
 import java.sql.Connection;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.MetadataInspector;
@@ -29,23 +28,21 @@ import org.omadac.sql.SqlScriptRunner;
 public class RoadNameTarget extends Target
 {
     private static final long serialVersionUID = 1L;
-
+    
+    private EntityManager em;
+    
     @Override
     public void clean()
     {
-        EntityManagerFactory emf = getEntityManagerFactory();
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(emf);
+        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "road_name");
-        JpaUtil.commit();
     }
 
     @Override
     public void compile()
     {
-        EntityManager em = getCurrentEntityManager();
         Connection connection = JpaUtil.getConnection(em);
         SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
         scriptRunner.executeScript(getClass(), "/sql/create_road_names.sql");
-        em.getTransaction().commit();
     }
 }

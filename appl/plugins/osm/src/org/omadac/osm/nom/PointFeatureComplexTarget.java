@@ -31,6 +31,8 @@ public class PointFeatureComplexTarget extends ComplexTarget
     private static final long serialVersionUID = 1L;
     private static final int NUM_NODES = 1000;
 
+    private EntityManager em;
+    
     public PointFeatureComplexTarget()
     {
     }
@@ -53,7 +55,6 @@ public class PointFeatureComplexTarget extends ComplexTarget
     @Override
     public void merge()
     {
-        EntityManager em = getCurrentEntityManager();
         Query query = em.createNativeQuery("ALTER TABLE nom.poi " +
                 "ADD CONSTRAINT pk_poi " +
                 "PRIMARY KEY(feature_id)");
@@ -67,7 +68,6 @@ public class PointFeatureComplexTarget extends ComplexTarget
         String sql = "select distinct n.id from osm.node_tags n  "
             + "order by n.id"; 
 
-        EntityManager em = getCurrentEntityManager();
         Query query = em.createNativeQuery(sql);
         
         @SuppressWarnings("unchecked")

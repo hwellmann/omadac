@@ -39,7 +39,9 @@ import org.omadac.make.JobManager;
 import org.omadac.make.MakeEngine;
 import org.omadac.make.MakeException;
 import org.omadac.make.NoOpTarget;
+import org.omadac.make.Step;
 import org.omadac.make.Target;
+import org.omadac.make.TargetDao;
 import org.omadac.make.Target.Status;
 import org.omadac.make.impl.dot.MakeGraphDotWriter;
 import org.omadac.make.impl.jmx.MakeEngineMBeanImpl;
@@ -56,6 +58,8 @@ import org.slf4j.LoggerFactory;
 public class GraphMakeEngine implements MakeEngine
 {
     private static Logger log = LoggerFactory.getLogger(GraphMakeEngine.class);
+    
+    private TargetDao targetDao;
 
     /** Job manager for executing actions. */
     private JobManager manager;
@@ -66,7 +70,7 @@ public class GraphMakeEngine implements MakeEngine
     /** File name of DOT file for rendering dependency graph. */
     private String dotOutput;
     
-    /* Queue of targets to be processed. */
+    /** Queue of targets to be processed. */
     private BlockingQueue<Target> pendingTargets;
 
     /** Default target which depends on all goals. */
@@ -84,6 +88,11 @@ public class GraphMakeEngine implements MakeEngine
         graph = new MakeGraph();
         pendingTargets = new LinkedBlockingQueue<Target>();
         defaultTarget = new DefaultTarget();
+    }
+    
+    public void setTargetDao(TargetDao targetDao)
+    {
+        this.targetDao = targetDao;
     }
     
     @Override
@@ -256,7 +265,7 @@ public class GraphMakeEngine implements MakeEngine
         DepthFirstIterator<Target, DefaultEdge> it = 
             new DepthFirstIterator<Target, DefaultEdge>(graph, defaultTarget);
             
-        MakeGraphTraversalListener listener = new MakeGraphTraversalListener(this);
+        MakeGraphTraversalListener listener = new MakeGraphTraversalListener(this, targetDao);
         it.addTraversalListener(listener);
         while (it.hasNext())
         {
@@ -305,7 +314,7 @@ public class GraphMakeEngine implements MakeEngine
             else if (target.getStatus() == Status.COMPLETED)
             {
                 target.setStatus(Status.UPTODATE);
-                target.saveStatus();
+                targetDao.saveStatus(target);
             }
             else
             {     
@@ -352,7 +361,7 @@ public class GraphMakeEngine implements MakeEngine
     private void submitTargetAction(Target target, Status newStatus)
     {
         target.setStatus(newStatus);
-        target.saveStatus();
+        targetDao.saveStatus(target);
         Action action = target.getAction();
         manager.submitAction(action);
     }
@@ -410,5 +419,11 @@ public class GraphMakeEngine implements MakeEngine
             }
         }
         return true;
+    }
+
+    @Override
+    public Step<? extends Target, ? extends Target> findStep(Target target)
+    {
+        return target.getStep();
     }
 }
