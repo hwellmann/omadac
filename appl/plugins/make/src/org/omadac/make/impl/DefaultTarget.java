@@ -16,6 +16,7 @@
  */
 package org.omadac.make.impl;
 
+import org.omadac.engine.Status;
 import org.omadac.make.Target;
 
 /**

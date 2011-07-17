@@ -43,7 +43,7 @@
   <service ref="executionContext" auto-export="all-classes"/>
 
   <reference id="configManager" interface="org.omadac.config.ConfigManager"/>
-  <reference id="productEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)"/>
+  <reference id="productEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.nom)" availability="optional"/>
   <reference id="engineEntityManagerFactory" interface="javax.persistence.EntityManagerFactory" filter="(osgi.unit.name=org.omadac.engine)"/>
   
 </blueprint>

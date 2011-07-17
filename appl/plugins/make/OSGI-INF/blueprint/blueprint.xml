@@ -18,15 +18,19 @@
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+            xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
             xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
             default-activation="lazy">
   
   <bean id="threadPoolJobManager" class="org.omadac.make.impl.ThreadPoolJobManager">
     <property name="executionContext" ref="executionContext"/>
+    <property name="targetDao" ref="targetDao"/>
   </bean>
   
   <bean id="graphMakeEngine" class="org.omadac.make.impl.GraphMakeEngine" activation="eager">
-    <property name="executionContext" ref="executionContext"/>
+    <property name="executionContext" ref="executionContext" />
+    <property name="targetDao" ref="targetDao"/>
   </bean>
   
   <service ref="threadPoolJobManager" auto-export="interfaces">
@@ -37,7 +41,14 @@
   
   <service ref="graphMakeEngine" auto-export="interfaces"/>
   
-  <reference id="executionContext" interface="org.omadac.make.ExecutionContext"/>
-  <reference id="engineSchemaCreator" interface="java.lang.Runnable" filter="(name=EngineSchemaCreator)"/>
+  <bean id="targetDao" class="org.omadac.make.TargetDao">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="org.omadac.engine" />
+  </bean>
+  <service ref="targetDao" auto-export="class-hierarchy"/>
+  
+  
+  <reference id="executionContext" interface="org.omadac.make.ExecutionContext" availability="optional"/>
+  <reference id="engineSchemaCreator" interface="java.lang.Runnable" filter="(name=EngineSchemaCreator)" availability="optional"/>
 
 </blueprint>

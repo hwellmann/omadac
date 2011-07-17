@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Engine Persistence Unit
+Bundle-SymbolicName: org.omadac.engine
+Bundle-Version: 0.2.0.qualifier
+Bundle-Vendor: omadac.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: javax.persistence;version="1.1.0",
+ org.apache.openjpa.enhance;version="2.1.0",
+ org.apache.openjpa.util;version="2.1.0"
+Export-Package: org.omadac.engine
+Meta-Persistence: 

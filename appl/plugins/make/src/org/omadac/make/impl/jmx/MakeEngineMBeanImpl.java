@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.omadac.engine.Status;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.Target;
-import org.omadac.make.Target.Status;
 import org.omadac.make.impl.GraphMakeEngine;
 
 /**

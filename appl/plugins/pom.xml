@@ -44,6 +44,7 @@
     <module>osm</module>
     <module>sql</module>
     <module>test</module>
+    <module>org.omadac.engine</module>
   </modules>
 
 </project>

@@ -16,12 +16,14 @@
  */
 package org.omadac.make;
 
-import static org.omadac.make.Target.Status.MISSING;
+import static org.omadac.engine.Status.MISSING;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import org.omadac.engine.TargetInfo;
 
 
 public class TargetDao 
@@ -77,6 +79,9 @@ public class TargetDao
             target.setInfo(savedInfo);
         }
     }
-
     
+    public void deleteAll() {
+        String jpql = "delete ti from TargetInfo ti";
+        em.createQuery(jpql).executeUpdate();
+    }
 }

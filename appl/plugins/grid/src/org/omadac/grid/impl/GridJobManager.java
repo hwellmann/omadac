@@ -33,6 +33,7 @@ import org.gridgain.grid.spi.failover.jobstealing.GridJobStealingFailoverSpi;
 import org.gridgain.grid.thread.GridThreadPoolExecutorService;
 import org.omadac.config.OmadacException;
 import org.omadac.config.jaxb.OmadacSettings;
+import org.omadac.engine.Status;
 import org.omadac.make.Action;
 import org.omadac.make.ActionListener;
 import org.omadac.make.JobManager;
@@ -149,7 +150,7 @@ public class GridJobManager implements JobManager, GridTaskListener
             }
             log.info("task completed: " + name);
             Target target = action.getTarget();
-            target.setStatus(Target.Status.UPTODATE);
+            target.setStatus(Status.UPTODATE);
             onCompleted(target.getAction());
         }
         catch (GridException exc)

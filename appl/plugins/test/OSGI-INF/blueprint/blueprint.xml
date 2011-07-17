@@ -21,12 +21,32 @@
             xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
             default-activation="eager">
   
-  <bean id="txTester" class="org.omadac.test.TxTester" init-method="start">
-    <property name="target" ref="nomSchemaTarget"/>
+  <bean id="counterStep" class="org.omadac.test.CounterStep"/>
+  <service ref="counterStep" auto-export="interfaces">
+    <service-properties>
+      <entry key="target" value="Counter"/>
+    </service-properties>
+  </service>
+  
+  <bean id="counterMaker" class="org.omadac.test.CounterMaker">
+    <property name="configManager" ref="configManager"/>
+    <property name="makeEngine" ref="makeEngine"/>    
+    <property name="bundleContext" ref="blueprintBundleContext"/>    
   </bean>
+  <service ref="counterMaker" interface="java.lang.Runnable">
+    <service-properties>
+      <entry key="name" value="CounterMaker"/>
+    </service-properties>
+  </service>
+
+  <bean id="counterComplexTarget" class="org.omadac.test.CounterComplexTarget"/>
+  <service ref="counterComplexTarget" interface="org.omadac.make.Target">
+    <service-properties>
+      <entry key="name" value="Counter"/>
+    </service-properties>
+  </service>
   
-  
-  <reference id="nomSchemaTarget" interface="org.omadac.osm.nom.NomSchemaTarget" >
-  </reference>
+  <reference id="configManager"  interface="org.omadac.config.ConfigManager"/>
+  <reference id="makeEngine" interface="org.omadac.make.MakeEngine"/>
   
 </blueprint>

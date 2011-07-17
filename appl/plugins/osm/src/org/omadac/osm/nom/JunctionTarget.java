@@ -19,7 +19,6 @@ package org.omadac.osm.nom;
 import java.sql.Connection;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.omadac.jpa.JpaUtil;
 import org.omadac.jpa.MetadataInspector;

@@ -29,34 +29,4 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>Omadac Make Engine</name>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>openjpa-maven-plugin</artifactId>
-        <version>1.2</version>
-        <configuration>
-          <persistenceXmlFile>${basedir}/META-INF/persistence.xml</persistenceXmlFile>
-          
-          <includes>org/omadac/make/TargetInfo.class</includes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>enhancer</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>enhance</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa</artifactId>
-            <version>2.1.0</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
 </project>

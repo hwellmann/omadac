@@ -16,9 +16,9 @@
  */
 package org.omadac.grid.impl;
 
-import static org.omadac.make.Target.Status.OUTDATED;
-import static org.omadac.make.Target.Status.UPDATING;
-import static org.omadac.make.Target.Status.UPTODATE;
+import static org.omadac.engine.Status.OUTDATED;
+import static org.omadac.engine.Status.UPDATING;
+import static org.omadac.engine.Status.UPTODATE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,10 +29,10 @@ import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridJob;
 import org.gridgain.grid.GridJobResult;
 import org.gridgain.grid.GridTaskSplitAdapter;
+import org.omadac.engine.Status;
 import org.omadac.make.ComplexTarget;
 import org.omadac.make.NoOpTarget;
 import org.omadac.make.Target;
-import org.omadac.make.Target.Status;
 import org.omadac.make.TargetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
