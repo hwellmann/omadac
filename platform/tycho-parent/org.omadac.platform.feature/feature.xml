@@ -308,6 +308,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.apache.aries.jpa.blueprint.aries"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.aries.jpa.container"
          download-size="0"
          install-size="0"
