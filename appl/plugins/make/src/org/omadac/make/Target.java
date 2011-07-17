@@ -128,88 +128,10 @@ public abstract class Target implements Serializable
      * Returns the action for updating this target, based on its current status.
      * @return action
      */
-    public synchronized Action getAction()
+    public Action getAction()
     {
-        if (action == null)
-        {
-            Runnable runnable;
-            switch (info.getStatus())
-            {
-                case MISSING:
-                case CREATING:
-                    runnable = create();
-                    break;
-
-                case INCOMPLETE:
-                case OUTDATED:
-                case UPDATING:
-                    runnable = update();
-                    break;
-
-                default:
-                    String msg = String.format("target %s is %s", info.getName(), info.getStatus());
-                    throw new IllegalStateException(msg);
-            }
-            action = new Action(this, runnable);
-        }
         return action;
     }
-
-    /**
-     * Returns a runnable for creating this target, when it does not exist.
-     * @return  creating action
-     */
-    protected Runnable create()
-    {
-        Runnable runnable = new SerializableRunnable() 
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void run()
-            {
-                if (step == null) {
-                    compile();
-                }
-                else {
-                    step.compile(Target.this);
-                }
-                setStatus(UPTODATE);
-                //saveStatus();
-            }
-
-        };
-        return runnable;
-    }
-    
-    /**
-     * Returns a runnable for updating this target when it exists already.
-     * @return updating action
-     */
-    protected Runnable update()
-    {
-        Runnable runnable = new SerializableRunnable() 
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void run()
-            {
-                if (step == null) {
-                    clean();
-                    compile();
-                }
-                else {
-                    step.clean(Target.this);
-                    step.compile(Target.this);
-                }
-                setStatus(UPTODATE);
-                //saveStatus();
-            }
-        };
-        return runnable;
-    }
-        
 
     public String getName()
     {
@@ -315,5 +237,10 @@ public abstract class Target implements Serializable
     
     public String getType() {
         throw new UnsupportedOperationException();
+    }
+
+    public void setAction(Action action)
+    {
+        this.action = action;
     }
 }

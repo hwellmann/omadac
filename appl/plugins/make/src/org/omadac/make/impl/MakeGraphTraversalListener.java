@@ -104,6 +104,7 @@ public class MakeGraphTraversalListener extends TraversalListenerAdapter<Target,
             newStatus == INCOMPLETE; 
 
         target.setStatus(newStatus);
+        targetDao.saveStatus(target);
         log.info("{} is {}", target, newStatus);
     }
 }

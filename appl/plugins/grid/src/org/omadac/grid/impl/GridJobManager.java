@@ -166,5 +166,11 @@ public class GridJobManager implements JobManager, GridTaskListener
             listener.onCompleted(action);
         }
     }
+
+    @Override
+    public void submitTarget(Target target)
+    {
+        throw new UnsupportedOperationException("TODO");
+    }
     
 }

@@ -50,6 +50,7 @@ public class CounterStep implements ComplexStep<CounterComplexTarget, CounterSub
         List<CounterSubtarget> subtargets = new ArrayList<CounterSubtarget>(ranges.size());
         for (NumberRange<Integer> range : ranges) {
             CounterSubtarget subtarget = new CounterSubtarget(range);
+            subtarget.setStep(this);
             subtargets.add(subtarget);
         }
         return subtargets;

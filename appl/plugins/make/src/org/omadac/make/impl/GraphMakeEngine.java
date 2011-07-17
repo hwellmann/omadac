@@ -359,8 +359,7 @@ public class GraphMakeEngine implements MakeEngine
     {
         target.setStatus(newStatus);
         targetDao.saveStatus(target);
-        Action action = target.getAction();
-        manager.submitAction(action);
+        manager.submitTarget(target);
     }
 
     /**
