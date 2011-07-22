@@ -2,10 +2,8 @@ package org.omadac.osm.nom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -37,8 +35,6 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
 
     private EntityManager em;
 
-    private List<Coordinate> coords;
-
     private Map<String, RoadAttributes> highwayTypeMap;
 
     private List<RoadAttributes> roadAttr;
@@ -47,28 +43,15 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
 
     private LineNormalizer normalizer;
 
-    private List<NomLink> links;
-
-    private Map<Coordinate, NomJunction> nodeMap;
-
-    private Set<NomJunction> newJunctions;
-
-    private Map<Long, NomJunction> junctionMap;
-    
     private LinkDao linkDao;
     
 
     public LinkStep()
     {
-        coords = new ArrayList<Coordinate>();
         factory = new GeometryFactory();
         normalizer = new LineNormalizer();
         roadAttr = new ArrayList<RoadAttributes>();
         highwayTypeMap = new HashMap<String, RoadAttributes>();
-        links = new ArrayList<NomLink>();
-        nodeMap = new HashMap<Coordinate, NomJunction>();
-        newJunctions = new HashSet<NomJunction>();
-        junctionMap = new HashMap<Long, NomJunction>();
         createRoadAttributes();
     }
 
@@ -114,16 +97,16 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
     {
         
         List<Object[]> results = linkDao.loadWays(target);
-        linkDao.loadJunctions(target, junctionMap, nodeMap);
+        linkDao.loadJunctions(target, target.junctionMap, target.nodeMap);
         
         for (Object[] result : results)
         {
             OsmWay way = (OsmWay) result[0];
             String tagValue = (String) result[1];
-            createLink(way, tagValue);
+            createLink(target, way, tagValue);
         }        
         
-        linkDao.saveFeatures(newJunctions, links);
+        linkDao.saveFeatures(target.newJunctions, target.links);
         log.info("done");
     }
 
@@ -202,56 +185,56 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
     }
     
     
-    private void createLink(OsmWay way, String highwayType)
+    private void createLink(LinkSubtarget target, OsmWay way, String highwayType)
     {
         int seqNum = 0;
         for (OsmNode node : way.getNodes())
         {
-            NomJunction junction = junctionMap.get(node.getId());
+            NomJunction junction = target.junctionMap.get(node.getId());
             assert !((seqNum == 0) || (seqNum == way.getNodes().size()-1)) 
                 || junction != null;
 
             Coordinate coord = new Coordinate(node.getLongitude(), node.getLatitude());
-            nodeMap.put(coord, junction);
+            target.nodeMap.put(coord, junction);
             if (seqNum++ == 0)
             {
-                coords = new ArrayList<Coordinate>();
-                coords.add(coord);
+                target.coords = new ArrayList<Coordinate>();
+                target.coords.add(coord);
             }
             else
             {
                 if (junction == null)
                 {
-                    coords.add(coord);
+                    target.coords.add(coord);
                 }
                 else
                 {
-                    coords.add(coord);
-                    createLinkPart(way.getId(), highwayType);
-                    coords = new ArrayList<Coordinate>();
-                    coords.add(coord);
+                    target.coords.add(coord);
+                    createLinkPart(target, way.getId(), highwayType);
+                    target.coords = new ArrayList<Coordinate>();
+                    target.coords.add(coord);
                 }
             }
         }
     }
     
-    private void createLinkPart(long wayId, String highwayType)
+    private void createLinkPart(LinkSubtarget target, long wayId, String highwayType)
     {
-        if (coords.size() == 1)
+        if (target.coords.size() == 1)
         {
             log.error("skipping way {} with only one node", wayId);
             return;
         }
 
-        if (coords.size() == 2 && coords.get(0).equals(coords.get(1)))
+        if (target.coords.size() == 2 && target.coords.get(0).equals(target.coords.get(1)))
         {
             log.error("skipping way {} collapsed to a point at {}", wayId,
-                    coords.get(0));
+                    target.coords.get(0));
             return;
         }
 
         LineString line = factory.createLineString(new CoordinateListSequence(
-                coords));
+                target.coords));
 
         List<LineString> parts = normalizer.normalize(line);
         if (parts.size() > 1)
@@ -266,10 +249,11 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
             int length = LinkLengthCalculator.computeLinkLength(part);
             Coordinate fromCoord = part.getCoordinateN(0);
             Coordinate toCoord = part.getCoordinateN(part.getNumPoints() - 1);
-            NomJunction fromNode = findOrCreateJunction(fromCoord);
-            NomJunction toNode = findOrCreateJunction(toCoord);
+            NomJunction fromNode = findOrCreateJunction(target, fromCoord);
+            NomJunction toNode = findOrCreateJunction(target, toCoord);
             assert fromNode != null;
             assert toNode != null;
+            
             assert !fromNode.equals(toNode);
 
             NomLink link = new NomLink();
@@ -286,19 +270,19 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
             link.setGeometry(part);
             link.getJunctions().add(fromNode);
             link.getJunctions().add(toNode);
-            links.add(link);
+            target.links.add(link);
         }
     }
 
-    private NomJunction findOrCreateJunction(Coordinate coord)
+    private NomJunction findOrCreateJunction(LinkSubtarget target, Coordinate coord)
     {
-        NomJunction junction = nodeMap.get(coord);
+        NomJunction junction = target.nodeMap.get(coord);
         if (junction == null)
         {
             int x = (int) coord.x;
             int y = (int) coord.y;
             junction = new NomJunction(x, y);
-            newJunctions.add(junction);
+            target.newJunctions.add(junction);
         }
         return junction;        
     }

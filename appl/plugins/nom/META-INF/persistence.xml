@@ -26,7 +26,7 @@
     <mapping-file>META-INF/osm.xml</mapping-file>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
-      <property name="openjpa.Log" value="log4j"/>
+      <property name="openjpa.Log" value="DefaultLevel=INFO"/>
       <!--property name="openjpa.RuntimeUnenhancedClasses" value="supported"/-->
       <property name="openjpa.jdbc.DBDictionary" value="batchLimit=25"/>
       <property name="openjpa.jdbc.DBDictionary" 
