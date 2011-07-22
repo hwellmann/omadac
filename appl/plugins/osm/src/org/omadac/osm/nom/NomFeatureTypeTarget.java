@@ -16,64 +16,15 @@
  */
 package org.omadac.osm.nom;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import org.omadac.jpa.JpaUtil;
-import org.omadac.jpa.MetadataInspector;
-import org.omadac.make.Target;
-import org.omadac.nom.NomFeatureType;
+import org.omadac.make.SimpleTarget;
 
 
-public class NomFeatureTypeTarget extends Target
+public class NomFeatureTypeTarget extends SimpleTarget
 {
-    private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1L;
 
-    private EntityManager em;
-    
     public NomFeatureTypeTarget()
     {
-    }
-    
-    @Override
-    public void clean()
-    {
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
-        inspector.cleanTable("nom", "nom_feature_type");
-    }
-
-    @Override
-    public void compile()
-    {
-        String sql = "insert into nom.nom_feature_type "
-                + "(feature_type, seq_num, dimension, description) "
-                + "values "
-                + "(?1, ?2, ?3, ?4)";
-        
-        Query query = em.createNativeQuery(sql);
-        
-        for (NomFeatureType type : NomFeatureType.values())
-        {
-            query.setParameter(1, type.getValue());
-            query.setParameter(2, type.getSeqNum());
-            query.setParameter(3, type.getDimension());
-            query.setParameter(4, type.getDescription());
-            query.executeUpdate();
-        }
-        
-        // primary key
-        String primaryKeySql = "alter table nom.nom_feature_type "
-                + "add constraint pk_nom_feature_type "
-                + "primary key (feature_type)";
-        query = em.createNativeQuery(primaryKeySql);
-        query.executeUpdate();
-        
-        // index
-        String indexSql = "create index nx_nomfeaturetype_seqnum "
-                + "on nom.nom_feature_type (seq_num)";
-        query = em.createNativeQuery(indexSql);
-        query.executeUpdate();
-        
-        em.getTransaction().commit();
+        super("NomFeatureTypes");
     }
 }

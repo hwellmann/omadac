@@ -27,16 +27,16 @@ public class OsmToNomMaker extends OmadacMaker
         addDependency("NomFeatureTypes", "NomSchema");
         addDependency("NomJunctions", "NomFeatureTypes");
         addDependency("NomLinks", "NomJunctions");
-        addDependency("NomMapFeatures", "NomLinks");
-        addDependency("NomMapFeatureClassifier", "NomMapFeatures");
-        addDependency("NomPointFeatures", "NomMapFeatureClassifier");
-        
-        addDependency("NomAdminRegion", "NomSchema");
-        
-        addDependency("NomRoadNames", 
-                      "NomAdminRegion", "NomPointFeatures");        
-
-        addDependency("NomNamedRoads", "NomRoadNames");
+//        addDependency("NomMapFeatures", "NomLinks");
+//        addDependency("NomMapFeatureClassifier", "NomMapFeatures");
+//        addDependency("NomPointFeatures", "NomMapFeatureClassifier");
+//        
+//        addDependency("NomAdminRegion", "NomSchema");
+//        
+//        addDependency("NomRoadNames", 
+//                      "NomAdminRegion", "NomPointFeatures");        
+//
+//        addDependency("NomNamedRoads", "NomRoadNames");
     }
 
 }

@@ -16,35 +16,14 @@
  */
 package org.omadac.osm.nom;
 
-import java.sql.Connection;
+import org.omadac.make.SimpleTarget;
 
-import javax.persistence.EntityManager;
-
-import org.omadac.jpa.JpaUtil;
-import org.omadac.jpa.MetadataInspector;
-import org.omadac.make.Target;
-import org.omadac.sql.SqlScriptRunner;
-
-public class JunctionTarget extends Target
+public class JunctionTarget extends SimpleTarget
 {
     private static final long serialVersionUID = 1L;
 
-    private EntityManager em;
-    
-    
-    @Override
-    public void clean()
+    public JunctionTarget()
     {
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
-        inspector.cleanTable("nom", "junction");
-        JpaUtil.commit();
-    }
-
-    @Override
-    public void compile()
-    {
-        Connection connection = JpaUtil.getConnection(em);
-        SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
-        scriptRunner.executeScript(getClass(), "/sql/create_junctions.sql");
+        super("NomJunctions");
     }
 }

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 
 import org.omadac.config.jaxb.ImportSettings;
 import org.omadac.config.jaxb.OmadacSettings;
@@ -39,17 +39,17 @@ public class PostgresqlFileImporter extends AbstractFileImporter
 
     private OmadacSettings config;
 
-    private EntityManagerFactory emf;
+    private EntityManager em;
 
     private String schemaName;
 
     private MetadataInspector inspector;
 
-    public PostgresqlFileImporter(OmadacSettings config, EntityManagerFactory emf)
+    public PostgresqlFileImporter(OmadacSettings config, EntityManager em)
     {
         super(new TrivialLineFilter());
         this.config = config;
-        this.emf = emf;
+        this.em = em;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class PostgresqlFileImporter extends AbstractFileImporter
     @Override
     protected void preCheckLoaderFiles()
     {
-        inspector = JpaUtil.getMetadataInspector(emf);
+        inspector = JpaUtil.getMetadataInspector(em);
     }
 
     @Override

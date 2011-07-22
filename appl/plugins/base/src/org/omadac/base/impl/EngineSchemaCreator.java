@@ -18,6 +18,8 @@ package org.omadac.base.impl;
 
 import java.net.URL;
 
+import javax.persistence.EntityManager;
+
 import org.omadac.sql.SqlSchemaCreator;
 
 /**
@@ -27,12 +29,14 @@ import org.omadac.sql.SqlSchemaCreator;
  */
 public class EngineSchemaCreator implements Runnable
 {
+    private EntityManager em;
+    
     @Override
     public void run()
     {
         // TODO do not hardcode dialect
         String dialect = "postgresql";
-        SqlSchemaCreator sqlSchemaCreator = new SqlSchemaCreator(dialect);
+        SqlSchemaCreator sqlSchemaCreator = new SqlSchemaCreator(em, dialect);
         String schemaFile = "/xml/engine_schema.xml";
         URL schema = getClass().getResource(schemaFile);
         sqlSchemaCreator.loadSchema(schema);

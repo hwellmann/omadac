@@ -19,6 +19,7 @@ package org.omadac.osm;
 import java.io.File;
 import java.net.URL;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.omadac.config.ConfigManager;
@@ -40,7 +41,7 @@ public class OsmDatabaseImporter implements Runnable
     // TODO make this configurable
     private String scriptDir = "/usr/share/postgresql/8.4/contrib/postgis-1.5";
     
-    private EntityManagerFactory emf;
+    private EntityManager em;
     private OmadacSettings config;
     
     private PostgresqlFileImporter osmImport;
@@ -62,9 +63,9 @@ public class OsmDatabaseImporter implements Runnable
         this.engineSchemaCreator = engineSchemaCreator;
     }
     
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
+    public void setEntityManager(EntityManager entityManager)
     {
-        this.emf = entityManagerFactory;
+        this.em = entityManager;
     }
     
     @Override
@@ -91,11 +92,11 @@ public class OsmDatabaseImporter implements Runnable
         }
         pgAdmin.createDatabase(targetHost, targetDb, owner);
 
-        SqlSchemaCreator schemaCreator = new SqlSchemaCreator(dialect);
+        SqlSchemaCreator schemaCreator = new SqlSchemaCreator(em, dialect);
         schemaCreator.loadSchema(xmlUrl);
         schemaCreator.createTables();
 
-        osmImport = new PostgresqlFileImporter(config, emf);
+        osmImport = new PostgresqlFileImporter(config, em);
         osmImport.setSchema("osm");
         osmImport.run();
 

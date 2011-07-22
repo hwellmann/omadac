@@ -23,5 +23,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="org.omadac.base@default:default,org.omadac.config@default:default,org.omadac.ds.postgresql@default:default,org.omadac.geom@default:default,org.omadac.grid@default:default,org.omadac.jpa@default:default,org.omadac.loader@default:default,org.omadac.make@default:default,org.omadac.nom@default:default,org.omadac.osm@default:default,org.omadac.sql@default:default,org.omadac.test@default:default"/>
+<stringAttribute key="workspace_bundles" value="org.omadac.base@default:default,org.omadac.config@default:default,org.omadac.ds.postgresql@default:default,org.omadac.engine@default:default,org.omadac.geom@default:default,org.omadac.grid@default:default,org.omadac.jpa@default:default,org.omadac.loader@default:default,org.omadac.main@default:default,org.omadac.make@default:default,org.omadac.nom@default:default,org.omadac.osm@default:default,org.omadac.sql@default:default"/>
 </launchConfiguration>
