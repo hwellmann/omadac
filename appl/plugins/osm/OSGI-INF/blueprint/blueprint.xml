@@ -37,10 +37,31 @@
     </service-properties>
   </service>
   
-  <bean id="linkStep" class="org.omadac.osm.nom.LinkStep"/>
+  <bean id="junctionStep" class="org.omadac.osm.nom.JunctionStep">
+    <property name="entityManager" ref="entityManager"/>
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
+  <service ref="junctionStep" interface="org.omadac.make.Step">
+    <service-properties>
+      <entry key="target" value="NomJunctions"/>
+    </service-properties>
+  </service>
+  
+  <bean id="linkDao" class="org.omadac.osm.nom.LinkDao">
+    <tx:transaction method="*" value="RequiresNew" />
+    <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
+  
+  <bean id="linkStep" class="org.omadac.osm.nom.LinkStep">
+    <property name="entityManager" ref="entityManager"/>
+    <property name="linkDao" ref="linkDao"/>
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
   <service ref="linkStep" interface="org.omadac.make.Step">
     <service-properties>
-      <entry key="name" value="NomLinks"/>
+      <entry key="target" value="NomLinks"/>
     </service-properties>
   </service>
   
@@ -80,14 +101,33 @@
       <entry key="name" value="NomFeatureTypes"/>
     </service-properties>
   </service>
-  
-  <bean id="nomSchemaTarget" class="org.omadac.osm.nom.NomSchemaTarget">
+
+  <bean id="nomFeatureTypeStep" class="org.omadac.osm.nom.NomFeatureTypeStep">
     <tx:transaction method="*" value="Required" />
     <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
+  <service ref="nomFeatureTypeStep" interface="org.omadac.make.Step">
+    <service-properties>
+      <entry key="target" value="NomFeatureTypes"/>
+    </service-properties>
+  </service>
+
+  
+  <bean id="nomSchemaTarget" class="org.omadac.osm.nom.NomSchemaTarget">
   </bean>
   <service ref="nomSchemaTarget" auto-export="all-classes">
     <service-properties>
       <entry key="name" value="NomSchema"/>
+    </service-properties>
+  </service>
+  
+  <bean id="nomSchemaStep" class="org.omadac.osm.nom.NomSchemaStep">
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
+  <service ref="nomSchemaStep" interface="org.omadac.make.Step">
+    <service-properties>
+      <entry key="target" value="NomSchema"/>
     </service-properties>
   </service>
   

@@ -232,7 +232,7 @@ public class ThreadPoolJobManager implements JobManager
         else
         {
             // simple target: directly submit the action
-            log.info("submitting job for ", target);
+            log.info("submitting job for {}", target);
             executor.submit(action, action);
         }
     }
@@ -260,6 +260,7 @@ public class ThreadPoolJobManager implements JobManager
             List<Action> subactions = new ArrayList<Action>(subtargets.size());                      
             for (Target subtarget : subtargets)
             {
+                subtarget.setStep(step);
                 subtarget.setParent(complexTarget);
                 subtarget.setExecutionContext(context);
                 targetDao.refreshTargetStatus(subtarget);

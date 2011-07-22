@@ -221,7 +221,7 @@ public abstract class Target implements Serializable
     @Override
     public String toString()
     {
-        return info.getName();
+        return getName();
     }
 
     public Step getStep()

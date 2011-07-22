@@ -33,7 +33,7 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
 {
     private static Logger log = LoggerFactory.getLogger(LinkStep.class);
 
-    private static final int NUM_LINKS = 1000;
+    private static final int NUM_LINKS = 200;
 
     private EntityManager em;
 
@@ -55,13 +55,10 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
 
     private Map<Long, NomJunction> junctionMap;
     
+    private LinkDao linkDao;
+    
 
-    public void setEntityManager(EntityManager em)
-    {
-        this.em = em;
-    }
-
-    private void init()
+    public LinkStep()
     {
         coords = new ArrayList<Coordinate>();
         factory = new GeometryFactory();
@@ -71,21 +68,31 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
         links = new ArrayList<NomLink>();
         nodeMap = new HashMap<Coordinate, NomJunction>();
         newJunctions = new HashSet<NomJunction>();
+        junctionMap = new HashMap<Long, NomJunction>();
         createRoadAttributes();
     }
 
-    
+    public void setEntityManager(EntityManager em)
+    {
+        this.em = em;
+    }
+
+    public void setLinkDao(LinkDao linkDao)
+    {
+        this.linkDao = linkDao;
+    }
     
     @Override
     public List<LinkSubtarget> split(LinkComplexTarget target)
     {
-        createRoadAttributes();
+        persistRoadAttributes();
         
         List<LinkSubtarget> subtargets = new ArrayList<LinkSubtarget>();
         List<NumberRange<Long>> ranges = getRanges(NUM_LINKS);
         for (NumberRange<Long> range : ranges)
         {
             LinkSubtarget subtarget = new LinkSubtarget(range);
+            subtarget.setStep(this);
             subtargets.add(subtarget);
         }
         
@@ -105,10 +112,9 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
     @Override
     public void compile(LinkSubtarget target)
     {
-        init();
         
-        List<Object[]> results = loadWays(target);
-        loadJunctions(target);
+        List<Object[]> results = linkDao.loadWays(target);
+        linkDao.loadJunctions(target, junctionMap, nodeMap);
         
         for (Object[] result : results)
         {
@@ -117,7 +123,8 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
             createLink(way, tagValue);
         }        
         
-        saveFeatures();
+        linkDao.saveFeatures(newJunctions, links);
+        log.info("done");
     }
 
     @Override
@@ -132,11 +139,9 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
     {
         MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
         inspector.cleanTable("nom", "link");        
-        JpaUtil.commit();
 
         String sql = "delete from nom.feature where discriminator = 'L'";
         em.createNativeQuery(sql).executeUpdate();
-        em.getTransaction().commit();        
     }
 
     private void createRoadAttributes()
@@ -147,7 +152,7 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
             attr.setId(i+1);
             attr.setFunctionalClass(i);
             attr.setTravelDirection('B');
-            em.persist(attr);
+            roadAttr.add(attr);
         }
 
         highwayTypeMap.put("bridlepath", roadAttr.get(7));
@@ -176,6 +181,12 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
         highwayTypeMap.put("unclassified", roadAttr.get(7));
         highwayTypeMap.put("unsurfaced", roadAttr.get(7));
     }    
+    
+    private void persistRoadAttributes() {
+        for (RoadAttributes ra : roadAttr) {
+            em.persist(ra);
+        }
+    }
 
     private List<NumberRange<Long>> getRanges(int rangeSize)
     {
@@ -186,63 +197,11 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
         @SuppressWarnings("unchecked")
         List<Long> ids = query.getResultList();
         
-        em.getTransaction().commit();
         List<NumberRange<Long>> ranges = NumberRange.split(ids, rangeSize);
         return ranges;
     }
     
     
-    private void loadJunctions(LinkSubtarget subtarget)
-    {
-        String jpql;
-        Query query;
-        NumberRange<Long> range = subtarget.getRange();
-        jpql = "select j from NomJunction j, OsmWay w join w.nodes as wn join w.tags as wt "
-                + "where key(wt) = 'highway' and j.sourceId = wn.id and w.id between :minId and :maxId";
-        query = em.createQuery(jpql);
-        query.setParameter("minId", range.getMinId());
-        query.setParameter("maxId", range.getMaxId());
-
-        @SuppressWarnings("unchecked")
-        List<NomJunction> junctions = query.getResultList();
-        junctionMap = new HashMap<Long, NomJunction>();
-        for (NomJunction junction : junctions)
-        {
-            junctionMap.put(junction.getSourceId(), junction);
-            Coordinate coord = new Coordinate(junction.getX(), junction.getY());
-            nodeMap.put(coord, junction);            
-        }
-    }
-
-    private List<Object[]> loadWays(LinkSubtarget subtarget)
-    {
-        NumberRange<Long> range = subtarget.getRange();
-        String jpql = "select w, wt from OsmWay w join fetch w.nodes join w.tags as wt "
-                + "where key(wt) = 'highway' and w.id between :minId and :maxId order by w.id";
-
-        Query query = em.createQuery(jpql);
-
-        query.setParameter("minId", range.getMinId());
-        query.setParameter("maxId", range.getMaxId());
-
-        @SuppressWarnings("unchecked")
-        List<Object[]> results = query.getResultList();
-        return results;
-    }
-
-    private void saveFeatures()
-    {
-        for (NomJunction junction : newJunctions)
-        {
-            em.persist(junction);
-        }
-
-        for (NomLink link : links)
-        {
-            em.persist(link);
-        }
-    }
-
     private void createLink(OsmWay way, String highwayType)
     {
         int seqNum = 0;
@@ -343,6 +302,4 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
         }
         return junction;        
     }
-   
-    
 }

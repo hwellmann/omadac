@@ -16,60 +16,15 @@
  */
 package org.omadac.osm.nom;
 
-import java.net.URL;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-
-import org.omadac.base.OmadacTarget;
-import org.omadac.jpa.JpaUtil;
-import org.omadac.jpa.MetadataInspector;
-import org.omadac.nom.Feature;
-import org.omadac.sql.SqlSchemaCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.omadac.make.SimpleTarget;
 
 
-public class NomSchemaTarget extends OmadacTarget
+public class NomSchemaTarget extends SimpleTarget
 {
     private static final long serialVersionUID = 1L;
 
-    private static Logger log = LoggerFactory.getLogger(NomSchemaTarget.class);
-    
-    private EntityManager em;
-    
-    public void setEntityManager(EntityManager em)
+    public NomSchemaTarget()
     {
-        this.em = em;
-    }
-
-    @Override
-    public void clean()
-    {
-        log.info("dropping NOM schema");
-
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
-        inspector.dropSchema("nom");
-    }
-
-    @Override
-    public void compile()
-    {
-        log.info("creating NOM schema");
-        
-        MetadataInspector inspector = JpaUtil.getMetadataInspector(em);
-        inspector.dropSchema("nom");
-
-        String dialect = "postgresql";//getConfiguration().getServer().getJdbc().getSubprotocol();
-        SqlSchemaCreator schemaCreator = new SqlSchemaCreator(dialect);
-        URL schema = Feature.class.getResource("/xml/nom_schema.xml");
-        schemaCreator.loadSchema(schema);
-        schemaCreator.createTables();
-        
-        String sql = "insert into nom.DATABASE_INFO (PROVIDER, SCHEMA_VERSION) " +
-                     "values ('OSM', '0.6')";
-        Query q = em.createNativeQuery(sql);
-        q.executeUpdate();
+        super("NomSchema");
     }
 }

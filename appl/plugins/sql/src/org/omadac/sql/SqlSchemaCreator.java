@@ -23,16 +23,20 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.sql.Connection;
 
+import javax.persistence.EntityManager;
+
 import org.omadac.config.OmadacException;
 import org.omadac.jpa.JpaUtil;
 
 
 public class SqlSchemaCreator
 {
+    private EntityManager em;
     private SqlGenerator generator;
     
-    public SqlSchemaCreator(String dialect)
+    public SqlSchemaCreator(EntityManager em, String dialect)
     {
+        this.em = em;
         this.generator = new SqlGenerator(dialect);
     }
     
@@ -91,7 +95,7 @@ public class SqlSchemaCreator
     
     private void executeScript(Reader reader)
     {
-        Connection connection = JpaUtil.getConnection();
+        Connection connection = JpaUtil.getConnection(em);
         SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
         try
         {
