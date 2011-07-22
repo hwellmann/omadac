@@ -29,7 +29,7 @@
       </make>
     </job>
     <manager>local</manager>
-    <threads>1</threads>
+    <threads>4</threads>
   </jobs>
   
   <server>

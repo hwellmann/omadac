@@ -67,22 +67,33 @@ public class LinkDao
 
     public void saveFeatures(Collection<NomJunction> newJunctions, Collection<NomLink> links)
     {
-        for (NomJunction junction : newJunctions)
+//        for (NomJunction junction : newJunctions)
+//        {
+//            em.persist(junction);
+//        }
+//        em.flush();
+        for (NomLink link : links)
         {
-            em.persist(junction);
+//            long refNodeId = link.getReferenceNode().getId();
+//            assert refNodeId != 0;
+//            NomJunction refNode = em.find(NomJunction.class, refNodeId);
+//            assert refNode != null : link.toString();
+//            
+//            long nonRefNodeId = link.getNonReferenceNode().getId();
+//            assert nonRefNodeId != 0;
+//            NomJunction nonRefNode = em.find(NomJunction.class, nonRefNodeId);
+//            assert nonRefNode != null : link.toString();
+//            link.setReferenceNode(refNode);
+//            link.setNonReferenceNode(nonRefNode);
         }
         for (NomLink link : links)
         {
-            NomJunction refNode = em.find(NomJunction.class, link.getReferenceNode().getId());
-            NomJunction nonRefNode = em.find(NomJunction.class, link.getNonReferenceNode().getId());
-            link.setReferenceNode(refNode);
-            link.setNonReferenceNode(nonRefNode);
-        }
-        for (NomLink link : links)
-        {
+            long refNodeId = link.getReferenceNode().getId();
             log.info("creating link {}", link);
             em.persist(link);
         }
         em.clear();
     }
+    
+    //public NomJunction findNode(NomJunction )
 }

@@ -16,8 +16,17 @@
  */
 package org.omadac.osm.nom;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.omadac.make.SimpleTarget;
 import org.omadac.make.util.NumberRange;
+import org.omadac.nom.NomJunction;
+import org.omadac.nom.NomLink;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 public class LinkSubtarget extends SimpleTarget
 {
@@ -25,10 +34,30 @@ public class LinkSubtarget extends SimpleTarget
 
     private NumberRange<Long> range;
 
+    
+    transient List<NomLink> links;
+
+    transient Map<Coordinate, NomJunction> nodeMap;
+
+    transient List<NomJunction> newJunctions;
+
+    transient Map<Long, NomJunction> junctionMap;
+    
+    transient List<Coordinate> coords;
+
+    
+    
+    
     public LinkSubtarget(NumberRange<Long> range)
     {
         super(String.format("NomLinks_%d_%d", range.getMinId(), range.getMaxId()));
         this.range = range;
+        coords = new ArrayList<Coordinate>();
+        links = new ArrayList<NomLink>();
+        nodeMap = new HashMap<Coordinate, NomJunction>();
+        newJunctions = new ArrayList<NomJunction>();
+        junctionMap = new HashMap<Long, NomJunction>();
+        
     }
 
     public NumberRange<Long> getRange()
