@@ -67,10 +67,11 @@ public class LinkDao
 
     public void saveFeatures(Collection<NomJunction> newJunctions, Collection<NomLink> links)
     {
-//        for (NomJunction junction : newJunctions)
-//        {
-//            em.persist(junction);
-//        }
+        em.clear();
+        for (NomJunction junction : newJunctions)
+        {
+            em.persist(junction);
+        }
 //        em.flush();
         for (NomLink link : links)
         {
@@ -88,11 +89,11 @@ public class LinkDao
         }
         for (NomLink link : links)
         {
-            long refNodeId = link.getReferenceNode().getId();
-            log.info("creating link {}", link);
+            //long refNodeId = link.getReferenceNode().getId();
+            log.debug("creating link {}", link);
             em.persist(link);
         }
-        em.clear();
+        log.info("done");
     }
     
     //public NomJunction findNode(NomJunction )

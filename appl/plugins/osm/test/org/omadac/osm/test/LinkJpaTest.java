@@ -34,13 +34,14 @@ import org.omadac.nom.NomLink;
 public class LinkJpaTest
 {
     private static String driver = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://localhost/OmadacTest";
+    private static String url = "jdbc:postgresql://localhost/OmadacTest?loglevel=2";
     private static String user = "omadac";
     private static String password = "omadac";
     private static String persistenceUnit = "org.omadac.nom";
     
     
     private Map<Long, NomJunction> junctionMap = new HashMap<Long, NomJunction>();
+    private List<NomJunction> junctions;
     
     private static EntityManager createEntityManager() {
         Map<String, String> props = new HashMap<String, String>();
@@ -61,7 +62,7 @@ public class LinkJpaTest
 
         // create the schema
         //props.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(ForeignKeys=false)");
-        //props.put("openjpa.Log", "DefaultLevel=TRACE");
+        props.put("openjpa.Log", "DefaultLevel=TRACE");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnit, props);
         EntityManager em = emf.createEntityManager();
         return em;
@@ -75,7 +76,7 @@ public class LinkJpaTest
         EntityManager em = createEntityManager();
         
         em.getTransaction().begin();
-        int numJunctions = 1000;
+        int numJunctions = 2000;
         for (int i = 1; i <= numJunctions; i++) {
             NomJunction junction = new NomJunction();
             junction.setFeatureType(2);
@@ -96,11 +97,13 @@ public class LinkJpaTest
         em.getTransaction().commit();
         
         em.getTransaction().begin();
-        int numLinks = 500;
-        for (long i = 1; i <= numLinks; i++) {
+        int numLinks = 5;
+        for (int i = 0; i < numLinks; i++) {
             NomLink link = new NomLink();
-            link.getJunctions().add(junctionMap.get(2*i-1));
-            link.getJunctions().add(junctionMap.get(2*i));
+            NomJunction from = junctions.get(2*i);
+            link.getJunctions().add(from);
+            NomJunction to = junctions.get(2*i+1);
+            link.getJunctions().add(to);
             em.persist(link);
         }
         em.getTransaction().commit();
@@ -112,9 +115,6 @@ public class LinkJpaTest
     private void loadJunctions(EntityManager em)
     {
         TypedQuery<NomJunction> query = em.createQuery("select j from NomJunction j", NomJunction.class);
-        List<NomJunction> junctions = query.getResultList();
-        for (NomJunction junction : junctions) {
-            junctionMap.put(junction.getId(), junction);
-        }
+        junctions = query.getResultList();
     }
 }
