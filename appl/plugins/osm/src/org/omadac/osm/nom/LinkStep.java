@@ -31,7 +31,7 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
 {
     private static Logger log = LoggerFactory.getLogger(LinkStep.class);
 
-    private static final int NUM_LINKS = 200;
+    private static final int NUM_LINKS = 1000;
 
     private EntityManager em;
 
@@ -257,17 +257,17 @@ public class LinkStep implements ComplexStep<LinkComplexTarget, LinkSubtarget>
             assert !fromNode.equals(toNode);
 
             NomLink link = new NomLink();
-            link.setAttr(highwayTypeMap.get(highwayType));
-            if (link.getAttr() == null)
-            {
-                log.error("unknown highway type {}", highwayType);
-                link.setAttr(highwayTypeMap.get("unclassified"));
-            }
+//            link.setAttr(highwayTypeMap.get(highwayType));
+//            if (link.getAttr() == null)
+//            {
+//                log.error("unknown highway type {}", highwayType);
+//                link.setAttr(highwayTypeMap.get("unclassified"));
+//            }
             link.setLength(length);
 
             link.setFeatureType(NomFeatureType.LINE_ROAD.getValue());            
             link.setSourceId(wayId);
-            link.setGeometry(part);
+            //link.setGeometry(part);
             link.getJunctions().add(fromNode);
             link.getJunctions().add(toNode);
             target.links.add(link);

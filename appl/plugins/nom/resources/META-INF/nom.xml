@@ -151,7 +151,7 @@
       </basic>
       <many-to-one name="attr">
         <join-column name="road_attr_id" />
-        <cascade><cascade-persist/></cascade>
+        <!--cascade><cascade-persist/></cascade-->
       </many-to-one>
       <one-to-many name="namedRoadLinks" mapped-by="link"/>
       <many-to-many name="junctions">
@@ -160,7 +160,7 @@
           <join-column name="link_id" />
           <inverse-join-column name="junction_id" />
         </join-table>
-        <cascade><cascade-persist/></cascade>
+        <!--cascade><cascade-persist/></cascade-->
       </many-to-many>
     </attributes>
   </entity>
