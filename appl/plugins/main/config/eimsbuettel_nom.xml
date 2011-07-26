@@ -24,8 +24,8 @@
       <make>
         <dotOutput>OsmToNomMaker.dot</dotOutput>
         <!--goal>NomNamedRoads</goal-->
-        <goal>NomLinks</goal>
-        <forced>NomLinks</forced>
+        <goal>NomMapFeatures</goal>
+        <forced>NomMapFeatures</forced>
       </make>
     </job>
     <manager>local</manager>
