@@ -72,29 +72,11 @@ public class LinkDao
         {
             em.persist(junction);
         }
-//        em.flush();
         for (NomLink link : links)
         {
-//            long refNodeId = link.getReferenceNode().getId();
-//            assert refNodeId != 0;
-//            NomJunction refNode = em.find(NomJunction.class, refNodeId);
-//            assert refNode != null : link.toString();
-//            
-//            long nonRefNodeId = link.getNonReferenceNode().getId();
-//            assert nonRefNodeId != 0;
-//            NomJunction nonRefNode = em.find(NomJunction.class, nonRefNodeId);
-//            assert nonRefNode != null : link.toString();
-//            link.setReferenceNode(refNode);
-//            link.setNonReferenceNode(nonRefNode);
-        }
-        for (NomLink link : links)
-        {
-            //long refNodeId = link.getReferenceNode().getId();
             log.debug("creating link {}", link);
             em.persist(link);
         }
         log.info("done");
     }
-    
-    //public NomJunction findNode(NomJunction )
 }
