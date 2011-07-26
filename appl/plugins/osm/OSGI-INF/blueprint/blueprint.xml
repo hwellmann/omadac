@@ -87,6 +87,19 @@
       <entry key="name" value="NomMapFeatures"/>
     </service-properties>
   </service>
+
+  <bean id="mapFeatureStep" class="org.omadac.osm.nom.MapFeatureStep">
+    <property name="entityManager" ref="entityManager"/>
+    <tx:transaction method="*" value="Required" />
+    <jpa:context property="entityManager" unitname="org.omadac.nom" />
+  </bean>
+  <service ref="mapFeatureStep" interface="org.omadac.make.Step">
+    <service-properties>
+      <entry key="target" value="NomMapFeatures"/>
+    </service-properties>
+  </service>
+  
+
   
   <bean id="namedRoadComplexTarget" class="org.omadac.osm.nom.NamedRoadComplexTarget"/>
   <service ref="namedRoadComplexTarget" interface="org.omadac.make.Target">
