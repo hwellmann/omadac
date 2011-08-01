@@ -24,12 +24,12 @@
       <make>
         <dotOutput>OsmToNomMaker.dot</dotOutput>
         <!--goal>NomNamedRoads</goal-->
-        <goal>NomMapFeatures</goal>
-        <forced>NomMapFeatures</forced>
+        <goal>NomLinks</goal>
+        <forced>NomLinks</forced>
       </make>
     </job>
     <manager>local</manager>
-    <threads>1</threads>
+    <threads>2</threads>
   </jobs>
   
   <server>

@@ -2,7 +2,7 @@
  *    Omadac - The Open Map Database Compiler
  *    http://omadac.org
  * 
- *    (C) 2010, Harald Wellmann and Contributors
+ *    (C) 2011, Harald Wellmann and Contributors
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,29 +14,20 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.omadac.osm.nom;
+package org.omadac.pool.impl;
 
-import org.omadac.make.SimpleTarget;
-import org.omadac.make.util.NumberRange;
+import org.apache.commons.pool.BasePoolableObjectFactory;
 
-public class LinkSubtarget extends SimpleTarget
-{
-    private static final long serialVersionUID = 1L;
+public class PoolableServiceFactory extends BasePoolableObjectFactory {
+    
+    private Object prototype;
 
-    private NumberRange<Long> range;
-
-    
-    
-    
-    
-    public LinkSubtarget(NumberRange<Long> range)
-    {
-        super(String.format("NomLinks_%d_%d", range.getMinId(), range.getMaxId()));
-        this.range = range;
+    public PoolableServiceFactory(Object prototype) {
+        this.prototype = prototype;
     }
 
-    public NumberRange<Long> getRange()
-    {
-        return range;
+    @Override
+    public Object makeObject() throws Exception {
+        return prototype.getClass().newInstance();
     }
 }

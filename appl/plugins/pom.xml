@@ -45,6 +45,7 @@
     <module>sql</module>
     <module>test</module>
     <module>org.omadac.engine</module>
+    <module>org.omadac.pool</module>
   </modules>
 
 </project>
