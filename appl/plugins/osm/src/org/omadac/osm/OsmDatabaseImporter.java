@@ -20,7 +20,6 @@ import java.io.File;
 import java.net.URL;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.omadac.config.ConfigManager;
 import org.omadac.config.OmadacException;
