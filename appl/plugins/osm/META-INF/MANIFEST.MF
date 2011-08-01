@@ -22,6 +22,7 @@ Require-Bundle: org.omadac.make;bundle-version="0.1.0",
  org.omadac.base;bundle-version="0.1.0",
  org.omadac.sql;bundle-version="0.1.0",
  org.omadac.geom;bundle-version="0.1.0",
- org.omadac.engine;bundle-version="0.2.0"
+ org.omadac.engine;bundle-version="0.2.0",
+ org.omadac.pool;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.omadac.osm.nom
